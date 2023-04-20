@@ -72,20 +72,6 @@ Item_Desc[0] = "This Item should not be in your Inventory"
 
 ;[End BLOCK]
 
-;[Block] Postprocessing
-Global PostProcess_Active=1
-
-Global PostProcess_GR_Strength#=0.035;0.075
-Global PostProcess_GR_RayLength#=0.2;0.2
-Global PostProcess_GR_Layers=64
-Global PostProcess_GR_Smoothing=8
-
-Global PostProcess_GS_Strength#=0.7
-
-Global PostProcess_BL_Strength#=1
-Global Postprocess_BL_Smoothing=16
-;[End Block]
-
 ;[Block] Performance Tracking
 Global Performance
 Global Performance_Update
@@ -1004,8 +990,12 @@ For A = 1 To 30
 	ButtonEndY[A]=ButtonTempY
 	ButtonTempY=ButtonTempY-2
 Next
+Global DST_Looptime#,DST_TIMER,DST_CHECKTIMER,dst_check,DST_TempPivot
+Const dst_sharesize=200
 
+Global PCL_Timer
 
+Const pcl_count=200			; change here to get more than 200 Particles per Cloud
 
 ;Translate.bb
 Global DLFILE
@@ -1050,4 +1040,6 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
+;~F#13#4A#5C#6C#72#90#95#B2#BB#BF#CA#CE#ED#117#125#134#13A#13F#143#149
+;~F#150#155#15B#16C#18F#21D#2A1#2AF#332
 ;~C#Blitz3D

@@ -3024,6 +3024,748 @@ Function RaceTrack_Update()
 	
 End Function
 
+Function LoadSkyBox(TxID, Parent%=0)
+	Local texFlags=1+512;+16+32+512
+	
+	Local Mesh = CreateMesh(Parent)
+	VirtualScene_Register(Scene, Mesh)
+	Local Brush, Surface
+	Brush = CreateBrush()
+	
+	;Front
+	BrushTexture Brush, Text_SkyFT[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface, -1, 1, 1,  0, 0:AddVertex Surface,  1, 1, 1,  1, 0
+	AddVertex Surface, -1,-1, 1,  0, 1:AddVertex Surface,  1,-1, 1,  1, 1
+	AddTriangle Surface, 0, 1, 2:AddTriangle Surface, 2, 1, 3
+	
+	;Back
+	BrushTexture Brush, Text_SkyBK[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface, -1, 1,-1,  1, 0:AddVertex Surface,  1, 1,-1,  0, 0
+	AddVertex Surface, -1,-1,-1,  1, 1:AddVertex Surface,  1,-1,-1,  0, 1
+	AddTriangle Surface, 0, 2, 1:AddTriangle Surface, 2, 3, 1
+	
+	;Left
+	BrushTexture Brush, Text_SkyLF[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface, -1, 1,-1,  0, 0:AddVertex Surface, -1, 1, 1,  1, 0
+	AddVertex Surface, -1,-1,-1,  0, 1:AddVertex Surface, -1,-1, 1,  1, 1
+	AddTriangle Surface, 0, 1, 2:AddTriangle Surface, 2, 1, 3
+	
+	;Right
+	BrushTexture Brush, Text_SkyRT[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface,  1, 1,-1,  1, 0:AddVertex Surface,  1, 1, 1,  0, 0
+	AddVertex Surface,  1,-1,-1,  1, 1:AddVertex Surface,  1,-1, 1,  0, 1
+	AddTriangle Surface, 0, 2, 1:AddTriangle Surface, 2, 3, 1
+	
+	;Top
+	BrushTexture Brush, Text_SkyUP[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface, -1, 1,-1,  0, 0:AddVertex Surface,  1, 1,-1,  1, 0
+	AddVertex Surface, -1, 1, 1,  0, 1:AddVertex Surface,  1, 1, 1,  1, 1
+	AddTriangle Surface, 0, 1, 2:AddTriangle Surface, 2, 1, 3
+	
+	;Bottom
+	BrushTexture Brush, Text_SkyDN[TxID]
+	Surface = CreateSurface(Mesh, Brush)
+	AddVertex Surface, -1,-1,-1,  0, 1:AddVertex Surface,  1,-1,-1,  1, 1
+	AddVertex Surface, -1,-1, 1,  0, 0:AddVertex Surface,  1,-1, 1,  1, 0
+	AddTriangle Surface, 0, 2, 1:AddTriangle Surface, 2, 3, 1
+	
+	; Stuff
+	ScaleMesh Mesh, 30000, 30000, 30000
+	EntityOrder Mesh, 1
+	EntityFX Mesh, 1
+	Return Mesh
+	
+	FreeBrush Brush
+	
+End Function
+
+Function Lighting_Initialize()
+	
+	Local SunScale# = 9000
+	Local SunColorR = 200
+	Local SunColorG = 210
+	Local SunColorB = 255
+	
+    ; Sun
+	
+	Object_Environment[0] = CreatePivot()
+	
+	Object_Light[0] = CreateLight(1, Object_Environment[0]):VirtualScene_Register(Scene, Object_Light[0])
+	
+;	LightRange Object_Light[0],200000000000
+	
+    Object_Environment[1] = LoadSprite("Content\GFX\Environment\sun\Sun_Sprite_Body.png", 2, Object_Light[0]) ;!ToDo: AssetManager
+	SpriteViewMode Object_Environment[1], 2
+	ScaleSprite Object_Environment[1], SunScale, SunScale
+	
+	EntityFX Object_Environment[1],1 + 4 + 8 + 16
+	Light_Pivot=CreatePivot(Object_Environment[1])
+	
+	Object_Environment[2] = LoadTexture("Content\GFX\Environment\Sun\sun_sprite_effect.png",1+2)
+	TextureBlend Object_Environment[2],2
+	ScaleTexture Object_Environment[2],0.8,0.8
+	EntityTexture Object_Environment[1],Object_Environment[2],0,2
+	
+	LightX=EntityX(Object_Environment[1])
+	LightY=EntityY(Object_Environment[1])
+	LightZ=EntityZ(Object_Environment[1])
+	
+	System_Flashlight = CreateLight(3,WorldCamera)
+	
+	
+;	EntityOrder Object_Environment[1],1
+End Function
+
+Function Modify_Light(RotX,RotY,Scale)
+	
+	
+	RotateEntity Object_Environment[0], RotX, RotY, 0, True
+	ScaleSprite Object_Environment[1], Scale, Scale
+	
+	PositionEntity Object_Light[0], 0,0,0
+	MoveEntity Object_Light[0],0,0,150000
+	PointEntity Object_Light[0], WorldCamera
+	PointEntity Object_Environment[1], WorldCamera
+	
+	EntityColor Object_Environment[1],255,255,255
+;	EntityFX Object_Environment[1],1
+	
+End Function
+
+Function Modify_Fog(Enable, RangeNear, RangeFar, R, G, B)
+	If Enable = 1 Then
+		CameraFogMode WorldCamera,1
+		CameraFogRange WorldCamera,RangeNear,RangeFar
+		CameraFogColor WorldCamera,R,G,B
+	Else
+		CameraFogMode WorldCamera,0
+	EndIf
+End Function
+
+Function Modify_Ambient(r,g,b)
+	AmbientLight r/2, g/2, b/2
+	LightColor Object_Light[0],r,g,b
+	EntityColor Object_Environment[1],r,g,b
+End Function
+
+Function CreateMainDust()
+	Zone_Dust_Handle=DST_Create_Dust(WorldCamera,100,1)
+	Zone_Dust_Base=DST_Create_Dustzone(Zone_Dust_Handle)
+	DST_Set_ZoneRadius(Zone_Dust_Base,300)
+	DST_Set_texture(Zone_Dust_Base,Text_Effects[9],1+2+4)
+	DST_Set_FadingFar(Zone_Dust_Base,200,150)
+	DST_Set_AlphaRange(Zone_Dust_Base,0.4,0.7)
+	DST_Set_Dense(Zone_Dust_Base,1)
+	DST_Set_ScaleRange(Zone_Dust_Base,.125,.25)
+	DST_Set_FX(Zone_Dust_Base,1)
+	DST_Set_Blend(Zone_Dust_Base,3)
+	DST_Set_SpeedBlur(Zone_Dust_Base,15)
+	DST_Set_ColorRange(Zone_Dust_Base,55,55,55,255,255,255)
+End Function
+
+
+Function Asset_Station_Create(x,y,z,Rotation=0, Station_Subtype=1, Station_Faction=1)
+	da.Station = New Station
+	da\Mesh_Essential=CopyEntity(Mesh_Station[1])
+	da\Mesh_Factory=CopyEntity(Mesh_Station[3])
+	da\Mesh_Power=CopyEntity(Mesh_Station[4])
+	da\Mesh_RIng=CopyEntity(Mesh_Station[2])
+	
+	Respawn_Create(x,y,z)
+;	TraderPOI_Create(x, y, z, 0)
+	
+;	AI_Turret_Create(da\Mesh_Ring,9999,Faction_Neutral,-1000,0,-1000)
+;	AI_Turret_Create(da\Mesh_Ring,9999,Faction_Neutral,+1000,0,-1000)
+	
+	PositionEntity da\Mesh_Essential,x,y,z
+	PositionEntity da\Mesh_Factory,x,y,z
+	PositionEntity da\Mesh_Power,x,y,z
+	PositionEntity da\Mesh_Ring,x,y,z
+	
+	EntityAutoFade da\Mesh_Essential,160000,181500
+	EntityAutoFade da\Mesh_Factory,160000,181500
+	EntityAutoFade da\Mesh_Power,120000,141500
+	EntityAutoFade da\Mesh_Ring,100000,111500
+	
+	ScaleEntity da\Mesh_Essential,120,120,120
+	ScaleEntity da\Mesh_Factory,120,120,120
+	ScaleEntity da\Mesh_Power,120,120,120
+	ScaleEntity da\Mesh_Ring,120,120,120
+	
+	RotateEntity da\Mesh_Essential,0,Rotation,0
+	RotateEntity da\Mesh_Factory,0,Rotation,0
+	RotateEntity da\Mesh_Ring,0,Rotation,0
+	RotateEntity da\Mesh_Power,0,Rotation,0
+	
+	VirtualScene_Register(Scene, da\Mesh_Essential)
+	VirtualScene_Register(Scene, da\Mesh_Factory)
+	VirtualScene_Register(Scene, da\Mesh_Power)
+	VirtualScene_Register(Scene, da\Mesh_Ring)
+	
+	CreateMapPoint(x,y,z,2)
+	
+End Function
+
+Function UpdateStation()
+	For da.station= Each Station
+		TurnEntity da\Mesh_Ring,0,0,0.04
+	Next
+End Function
+
+Type SpecialObject
+	Field x,y,z
+	Field rot#, mesh, var, secmesh, Framemesh, Beammesh
+End Type
+
+Function Special_Create(x,y,z,variant)
+	Disc.SpecialObject = New SpecialObject
+	Disc\x = x
+	DIsc\y = y
+	Disc\z = z
+	Disc\var = variant
+	Select variant
+		Case 1
+			Disc\Mesh = CreateCube()
+			EntityTexture Disc\Mesh,Text_Special[0]
+			EntityShininess Disc\Mesh,0.9
+			ScaleEntity Disc\Mesh,20,20,0.2
+			VirtualScene_Register(Scene, Disc\Mesh)
+			PositionEntity Disc\Mesh,x,y,z
+			
+		Case 2
+			
+			Disc\Mesh = CopyEntity(Mesh_Special[0])
+			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
+			Disc\SecMesh = CopyEntity(Mesh_Special[1])
+			Disc\BeamMesh = CopyEntity(Mesh_Weapon[1])
+			ScaleEntity Disc\Mesh,100,100,100
+			ScaleEntity Disc\SecMesh,100,100,100
+			ScaleEntity Disc\FrameMesh,100,100,100
+			
+			EntityShininess Disc\Mesh,1
+			VirtualScene_Register(Scene, Disc\Mesh)
+			VirtualScene_Register(Scene, Disc\SecMesh)
+			VirtualScene_Register(Scene, Disc\FrameMesh)
+			VirtualScene_Register(Scene, Disc\BeamMesh)
+			PointEntity Disc\Mesh,Object_Light[0]
+			PointEntity Disc\FrameMesh,Object_Light[0]
+			
+			PositionEntity Disc\Mesh,x,y,z
+			PositionEntity Disc\SecMesh,x,y,z
+			PositionEntity Disc\FrameMesh,x,y,z
+			PositionEntity Disc\BeamMesh,x,y,z
+			
+			EntityTexture DISc\BeamMesh, Text_Special[3]
+			
+			ScaleEntity Disc\BeamMesh,50,50,50
+			
+			MoveEntity Disc\Framemesh,0,0,-120
+			
+			EntityFX Disc\BeamMesh,1+16
+			
+		Case 3
+			
+			Disc\Mesh = CopyEntity(Mesh_Special[3])
+			Disc\FrameMesh = CopyEntity(Mesh_Special[4])
+			Disc\SecMesh = CopyEntity(Mesh_Special[4])
+			
+			ScaleEntity Disc\Mesh,1000,1000,1000
+			ScaleEntity Disc\SecMesh,1000,1000,1000
+			ScaleEntity Disc\FrameMesh,1000,1000,1000
+			
+			VirtualScene_Register(Scene, Disc\Mesh)
+			VirtualScene_Register(Scene, Disc\SecMesh)
+			VirtualScene_Register(Scene, Disc\FrameMesh)
+			
+			PositionEntity Disc\Mesh,x,y,z
+			PositionEntity Disc\SecMesh,x,y,z
+			PositionEntity Disc\FrameMesh,x,y,z
+			
+			EntityFX Disc\SecMesh,1+16
+			EntityFX Disc\FrameMesh,1+16
+			
+			RotateEntity Disc\FrameMesh,180,0,0
+			
+		Case 4
+			
+			Disc\Mesh = CopyEntity(Mesh_Special[0])
+			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
+			Disc\SecMesh = CopyEntity(Mesh_Special[1])
+			
+			ScaleEntity Disc\Mesh,100,100,100
+			ScaleEntity Disc\SecMesh,100,100,100
+			ScaleEntity Disc\FrameMesh,100,100,100
+			
+			EntityShininess Disc\Mesh,1
+			VirtualScene_Register(Scene, Disc\Mesh)
+			VirtualScene_Register(Scene, Disc\SecMesh)
+			VirtualScene_Register(Scene, Disc\FrameMesh)
+			
+			PointEntity Disc\Mesh,Object_Light[0]
+			PointEntity Disc\FrameMesh,Object_Light[0]
+			
+			PositionEntity Disc\Mesh,x,y,z
+			PositionEntity Disc\SecMesh,x,y,z
+			PositionEntity Disc\FrameMesh,x,y,z
+			
+			MoveEntity Disc\Framemesh,0,0,-120
+			
+		Case 5
+			Disc\Mesh = CopyEntity(Mesh_Ship[8])
+			VirtualScene_Register(Scene, Disc\Mesh)
+			ScaleEntity Disc\Mesh,16,16,16
+			PositionEntity Disc\Mesh,x,y,z
+			PositionEntity Story_Pivot,x,y,z
+			
+		Case 6
+			Disc\Mesh = CopyEntity(Mesh_Ship[5])
+			VirtualScene_Register(Scene, Disc\Mesh)
+			ScaleEntity Disc\Mesh,2,2,2
+			PositionEntity Disc\Mesh,x,y,z
+			PositionEntity Story_Pivot,x,y,z
+	End Select
+	
+	
+End Function
+
+Function Special_Update()
+	For Disc.SpecialObject = Each SpecialObject
+		Select DIsc\var
+			Case 1
+				TurnEntity Disc\Mesh,Disc\Rot/30,disc\rot/20,Disc\Rot#/10
+				Disc\Rot#=1
+			Case 2
+				da.Station = First Station
+				PointEntity Disc\Secmesh,da\mesh_power
+				Local EDist = EntityDistance(DIsc\Mesh,da\mesh_Power)/6
+				ScaleEntity Disc\BeamMesh,50,50,EDist
+				PointEntity Disc\Beammesh,da\mesh_Power
+			Case 3
+				TurnEntity DIsc\Secmesh,0,.1,0
+				TurnEntity DIsc\Framemesh,0,.1,0
+			Case 4
+				
+		End Select
+	Next
+End Function
+;[End Block]
+Type ItemDrop
+	Field Mesh, Attribute, AttribTime, Level
+End Type
+
+Function Drop_Item(x,y,z,attrib,lvl=1)
+	Can.ItemDrop = New ItemDrop
+	Can\Mesh = CopyEntity(Mesh_Effects[5])
+	PositionEntity Can\Mesh,x,y,z
+	Can\Attribute = attrib
+	
+	RotateEntity Can\Mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
+	
+	Select attrib
+		Case 1
+			EntityTexture can\mesh, Text_Effects[8]
+		Case 2
+			EntityTexture can\mesh, Text_Effects[9]
+		Case 3
+			EntityTexture can\mesh, Text_Effects[10]
+		Case 4
+			EntityTexture can\mesh, Text_Effects[11]
+		Case 5
+			EntityTexture can\mesh, Text_Effects[12]
+		Default
+			EntityTexture can\mesh, Text_Effects[8]
+	End Select
+	
+	TurnEntity Can\mesh,17,0,0
+	Can\Level = lvl
+	Can\AttribTime = 30*lvl
+	VirtualScene_Register(Scene, Can\Mesh)
+End Function
+
+Function Update_Item()
+	For Can.ItemDrop = Each ItemDrop
+		
+		
+		Local Namespace$
+		Select Can\Attribute
+			Case 1
+				Namespace$= "LVL"+Can\Level+" Shield Battery ("+Can\Attribtime+"s)"
+			Case 2
+				Namespace$= "LVL"+Can\Level+" Repair Nanobots ("+Can\Attribtime+"s)"
+			Case 3
+				Namespace$= "LVL"+Can\Level+" Weapon Refining ("+Can\Attribtime+"s)"
+			Case 4
+				Namespace$= "LVL"+Can\Level+" Weapon Efficiency ("+Can\Attribtime+"s)"
+			Case 5
+				Namespace$= "LVL"+Can\Level+" Experience Gain ("+Can\Attribtime+"s)"
+		End Select
+		
+		If EntityDistance(Can\Mesh,WorldCamera)< 2500 Then
+			CameraProject WorldCamera,EntityX(Can\Mesh), EntityY(Can\Mesh), EntityZ(Can\Mesh)
+			If HUD = 1 Then Text3D(Text_Font[11],ProjectedX()-(GraphicsWidth()/2),-ProjectedY()+(GraphicsHeight()/2),Namespace,1)
+		EndIf
+		
+		If EntityDistance(Can\mesh,eShipBody) < 600 Then
+			AlignEntity(Can\Mesh,eShipBody,15)
+			MoveEntity can\mesh,0,0,10
+		Else
+			TurnEntity Can\mesh,0,1,1
+		EndIf
+		
+		If EntityDistance(Can\mesh,eShipBody) < 100 Then
+			
+			Select Can\Attribute
+				Case 1
+					Buff_Add(4,30*Can\Level)
+				Case 2
+					Buff_Add(5,30*Can\Level)
+				Case 3
+					Buff_Add(1,30*Can\Level)
+				Case 4
+					Buff_Add(2,30*Can\Level)
+				Case 5
+					Buff_Add(3,30*Can\Level)
+			End Select
+			
+			PlaySound Sound_UI[6]
+			FreeEntity Can\Mesh
+			VirtualScene_Unregister(Scene, Can\Mesh)
+			Delete Can
+			
+		EndIf
+		
+	Next
+End Function
+
+Type Advantage
+	Field Attribute
+	Field Duration
+End Type
+
+Function Buff_Add(Attribute, Time)
+	Buff.Advantage = New Advantage
+	Buff\Attribute = Attribute
+	Buff\Duration = Time
+End Function
+
+Function Buff_Update()
+	Upgrade_Weapon_Damage = 0
+	Upgrade_Weapon_Multiplier# = 1
+	Upgrade_XP_Modifier# = 1
+	Upgrade_Shield_Recharge = 0
+	Upgrade_Armor_Repair = 0
+	
+	For Buff.Advantage = Each Advantage
+		
+		Select Buff\Attribute
+			Case 1
+				Upgrade_Weapon_Damage = Upgrade_Weapon_Damage + 1
+			Case 2
+				Upgrade_Weapon_Multiplier# = Upgrade_Weapon_Multiplier# + 0.05
+			Case 3
+				Upgrade_XP_Modifier# = Upgrade_XP_Modifier# + 0.1
+			Case 4
+				Player_Value_Shield_Current = Player_Value_Shield_Current + 1
+				Upgrade_Shield_Recharge = Upgrade_Shield_Recharge + 1
+			Case 5
+				Player_Value_Armor_Current = Player_Value_Armor_Current + 1
+				Upgrade_Armor_Repair = Upgrade_Armor_Repair + 1
+		End Select
+		
+		If Buff\Duration < 1 Then
+			Delete buff
+		EndIf
+		
+	Next
+	
+	Local Bonus_Perc_WPMulti = (Upgrade_Weapon_Multiplier - 1) * 100
+	Local Bonus_Perc_XPMulti = (Upgrade_XP_Modifier - 1) * 100
+	
+	If HUD=1 And MAPHUD = 0
+		If Upgrade_Weapon_Damage > 0 Then
+			DrawImage3D(GUI_Buffs[3], D3DOL+32, +128)
+			Text3D(Text_Font[31],D3DOL+32,128,"+"+Upgrade_Weapon_Damage,1)
+		EndIf
+		
+		If Upgrade_Weapon_Multiplier > 1 Then
+			DrawImage3D(GUI_Buffs[4], D3DOL+32, +64)
+			Text3D(Text_Font[31],D3DOL+32,64,"+"+Bonus_Perc_WPMulti+"%",1)
+		EndIf
+		
+		If Upgrade_XP_Modifier > 1 Then
+			DrawImage3D(GUI_Buffs[5], D3DOL+32, +0)
+			Text3D(Text_Font[31],D3DOL+32,0,"+"+Bonus_Perc_XPMulti+"%",1)
+		EndIf
+		
+		If Upgrade_Shield_Recharge > 0 Then
+			DrawImage3D(GUI_Buffs[1], D3DOL+32, -64)
+			Text3D(Text_Font[31],D3DOL+32,-64,"+"+Upgrade_Shield_Recharge,1)
+		EndIf
+		
+		If Upgrade_Armor_Repair > 0 Then
+			DrawImage3D(GUI_Buffs[2], D3DOL+32, -128)
+			Text3D(Text_Font[31],D3DOL+32,-128,"+"+Upgrade_Armor_Repair,1)
+		EndIf
+	EndIf
+	
+End Function
+
+Function Planet_Create(DistanceTocenter, Size, SurfaceType, Rotx, RotY, Ring=0, Ring_Tilt=0, Ring_Type=0);( PosX%, PosY%, PosZ%, Size#, SurfaceTexture%, Name$, AtmosR, AtmosG, AtmosB, Ring=0, Ringtilt=0, Ringtype=0)
+	TP.TPlanet = New TPlanet
+	
+; Assign Size
+	TP\Size = Size*10
+	
+	; Create Entity
+	TP\Pivot = CreatePivot()
+	TP\Mesh = CopyEntity(Mesh_Effects[0],TP\Pivot)
+	ScaleEntity TP\Mesh, TP\Size, TP\Size, TP\Size
+	TurnEntity TP\Pivot, Rotx, RotY,0
+	
+	MoveEntity TP\Mesh, 0, 0, DistanceTocenter*10
+	
+	EntityTexture TP\Mesh, Text_Planet[SurfaceType],0,0
+	
+	VirtualScene_Register(Scene, TP\Mesh)
+	
+	TP\Tilt=Ring_Tilt
+;	
+	Local TPX=EntityX(TP\Mesh,True)
+	Local TPY=EntityY(TP\Mesh,True)
+	Local TPZ=EntityZ(TP\Mesh,True)
+	
+	Tp\Ring_Exist = Ring
+	
+	If Ring=1 Then 
+		Tp\Ring = Ring_Create(.9*TP\Size,2.5*TP\Size,180,1+2+32,3,192,224,255,64,128,255,.5,TP\Size,Ring_Type)
+		VirtualScene_Register(Scene,TP\ring)
+	EndIf
+	
+End Function
+
+Function Planet_Update(Camera%, OffsetX%, OffsetY%, OffsetZ%)
+	For TP.TPlanet = Each TPlanet
+		PositionEntity TP\Pivot,EntityX(eShipBody,True),EntityY(eShipBody,True),EntityZ(eShipBody,True)
+		If TP\Ring_Exist=1 Then 
+			PositionEntity TP\RING,EntityX(TP\Mesh,True),EntityY(TP\Mesh,True),EntityZ(TP\Mesh,True)
+			RotateEntity TP\ring,180+TP\Tilt,0,0
+		EndIf
+		TurnEntity TP\Mesh,0,0.001,0
+	Next
+End Function
+
+Function Ring_Create(radius1#=1.0,radius2#=2.0,segments%=360,fx%=0,blend%=0,r1%=255,g1%=255,b1%=255,r2%=0,g2%=0,b2%=0,a#=1.0,scale#=1.0,Brush_Sub=1)
+	
+	Local a1#,a2#,a3#,a4#,angle% 
+    
+	Local mesh=CreateMesh() 
+	Local surf=CreateSurface(mesh) 
+    
+   ; Limit segments 
+	If segments>360 Then segments=360 
+    
+	Local Basebrush
+	
+	Select Brush_Sub
+		Case 1
+			Basebrush = 1
+			
+		Case 2
+			Basebrush = 3
+			
+		Case 3
+			Basebrush = 5
+			
+	End Select
+	
+   ; Create ring 
+	For angle=1 To segments 
+		
+		a1=angle*360.0/segments 
+		a2=angle*360.0/segments +360.0/segments 
+		a3=angle*360.0/segments +180.0/segments 
+		a4=angle*360.0/segments -180.0/segments 
+		
+      ; Calc vertex points 
+		v0=AddVertex(surf,radius1*Cos(a1),radius1*Sin(a1),0,0,0) 
+		v1=AddVertex(surf,radius1*Cos(a2),radius1*Sin(a2),0,0,0) 
+		v2=AddVertex(surf,radius2*Cos(a3),radius2*Sin(a3),0,1,1) 
+		v3=AddVertex(surf,radius2*Cos(a4),radius2*Sin(a4),0,0,1) 
+		
+      ; Create Triangles 
+		AddTriangle surf,v2,v1,v0 
+		PaintSurface surf,Text_Brush[Basebrush]
+		AddTriangle surf,v0,v3,v2
+		PaintSurface surf,Text_Brush[Basebrush+1]
+	Next 
+    
+	If fx>0 Then EntityFX mesh,fx 
+	If blend>0 Then EntityBlend mesh,blend 
+    
+	Return mesh 
+	
+End Function
+
+Function Explosion_Create(x,y,z,subtype=1, Scale=1, Shockwave=0)
+	
+	Effect.Explosion = New Explosion
+	Effect\Sprite = CreateSprite()
+	Effect\Stage = 1
+	VirtualScene_Register(Scene,effect\Sprite)
+	
+	PositionEntity Effect\Sprite, x,y,z
+	SpriteViewMode Effect\Sprite,4
+	ScaleSprite Effect\Sprite,Scale*500,Scale*500
+	
+	EntityTexture Effect\Sprite, Text_Explosion[1]
+	
+	RotateSprite Effect\Sprite,Rnd(0,360.0)
+	
+	If Shockwave = 1
+		CreateShockwave(x,y,z)
+	EndIf
+	
+End Function
+
+Function Explosion_Update()
+	For Effect.Explosion = Each Explosion
+		Effect\StageTimer = Effect\StageTimer + 1
+		
+		If Effect\StageTimer > 1 Then
+			Effect\Stage = Effect\Stage + 1
+			Effect\StageTimer = 0
+		EndIf
+		
+		EntityTexture Effect\Sprite, Text_Explosion[Effect\Stage]
+		
+		If Effect\Stage=64 Then
+			FreeEntity Effect\Sprite
+			VirtualScene_Unregister(Scene, Effect\Sprite)
+			Delete Effect
+		EndIf
+	Next
+End Function
+
+Function CreateShockwave(x,y,z,level=0)
+	sh.Shockwave=New Shockwave
+	sh\x=x
+	sh\y=y
+	sh\z=z
+	sh\age=1
+	sh\alpha=0.9
+	sh\speed=15
+	sh\mesh=CreateSprite()
+	sh\level=level
+	SpriteViewMode sh\mesh,2
+	EntityFX sh\mesh,1+16
+	PositionEntity sh\mesh,sh\x,sh\y,sh\z
+	RotateEntity sh\mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
+	EntityTexture sh\mesh,Text_Effects[3]
+	VirtualScene_Register(Scene, sh\mesh)
+	;EntityColor sh\mesh,255,0,0
+End Function
+
+Function CreateLevelWave(x,y,z,Level=1)
+	sh.Shockwave=New Shockwave
+	sh\x=x
+	sh\y=y
+	sh\z=z
+	sh\age=1
+	sh\alpha=0.9
+	sh\speed=30
+	sh\mesh=CreateSprite()
+	sh\level=Level
+	SpriteViewMode sh\mesh,2
+	EntityFX sh\mesh,1+16
+	PositionEntity sh\mesh,sh\x,sh\y,sh\z
+	RotateEntity sh\mesh,0,0,45
+	EntityTexture sh\mesh,Text_Effects[3]
+	VirtualScene_Register(Scene, sh\mesh)
+	EntityColor sh\mesh,255,255,0
+	
+	sh.Shockwave=New Shockwave
+	sh\x=x
+	sh\y=y
+	sh\z=z
+	sh\age=1
+	sh\alpha=0.9
+	sh\speed=30
+	sh\mesh=CreateSprite()
+	sh\level=Level
+	SpriteViewMode sh\mesh,2
+	EntityFX sh\mesh,1+16
+	PositionEntity sh\mesh,sh\x,sh\y,sh\z
+	RotateEntity sh\mesh,0,0,-45
+	EntityTexture sh\mesh,Text_Effects[3]
+	VirtualScene_Register(Scene, sh\mesh)
+	EntityColor sh\mesh,255,255,0
+	
+	sh.Shockwave=New Shockwave
+	sh\x=x
+	sh\y=y
+	sh\z=z
+	sh\age=1
+	sh\alpha=0.9
+	sh\speed=30
+	sh\mesh=CreateSprite()
+	sh\level=Level
+	SpriteViewMode sh\mesh,2
+	EntityFX sh\mesh,1+16
+	PositionEntity sh\mesh,sh\x,sh\y,sh\z
+	RotateEntity sh\mesh,45,0,0
+	EntityTexture sh\mesh,Text_Effects[3]
+	VirtualScene_Register(Scene, sh\mesh)
+	EntityColor sh\mesh,255,255,0
+	
+	sh.Shockwave=New Shockwave
+	sh\x=x
+	sh\y=y
+	sh\z=z
+	sh\age=1
+	sh\alpha=0.9
+	sh\speed=30
+	sh\mesh=CreateSprite()
+	sh\level=Level
+	SpriteViewMode sh\mesh,2
+	EntityFX sh\mesh,1+16
+	PositionEntity sh\mesh,sh\x,sh\y,sh\z
+	RotateEntity sh\mesh,-45,0,0
+	EntityTexture sh\mesh,Text_Effects[3]
+	VirtualScene_Register(Scene, sh\mesh)
+	EntityColor sh\mesh,255,255,0
+End Function
+
+Function UpdateShockwave()
+	For sh.Shockwave = Each Shockwave
+		
+		sh\age=sh\age+sh\speed
+		If sh\age>600 Then sh\speed=sh\speed*0.98
+		
+		ScaleSprite sh\mesh, sh\age, sh\age
+		
+		If sh\age>790 Then
+			sh\alpha#=sh\alpha#-0.01
+			EntityAlpha sh\mesh,sh\alpha#
+		EndIf
+		
+		If 	sh\level = 1 Then
+			PositionEntity sh\mesh, EntityX(pvShip),EntityY(pvShip),EntityZ(pvShip)
+		EndIf
+		
+		If sh\alpha#<0.01 Then
+			FreeEntity sh\mesh:VirtualScene_Unregister(Scene, sh\mesh)
+			Delete sh
+		EndIf
+		
+		
+	Next
+	
+End Function
 
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

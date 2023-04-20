@@ -11,6 +11,7 @@ Include "Libraries\System\Threading.bb"
 Include "Libraries\System\ThreadPool.bb"
 Include "Libraries\Draw3D2\Includes\Draw3D2.bb"
 
+; Shared
 Include "Shared\Version.bb"
 
 ; Engine
@@ -19,17 +20,32 @@ Include "Engine\AssetManager.bb"
 Include "Engine\Settings.bb"
 
 ; Game Functions
-Include "Modules\LIBxDUST.bb"
-Include "Modules\Base_Vars.bb"
-Include "Modules\utilities.bb"	
-Include "Modules\pcl-cloud2_6.bb"
-Include "Modules\Math.bb"
-Include "Modules\Graphics.bb"
-Include "Modules\AI_Bots.bb"
-Include "Modules\mainloop_controls_ui.bb"
-Include "Modules\mainloop_graphics.bb"
-Include "Modules\worldgen.bb"
-Include "Modules\twitch.bb"
+; >> Basic
+Include "Modules\BasicTypes.bb"
+Include "Modules\BasicVars.bb"
+
+; >> Game Logic
+Include "Modules\Controls.bb"
+Include "Modules\MainLogic.bb"
+Include "Modules\PlayerLogic.bb"
+
+; >> Graphics
+Include "Modules\Asset_Loading.bb"
+Include "Modules\Starfield.bb"
+Include "Modules\Textures.bb"
+
+; >> Math
+Include "Modules\BasicData.bb"
+Include "Modules\BasicMath.bb"
+Include "Modules\Coordinates.bb"
+
+; >> Sound
+
+; >> Utility
+Include "Modules\Utilities.bb"
+
+; >> World
 Include "Modules\Collisions.bb"
+Include "Modules\WorldGenerator.bb"
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
