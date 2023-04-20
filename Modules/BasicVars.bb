@@ -995,6 +995,15 @@ Const dst_sharesize=200
 
 Global PCL_Timer
 
+Global Gw#, Gh#
+Global GwBy2#, GhBy2#
+Global GwBy3#,  GhBy3#
+Global GwBy4#, GhBy4#
+
+Global CameraScene, CameraUI
+
+Global Scene.VirtualScene
+
 Const pcl_count=200			; change here to get more than 200 Particles per Cloud
 
 ;Translate.bb

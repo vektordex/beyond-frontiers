@@ -3,6 +3,155 @@ Type Respawn ; PlayerLogic
 	Field Mesh
 End Type
 
+;----------------------------------------------------------------
+;! Constants
+;----------------------------------------------------------------
+
+Const CAMERA_NEAR#	= 1.0
+Const CAMERA_FAR#	= Float(2 Shl 21) ; 23 bits is maximum representable depth value.
+
+;----------------------------------------------------------------
+;! Types
+;----------------------------------------------------------------
+
+;[Block] Old
+
+Type EnvDust
+	Field x#,y#,z#,Rad,Tex,DustHan
+	Field FadeN1,FadeN2,FadeF1,FadeF2
+	Field Scale1, Scale2, FX, Blend
+	Field R1,G1,B1,R2,G2,B2,Alpha1,Alpha2
+End Type
+
+Type Belt
+	Field x#,y#,z#, Pit#, rol#, yaw#
+	Field Mesh, FXMesh, Chance, Maxyield
+	Field tur#,rot#,siz#,minsiz#,toy, Model_State
+	Field yamount, homepiv, momentum#, spin#, touchedtrg, touchedcnt, retrievecnt, retrievetrg
+End Type
+
+Type beltorigin
+	Field x,y,z
+	Field mesh
+End Type
+
+Type SpcObj
+	Field mesh
+	Field fxmesh
+	Field x,y,z
+End Type
+
+Type Spotmark
+	Field X#,y#,z#, tpar, showdist
+	Field mesh, TOfSpot, ruby
+End Type
+
+Type ChatMSGS
+	Field msg$, id, age
+	Field ColorR,ColorG,ColorB
+End Type
+
+Type WalletLog
+	Field amount$, Msg$, timestamp$, ID, SubType
+End Type
+
+Type Player_Bullet
+	Field mesh, Pivot
+	Field speed
+	Field scale#, distance
+	Field dmg,guntype,decay,viable, btyp, SID, OBB
+	
+End Type
+
+Type hardpoint
+	Field plusX,plusy,plusz
+	Field pivot
+End Type
+
+Type Planet
+	Field X,Y,Z
+	Field Scale, ProPiv, SphereA, SphereB, SpriteA
+End Type
+
+Type MainZone
+	Field x,y,z
+	Field range,name$,pha
+End Type
+
+Type Profiles
+	Field Name$, Pass$
+End Type
+
+Type SubZone
+	Field x,y,z
+	Field range,name$,pha
+End Type
+
+Type NebZone
+	Field x,y,z
+	Field trange,vrange,faderange
+	Field colorr,colorg,colorb
+	Field tpiv
+End Type
+
+Type Info
+	Field txt$
+End Type
+
+Global GlobalSID=9
+
+Type RZone
+	Field x,y,z, rate
+	Field mesh, insmesh
+	Field size
+	Field P1#,  P2#,  P3#,  P4#,  P5#, P6#,  P7#
+	Field StationID
+End Type
+
+Type SBubble
+	Field pivot, sphere
+	Field durat#, fade#
+End Type
+
+Type Station
+	Field Mesh_Essential, Mesh_Power, Mesh_Factory, Mesh_Ring, stt, x, y, z
+	Field enablehull, hullx, hully, hullz, hrange
+	Field enableshield, shieldx, shieldy,shieldz, srange
+End Type
+
+Type Shockwave
+	Field x,y,z
+	Field mesh,scale,age, alpha#, Speed, level
+End Type
+
+Type trailpivot
+	Field parent, srcid, x, y, z, sprite
+End Type
+
+Type SafeZone
+	Field mesh, range
+End Type
+
+Type DropZone
+	Field mesh, size, maxsize, typ, timer, maxtimer
+End Type
+
+Type DebrisBelt
+	Field Mesh, x,y,z
+End Type
+
+Type ExplosionLight
+	Field X,Y,Z
+	Field R,G,B
+	Field Range
+End Type
+
+;[End Block]
+
+Type GFXModes
+	Field GFXM_Width, GFXM_Height
+	Field IndexNR
+End Type
 
 .dustobject ; starfield.bb
 Type DST_Dustobject
