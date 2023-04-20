@@ -2700,14 +2700,14 @@ Function Battlefield_Update()
 ;			PlaySound Sound_Battlefield[6]
 			If Character_Value_Faction = Faction_Sirian Then 
 				Character_Value_XP = Character_Value_XP + (12500 * Upgrade_XP_Modifier)
-				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
+;				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
 			EndIf
 			CurrentZone = Faction_Sirian
 		ElseIf Existing_Sirian = 0 And Switch_System_init > 2 Then
 ;			PlaySound Sound_Battlefield[8]
 			If Character_Value_Faction = Faction_Terran Then 
 				Character_Value_XP = Character_Value_XP + (12500 * Upgrade_XP_Modifier)
-				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
+;				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
 			EndIf
 			CurrentZone = Faction_Terran
 		EndIf

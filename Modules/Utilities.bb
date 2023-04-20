@@ -1351,7 +1351,6 @@ Function Music_Update()
 			If ChannelPlaying(Channel_Music)=False
 				Randomsong(Rand(1,8))
 				ChannelVolume Channel_Music,Music_Volume#
-				AddChat("Now Playing: "+Music_Description$,"")
 			EndIf
 			If Music_Aggro_Timer > 0 Then Music_Theme=2
 		Case 2
@@ -1366,8 +1365,7 @@ Function Music_Update()
 			If ChannelPlaying(Channel_Music)=False
 				Randomsong(Rand(9,12))
 				ChannelVolume Channel_Music,Music_Volume#
-				AddChat("Now Playing: "+Music_Description$,"")
-			EndIf
+				EndIf
 			If Music_Aggro_Timer < 1 Then Music_Theme=4
 		Case 4
 			Music_Volume#=Music_Volume#-0.01
