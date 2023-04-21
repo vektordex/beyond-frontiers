@@ -62,8 +62,6 @@ While WinMM_timeBeginPeriod(WinMM_timeBeginPeriod_Resolution) <> 0
 	WinMM_timeBeginPeriod_Resolution = WinMM_timeBeginPeriod_Resolution + 100
 Wend
 
-
-
 ; Data: Create proper App Data folders
 Global LocalAppData$ = GetEnv("LOCALAPPDATA") + "\BeyondFrontiersGame"
 If FileType(LocalAppData) <> 2 Then
@@ -115,8 +113,8 @@ Const LOADING_STATE_COMPLETE	= -1
 
 ; First, load the important stuff.
 SeedRnd MilliSecs()
-Local Loading_BG = LoadImage("Content\GFX\Loadscreens\Loadscreen_"+Rand(1,5)+".png"):MidHandle(Loading_BG)
-Local Loading_Seiz = LoadImage("Content\GFX\Interface\MainMenu\epilepsy.png"):MidHandle(Loading_Seiz)
+Local Loading_BG = LoadImage("Assets\GFX\Loadscreens\Loadscreen_"+Rand(1,5)+".png"):MidHandle(Loading_BG)
+Local Loading_Seiz = LoadImage("Assets\GFX\Interface\MainMenu\epilepsy.png"):MidHandle(Loading_Seiz)
 
 
 ;-- Initialize AssetManager
@@ -148,305 +146,246 @@ Repeat
 				;[Block] Meshes and Textures --------------------------------------------------
 				AssetState$ = "Asteroids"
 				;[Block] Asteroids
-				LoadMeshAsset("Content\GFX\3D\Environment\Asteroid_rock.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Asteroid_ice.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Asteroid_comet.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Asteroid_spread.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Asteroid_hole.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_rock.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_ice.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_comet.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_spread.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_hole.3ds", SceneDataRoot)
 				
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_iron.png",1)
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_iron_normal.png",1)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron.png",1)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron_normal.png",1)
 				
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_chalk.png",1)
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_lava.png",1)
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_lava_glow.png",1)
-				LoadTextureAsset("Content\GFX\Textures\texture_asteroid_ice.png",1+64)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_chalk.png",1)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava.png",1)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava_glow.png",1)
+				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_ice.png",1+64)
 				
-				LoadMeshAsset("Content\GFX\3D\Environment\lootbox.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootbox_glo.png", 1)
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootbox_col.png", 1)
+				LoadMeshAsset("Assets\GFX\3D\Environment\lootbox.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_glo.png", 1)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_col.png", 1)
 				
 				;[End Block]
 				AssetState$ = "Planets"
 				;[Block] Planets
-				LoadTextureAsset("Content\GFX\Planets\Alpine_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Fungal_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Gas_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Gas_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Gas_003.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Gas_004.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Ice_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Moon_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Moon_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Mud_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Oasis_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Oasis_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Oasis_003.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Oceanic_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Primordial_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Savannah_001.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Tundra_002.png", 1+8)
-				LoadTextureAsset("Content\GFX\Planets\Terra_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Alpine_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Fungal_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Gas_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Gas_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Gas_003.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Gas_004.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Ice_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Moon_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Moon_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Mud_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Oasis_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Oasis_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Oasis_003.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Oceanic_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Primordial_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Savannah_001.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Tundra_002.png", 1+8)
+				LoadTextureAsset("Assets\GFX\Planets\Terra_001.png", 1+8)
 				
-				LoadTextureAsset("Content\GFX\Planets\Ring_1a.png", 32+2)
-				LoadTextureAsset("Content\GFX\Planets\Ring_1a.png", 32+2)
-				LoadTextureAsset("Content\GFX\Planets\Ring_2a.png", 32+2)
-				LoadTextureAsset("Content\GFX\Planets\Ring_2b.png", 32+2)
-				LoadTextureAsset("Content\GFX\Planets\Ring_3a.png", 32+2)
-				LoadTextureAsset("Content\GFX\Planets\Ring_3b.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_2a.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_2b.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_3a.png", 32+2)
+				LoadTextureAsset("Assets\GFX\Planets\Ring_3b.png", 32+2)
 				;[End Block]
 				AssetState$ = "Scrap metals"
 				;[Block] Scrap Metals
-				LoadMeshAsset("Content\GFX\3D\Environment\scrap_particle_01.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\scrap_particle_02.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\scrap_particle_03.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\scrap_particle_04.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\textures\texture_scrap_basic.png",1)
+				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_01.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_02.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_03.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_04.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\textures\texture_scrap_basic.png",1)
 				;[End Block]
 				AssetState$ = "Primitives"
 				;[Block] Basic Shapes
-				LoadMeshAsset("Content\GFX\3D\Primitives\IcoSphere.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Primitives\IcoSphere.3ds", SceneDataRoot)
 				;[End Block]
 				AssetState$ = "Special Objects"
 				;[Block] Special Object
-				LoadMeshAsset("Content\GFX\3D\Environment\Solar_Panel_XXL.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Solar_Panel_Frame.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Solar_Panel_Gun.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Environment\Solar_Panel.png")
-				LoadTextureAsset("Content\GFX\3D\Environment\Solar_Grid.png",2)
-				LoadTextureAsset("Content\GFX\3D\Environment\Solar_Beam.png",2)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_XXL.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Frame.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Gun.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Panel.png")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Grid.png",2)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Beam.png",2)
 				
-				LoadMeshAsset("Content\GFX\3D\Environment\Pyramid_Base.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Pyramid_Ring.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Environment\Pyramid_Body.png")
-				LoadTextureAsset("Content\GFX\3D\Environment\Pyramid_Eye.png")
+				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Base.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Ring.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Body.png")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Eye.png")
 				;[End Block]
 				AssetState$ = "Space Ships"
 				;[Block] Ships
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_Flare.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_1.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_2.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_3.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_5.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_6.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_7.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_8.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Ships\Ship_9.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_Flare.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_1.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_2.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_3.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_5.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_6.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_7.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_8.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_9.3DS", SceneDataRoot)
 				
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_flare_clr.png",1+2)
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_1_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_2_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_3_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_5_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_6_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_7_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_8_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_9_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_flare_clr.png",1+2)
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_1_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_2_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_3_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_5_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_6_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_7_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_8_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_9_clr.jpg")
 				
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_flare_noise.png",1+2)
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_1_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_2_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_3_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_5_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_6_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_7_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_8_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Ships\Ship_9_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_flare_noise.png",1+2)
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_1_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_2_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_3_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_5_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_6_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_7_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_8_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_9_glow.jpg")
 				;[End Block]
 				AssetState$ = "Stargates"
 				;[Block] Stargate
-				LoadMeshAsset("Content\GFX\3D\Environment\Stargate.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Stargate_horizon.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\Stargate_beams.3DS", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Environment\racegate.3DS", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Environment\Stargate_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Stargate_glow.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Stargate_horizon.png",1+2)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_horizon.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_beams.3DS", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Environment\racegate.3DS", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_glow.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_horizon.png",1+2)
 				
-				LoadTextureAsset("Content\GFX\3D\Environment\Blend_TopBot.png",1+2)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Blend_TopBot.png",1+2)
 				;[End Block]
 				AssetState$ = "Stations"
 				;[Block] Station
-				LoadMeshAsset("Content\GFX\3D\Station\Station_Body.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Station\Station_Essential.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Station\Station_Factory.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Station\Station_Power.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Station\Station_Body.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Station\Station_Essential.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Station\Station_Factory.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Station\Station_Power.3ds", SceneDataRoot)
 				
-				LoadMeshAsset("Content\GFX\3D\Station\Station_Ring.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Station\Station_Body_clr.jpg")
-				LoadTextureAsset("Content\GFX\3D\Station\Station_Body_glow.jpg")
+				LoadMeshAsset("Assets\GFX\3D\Station\Station_Ring.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_clr.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_glow.jpg")
 				;[End Block]
 				AssetState$ = "Other Important Things"
 				;[Block] Extensions
-				LoadMeshAsset("Content\GFX\3D\Utilities\object_miningsiphon.3ds",SceneDataRoot)
-				LoadTextureAsset("Content\GFX\Textures\texture_miningsiphon.png",1+2)
+				LoadMeshAsset("Assets\GFX\3D\Utilities\object_miningsiphon.3ds",SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\Textures\texture_miningsiphon.png",1+2)
 ;;				
 				For ESprite = 1 To 64
-					LoadTextureAsset("Content\GFX\Environment\Effects\explosion_frames\"+Esprite+".png",1+2)
+					LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_frames\"+Esprite+".png",1+2)
 				Next
-				LoadTextureAsset("Content\GFX\Environment\Effects\Explosion_wave.png",1+2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\Explosion_wave.png",1+2)
 				
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_wave.png",1+2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_wave.png",1+2)
 				
-				LoadTextureAsset("Content\GFX\Environment\Effects\explosion_lightflash.png",1+2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_lightflash.png",1+2)
 				
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_ping_s.png",2)
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_ping_m.png",2)
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_Ping_L.png",2)
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_ping_xl.png",2)
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_scanner_ping_xxl.png",2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_s.png",2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_m.png",2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_Ping_L.png",2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xl.png",2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xxl.png",2)
 				
-				LoadTextureAsset("Content\GFX\Textures\texture_special_001.png",2)
+				LoadTextureAsset("Assets\GFX\Textures\texture_special_001.png",2)
 				
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_eclipse.png",1+2)
+				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_eclipse.png",1+2)
 				;[End Block]
 				AssetState$ = "3D Interface"
 				;[Block] 3D Interface
-				LoadTextureAsset("Content\GFX\Interface\Objects\object_loot_frame.png", 2)
-				LoadTextureAsset("Content\GFX\Interface\Objects\object_loot_highlight.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_frame.png", 2)
+				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_highlight.png", 1+2)
 				;[End Block]
 				AssetState$ = "Extra Stuff"
 				;[Block] Extra Environment
-				LoadTextureAsset("Content\GFX\Textures\texture_fog_basic.tga", 1+2)
+				LoadTextureAsset("Assets\GFX\Textures\texture_fog_basic.tga", 1+2)
 				
-				LoadMeshAsset("Content\GFX\3D\Environment\Lootcan.3ds",SceneDataRoot)
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootcan_Blue.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootcan_Red.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootcan_Orange.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootcan_Pink.jpg")
-				LoadTextureAsset("Content\GFX\3D\Environment\Lootcan_green.jpg")
+				LoadMeshAsset("Assets\GFX\3D\Environment\Lootcan.3ds",SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Blue.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Red.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Orange.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Pink.jpg")
+				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_green.jpg")
 				
-				LoadTextureAsset("Content\GFX\Environment\sun\sun_sprite_effect.png", 1+2)
-				LoadTextureAsset("Content\GFX\Environment\Sun\sun_sprite_Body.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Environment\sun\sun_sprite_effect.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Environment\Sun\sun_sprite_Body.png", 1+2)
 				;[End Block]
 				AssetState$ = "Weapons"
 				;[Block] Weapons
-				LoadMeshAsset("Content\GFX\3D\Utilities\object_weapon_bullet.3ds", SceneDataRoot)
-				LoadMeshAsset("Content\GFX\3D\Utilities\object_weapon_mine.3ds", SceneDataRoot)
-				LoadTextureAsset("Content\GFX\Textures\Texture_weapon_low.png", 1+2)
-				LoadTextureAsset("Content\GFX\Textures\Texture_weapon_medium.png", 1+2)
-				LoadTextureAsset("Content\GFX\Textures\Texture_weapon_heavy.png", 1+2)
-				LoadTextureAsset("Content\GFX\Textures\Texture_weapon_special.png", 1+2)
+				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_bullet.3ds", SceneDataRoot)
+				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_mine.3ds", SceneDataRoot)
+				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_low.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_medium.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_heavy.png", 1+2)
+				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_special.png", 1+2)
 				;[End Block]
 				AssetState$ = "Space Itself"
 				;[Block] Skybox
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3BK.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4BK.png",1+16+32+512)
 				
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3DN.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4DN.png",1+16+32+512)
 				
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3FT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4FT.png",1+16+32+512)
 				
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3LF.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4LF.png",1+16+32+512)
 				
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3RT.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4RT.png",1+16+32+512)
 				
-				LoadTextureAsset("Content\GFX\3D\SkyBox\B2UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\G2UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\O1UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R1UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\R2UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W1UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W3UP.png",1+16+32+512)
-				LoadTextureAsset("Content\GFX\3D\SkyBox\W4UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4UP.png",1+16+32+512)
 				;[End Block]
 				
 				;[End Block]
 				
 				;[Block] NPC Voices --------------------------------------------------
-				AssetState$ = "Male NPC Voices"
-				;[Block] Male
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Kanak_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Kanak_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Kanak_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Kanak_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Alex_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Alex_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Alex_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Alex_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_AdamWilkin_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_AdamWilkin_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_AdamWilkin_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_AdamWilkin_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Dex_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Dex_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Dex_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Dex_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Cal_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Cal_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Cal_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Male\VA_Cal_Victory_1.wav")
-				;[End Block]
-				AssetState$ = "Female NPC Voices"
-				;[Block] Female
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_mbee24_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_mbee24_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_mbee24_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_mbee24_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Devilienchen_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Devilienchen_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Devilienchen_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Devilienchen_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Virdra_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Virdra_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Virdra_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Virdra_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_JenOfFear_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_JenOfFear_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_JenOfFear_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_JenOfFear_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Kiesel_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Kiesel_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Kiesel_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_Kiesel_Victory_1.wav")
-				
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_PolinaFrosty_Aggro_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_PolinaFrosty_Chatter_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_PolinaFrosty_Death_1.wav")
-				Load3DSoundAsset("Content\SFX\Voices\NPC\Female\VA_PolinaFrosty_Victory_1.wav")
-				;[End Block]
 				
 				;[End Block]
 				
