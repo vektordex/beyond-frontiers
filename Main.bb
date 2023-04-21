@@ -142,7 +142,28 @@ Repeat
 				AssetManager_Suspend()
 				
 				;[Block] Meshes and Textures --------------------------------------------------
-				AssetState$ = "Asteroids"
+				
+				
+				;[Block] Ships
+				Local LoadOrder = OpenFile("Assets\3D\Ships\LoadShips.lof")
+				Repeat
+					Local LoadData$ = ReadLine(LoadOrder)
+					LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
+					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
+				;[End Block]
+				
+				;[Block] Stations
+				LoadOrder = OpenFile("Assets\3D\Stations\LoadStations.lof")
+				Repeat
+					LoadData$ = ReadLine(LoadOrder)
+					LoadMeshAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
+					LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+					LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
 ;				;[Block] Asteroids
 ;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_rock.3ds", SceneDataRoot)
 ;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_ice.3ds", SceneDataRoot)
@@ -218,15 +239,6 @@ Repeat
 ;				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Eye.png")
 ;				;[End Block]
 				AssetState$ = "Space Ships"
-				Local LoadOrder = OpenFile("Assets\3D\Ships\LoadShips.lof")
-				;[Block] Ships
-				Repeat
-					Local LoadData$ = ReadLine(LoadOrder)
-					LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
-					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
-					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
-				Until Eof(LoadOrder)
-				
 				;[End Block]
 				AssetState$ = "Stargates"
 				;[Block] Stargate
