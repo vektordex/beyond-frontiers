@@ -113,9 +113,7 @@ Const LOADING_STATE_COMPLETE	= -1
 
 ; First, load the important stuff.
 SeedRnd MilliSecs()
-Local Loading_BG = LoadImage("Assets\GFX\Loadscreens\Loadscreen_"+Rand(1,5)+".png"):MidHandle(Loading_BG)
-Local Loading_Seiz = LoadImage("Assets\GFX\Interface\MainMenu\epilepsy.png"):MidHandle(Loading_Seiz)
-
+Local Loading_BG = LoadImage("Assets\2D\LoadScreens\Loading_Screen.png"):MidHandle(Loading_BG)
 
 ;-- Initialize AssetManager
 AssetManager_Initialize()
@@ -145,504 +143,480 @@ Repeat
 				
 				;[Block] Meshes and Textures --------------------------------------------------
 				AssetState$ = "Asteroids"
-				;[Block] Asteroids
-				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_rock.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_ice.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_comet.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_spread.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_hole.3ds", SceneDataRoot)
-				
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron.png",1)
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron_normal.png",1)
-				
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_chalk.png",1)
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava.png",1)
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava_glow.png",1)
-				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_ice.png",1+64)
-				
-				LoadMeshAsset("Assets\GFX\3D\Environment\lootbox.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_glo.png", 1)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_col.png", 1)
-				
-				;[End Block]
-				AssetState$ = "Planets"
-				;[Block] Planets
-				LoadTextureAsset("Assets\GFX\Planets\Alpine_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Fungal_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Gas_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Gas_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Gas_003.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Gas_004.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Ice_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Moon_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Moon_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Mud_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Oasis_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Oasis_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Oasis_003.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Oceanic_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Primordial_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Savannah_001.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Tundra_002.png", 1+8)
-				LoadTextureAsset("Assets\GFX\Planets\Terra_001.png", 1+8)
-				
-				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
-				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
-				LoadTextureAsset("Assets\GFX\Planets\Ring_2a.png", 32+2)
-				LoadTextureAsset("Assets\GFX\Planets\Ring_2b.png", 32+2)
-				LoadTextureAsset("Assets\GFX\Planets\Ring_3a.png", 32+2)
-				LoadTextureAsset("Assets\GFX\Planets\Ring_3b.png", 32+2)
-				;[End Block]
-				AssetState$ = "Scrap metals"
-				;[Block] Scrap Metals
-				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_01.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_02.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_03.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_04.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\textures\texture_scrap_basic.png",1)
-				;[End Block]
-				AssetState$ = "Primitives"
-				;[Block] Basic Shapes
-				LoadMeshAsset("Assets\GFX\3D\Primitives\IcoSphere.3ds", SceneDataRoot)
-				;[End Block]
-				AssetState$ = "Special Objects"
-				;[Block] Special Object
-				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_XXL.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Frame.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Gun.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Panel.png")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Grid.png",2)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Beam.png",2)
-				
-				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Base.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Ring.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Body.png")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Eye.png")
-				;[End Block]
+;				;[Block] Asteroids
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_rock.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_ice.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_comet.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_spread.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Asteroid_hole.3ds", SceneDataRoot)
+;				
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron.png",1)
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_iron_normal.png",1)
+;				
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_chalk.png",1)
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava.png",1)
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_lava_glow.png",1)
+;				LoadTextureAsset("Assets\GFX\Textures\texture_asteroid_ice.png",1+64)
+;				
+;				LoadMeshAsset("Assets\GFX\3D\Environment\lootbox.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_glo.png", 1)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootbox_col.png", 1)
+;				
+;				;[End Block]
+;				AssetState$ = "Planets"
+;				;[Block] Planets
+;				LoadTextureAsset("Assets\GFX\Planets\Alpine_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Fungal_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Gas_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Gas_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Gas_003.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Gas_004.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Ice_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Moon_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Moon_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Mud_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Oasis_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Oasis_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Oasis_003.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Oceanic_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Primordial_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Savannah_001.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Tundra_002.png", 1+8)
+;				LoadTextureAsset("Assets\GFX\Planets\Terra_001.png", 1+8)
+;				
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_1a.png", 32+2)
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_2a.png", 32+2)
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_2b.png", 32+2)
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_3a.png", 32+2)
+;				LoadTextureAsset("Assets\GFX\Planets\Ring_3b.png", 32+2)
+;				;[End Block]
+;				AssetState$ = "Scrap metals"
+;				;[Block] Scrap Metals
+;				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_01.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_02.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_03.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\scrap_particle_04.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\textures\texture_scrap_basic.png",1)
+;				;[End Block]
+;				AssetState$ = "Primitives"
+;				;[Block] Basic Shapes
+;				LoadMeshAsset("Assets\GFX\3D\Primitives\IcoSphere.3ds", SceneDataRoot)
+;				;[End Block]
+;				AssetState$ = "Special Objects"
+;				;[Block] Special Object
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_XXL.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Frame.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Solar_Panel_Gun.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Panel.png")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Grid.png",2)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Solar_Beam.png",2)
+;				
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Base.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Pyramid_Ring.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Body.png")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Pyramid_Eye.png")
+;				;[End Block]
 				AssetState$ = "Space Ships"
+				Local LoadOrder = OpenFile("Assets\3D\Ships\LoadShips.lof")
 				;[Block] Ships
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_Flare.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_1.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_2.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_3.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_5.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_6.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_7.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_8.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Ships\Ship_9.3DS", SceneDataRoot)
+				Repeat
+					Local LoadData$ = ReadLine(LoadOrder)
+					LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
+					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+				Until Eof(LoadOrder)
 				
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_flare_clr.png",1+2)
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_1_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_2_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_3_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_5_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_6_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_7_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_8_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_9_clr.jpg")
-				
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_flare_noise.png",1+2)
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_1_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_2_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_3_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_5_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_6_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_7_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_8_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Ships\Ship_9_glow.jpg")
 				;[End Block]
 				AssetState$ = "Stargates"
 				;[Block] Stargate
-				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_horizon.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_beams.3DS", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Environment\racegate.3DS", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_glow.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_horizon.png",1+2)
-				
-				LoadTextureAsset("Assets\GFX\3D\Environment\Blend_TopBot.png",1+2)
-				;[End Block]
-				AssetState$ = "Stations"
-				;[Block] Station
-				LoadMeshAsset("Assets\GFX\3D\Station\Station_Body.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Station\Station_Essential.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Station\Station_Factory.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Station\Station_Power.3ds", SceneDataRoot)
-				
-				LoadMeshAsset("Assets\GFX\3D\Station\Station_Ring.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_clr.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_glow.jpg")
-				;[End Block]
-				AssetState$ = "Other Important Things"
-				;[Block] Extensions
-				LoadMeshAsset("Assets\GFX\3D\Utilities\object_miningsiphon.3ds",SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\Textures\texture_miningsiphon.png",1+2)
-;;				
-				For ESprite = 1 To 64
-					LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_frames\"+Esprite+".png",1+2)
-				Next
-				LoadTextureAsset("Assets\GFX\Environment\Effects\Explosion_wave.png",1+2)
-				
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_wave.png",1+2)
-				
-				LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_lightflash.png",1+2)
-				
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_s.png",2)
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_m.png",2)
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_Ping_L.png",2)
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xl.png",2)
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xxl.png",2)
-				
-				LoadTextureAsset("Assets\GFX\Textures\texture_special_001.png",2)
-				
-				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_eclipse.png",1+2)
-				;[End Block]
-				AssetState$ = "3D Interface"
-				;[Block] 3D Interface
-				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_frame.png", 2)
-				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_highlight.png", 1+2)
-				;[End Block]
-				AssetState$ = "Extra Stuff"
-				;[Block] Extra Environment
-				LoadTextureAsset("Assets\GFX\Textures\texture_fog_basic.tga", 1+2)
-				
-				LoadMeshAsset("Assets\GFX\3D\Environment\Lootcan.3ds",SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Blue.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Red.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Orange.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Pink.jpg")
-				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_green.jpg")
-				
-				LoadTextureAsset("Assets\GFX\Environment\sun\sun_sprite_effect.png", 1+2)
-				LoadTextureAsset("Assets\GFX\Environment\Sun\sun_sprite_Body.png", 1+2)
-				;[End Block]
-				AssetState$ = "Weapons"
-				;[Block] Weapons
-				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_bullet.3ds", SceneDataRoot)
-				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_mine.3ds", SceneDataRoot)
-				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_low.png", 1+2)
-				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_medium.png", 1+2)
-				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_heavy.png", 1+2)
-				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_special.png", 1+2)
-				;[End Block]
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate.3DS", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_horizon.3DS", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Stargate_beams.3DS", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Environment\racegate.3DS", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_clr.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_glow.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Stargate_horizon.png",1+2)
+;				
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Blend_TopBot.png",1+2)
+;				;[End Block]
+;				AssetState$ = "Stations"
+;				;[Block] Station
+;				LoadMeshAsset("Assets\GFX\3D\Station\Station_Body.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Station\Station_Essential.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Station\Station_Factory.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Station\Station_Power.3ds", SceneDataRoot)
+;				
+;				LoadMeshAsset("Assets\GFX\3D\Station\Station_Ring.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_clr.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Station\Station_Body_glow.jpg")
+;				;[End Block]
+;				AssetState$ = "Other Important Things"
+;				;[Block] Extensions
+;				LoadMeshAsset("Assets\GFX\3D\Utilities\object_miningsiphon.3ds",SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\Textures\texture_miningsiphon.png",1+2)
+;;;				
+;				For ESprite = 1 To 64
+;					LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_frames\"+Esprite+".png",1+2)
+;				Next
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\Explosion_wave.png",1+2)
+;				
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_wave.png",1+2)
+;				
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\explosion_lightflash.png",1+2)
+;				
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_s.png",2)
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_m.png",2)
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_Ping_L.png",2)
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xl.png",2)
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_scanner_ping_xxl.png",2)
+;				
+;				LoadTextureAsset("Assets\GFX\Textures\texture_special_001.png",2)
+;				
+;				LoadTextureAsset("Assets\GFX\Environment\Effects\expansion_eclipse.png",1+2)
+;				;[End Block]
+;				AssetState$ = "3D Interface"
+;				;[Block] 3D Interface
+;				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_frame.png", 2)
+;				LoadTextureAsset("Assets\GFX\Interface\Objects\object_loot_highlight.png", 1+2)
+;				;[End Block]
+;				AssetState$ = "Extra Stuff"
+;				;[Block] Extra Environment
+;				LoadTextureAsset("Assets\GFX\Textures\texture_fog_basic.tga", 1+2)
+;				
+;				LoadMeshAsset("Assets\GFX\3D\Environment\Lootcan.3ds",SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Blue.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Red.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Orange.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_Pink.jpg")
+;				LoadTextureAsset("Assets\GFX\3D\Environment\Lootcan_green.jpg")
+;				
+;				LoadTextureAsset("Assets\GFX\Environment\sun\sun_sprite_effect.png", 1+2)
+;				LoadTextureAsset("Assets\GFX\Environment\Sun\sun_sprite_Body.png", 1+2)
+;				;[End Block]
+;				AssetState$ = "Weapons"
+;				;[Block] Weapons
+;				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_bullet.3ds", SceneDataRoot)
+;				LoadMeshAsset("Assets\GFX\3D\Utilities\object_weapon_mine.3ds", SceneDataRoot)
+;				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_low.png", 1+2)
+;				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_medium.png", 1+2)
+;				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_heavy.png", 1+2)
+;				LoadTextureAsset("Assets\GFX\Textures\Texture_weapon_special.png", 1+2)
+;				;[End Block]
 				AssetState$ = "Space Itself"
 				;[Block] Skybox
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3BK.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3BK.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4BK.png",1+16+32+512)
 				
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3DN.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3DN.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4DN.png",1+16+32+512)
 				
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3FT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3FT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4FT.png",1+16+32+512)
 				
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3LF.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3LF.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4LF.png",1+16+32+512)
 				
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3RT.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3RT.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4RT.png",1+16+32+512)
 				
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\B2UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\G2UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\O1UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R1UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\R2UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W1UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W3UP.png",1+16+32+512)
-				LoadTextureAsset("Assets\GFX\3D\SkyBox\W4UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\B2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\G2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\O1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\R2UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W1UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W3UP.png",1+16+32+512)
+				LoadTextureAsset("Assets\3D\SkyBox\W4UP.png",1+16+32+512)
 				;[End Block]
 				
 				;[End Block]
 				
-				;[Block] NPC Voices --------------------------------------------------
 				
-				;[End Block]
-				
-				;[Block] Audio and Music --------------------------------------------------
-				AssetState$ = "SFX: Weapons"
-				;[Block] Weapons
-				Load3DSoundAsset("Content\SFX\Weapons\Laser_Low.wav")
-				Load3DSoundAsset("Content\SFX\Weapons\Laser_Medium.wav")
-				Load3DSoundAsset("Content\SFX\Weapons\Laser_Heavy.wav")
-				Load3DSoundAsset("Content\SFX\Weapons\Weapon_mine.wav")
-				;[End Block]
-				AssetState$ = "SFX: Ship Expansions"
-				;[Block] Expansions
-				Load3DSoundAsset("Content\SFX\Expansions\expansion_explosion.wav")
-				Load3DSoundAsset("Content\SFX\Expansions\expansion_explosion_small.wav")
-				Load3DSoundAsset("Content\SFX\Expansions\expansion_warpin_small.wav")
-				LoadSoundAsset("Content\SFX\Expansions\expansion_warpin_large.wav")
-				LoadSoundAsset("Content\SFX\Expansions\expansion_explosion_distant.wav")
-				LoadSoundAsset("Content\SFX\Expansions\expansion_miningbeam.wav")
-				LoadSoundAsset("Content\SFX\Expansions\expansion_scanner.wav")
-				;[End Block]
-				AssetState$ = "SFX: Interface"
-				;[Block] Interface Sounds
-				LoadSoundAsset("Content\SFX\Interface\click_high.wav")
-				LoadSoundAsset("Content\SFX\Interface\jingle_levelup.wav")
-				LoadSoundAsset("Content\SFX\Interface\click_low.wav")
-				LoadSoundAsset("Content\SFX\Interface\confirm_high.wav")
-				LoadSoundAsset("Content\SFX\Interface\confirm_low.wav")
-				LoadSoundAsset("Content\SFX\Interface\deny_low.wav")
-				LoadSoundAsset("Content\SFX\Interface\scanner_ping.wav")
-				LoadSoundAsset("Content\SFX\Interface\upgrade_pickup.wav")
-				;[End Block]
-				AssetState$ = "SFX: Character Creation Audio"
-				;[Block] Preload Character Creation Audio Files
-				
-				;[End Block]
-				AssetState$ = "Music"
-				;[Block] Music
-				LoadSoundAsset("Content\SFX\Music\Ambient_01.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_02.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_03.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_04.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_05.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_06.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_07.mp3")
-				LoadSoundAsset("Content\SFX\Music\Ambient_08.mp3")
-				
-				LoadSoundAsset("Content\SFX\Music\Combat_01.mp3")
-				LoadSoundAsset("Content\SFX\Music\Combat_02.mp3")
-				LoadSoundAsset("Content\SFX\Music\Combat_03.mp3")
-				LoadSoundAsset("Content\SFX\Music\Combat_04.mp3")
-				
-				LoadSoundAsset("Content\SFX\Music\Intro_01.mp3")
-				;[End Block]
-				;[End Block]
-				
+;				;[Block] Audio and Music --------------------------------------------------
+;				AssetState$ = "SFX: Weapons"
+;				;[Block] Weapons
+;				Load3DSoundAsset("Content\SFX\Weapons\Laser_Low.wav")
+;				Load3DSoundAsset("Content\SFX\Weapons\Laser_Medium.wav")
+;				Load3DSoundAsset("Content\SFX\Weapons\Laser_Heavy.wav")
+;				Load3DSoundAsset("Content\SFX\Weapons\Weapon_mine.wav")
+;				;[End Block]
+;				AssetState$ = "SFX: Ship Expansions"
+;				;[Block] Expansions
+;				Load3DSoundAsset("Content\SFX\Expansions\expansion_explosion.wav")
+;				Load3DSoundAsset("Content\SFX\Expansions\expansion_explosion_small.wav")
+;				Load3DSoundAsset("Content\SFX\Expansions\expansion_warpin_small.wav")
+;				LoadSoundAsset("Content\SFX\Expansions\expansion_warpin_large.wav")
+;				LoadSoundAsset("Content\SFX\Expansions\expansion_explosion_distant.wav")
+;				LoadSoundAsset("Content\SFX\Expansions\expansion_miningbeam.wav")
+;				LoadSoundAsset("Content\SFX\Expansions\expansion_scanner.wav")
+;				;[End Block]
+;				AssetState$ = "SFX: Interface"
+;				;[Block] Interface Sounds
+;				LoadSoundAsset("Content\SFX\Interface\click_high.wav")
+;				LoadSoundAsset("Content\SFX\Interface\jingle_levelup.wav")
+;				LoadSoundAsset("Content\SFX\Interface\click_low.wav")
+;				LoadSoundAsset("Content\SFX\Interface\confirm_high.wav")
+;				LoadSoundAsset("Content\SFX\Interface\confirm_low.wav")
+;				LoadSoundAsset("Content\SFX\Interface\deny_low.wav")
+;				LoadSoundAsset("Content\SFX\Interface\scanner_ping.wav")
+;				LoadSoundAsset("Content\SFX\Interface\upgrade_pickup.wav")
+;				;[End Block]
+;				AssetState$ = "SFX: Character Creation Audio"
+;				;[Block] Preload Character Creation Audio Files
+;				
+;				;[End Block]
+;				AssetState$ = "Music"
+;				;[Block] Music
+;				LoadSoundAsset("Content\SFX\Music\Ambient_01.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_02.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_03.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_04.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_05.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_06.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_07.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Ambient_08.mp3")
+;				
+;				LoadSoundAsset("Content\SFX\Music\Combat_01.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Combat_02.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Combat_03.mp3")
+;				LoadSoundAsset("Content\SFX\Music\Combat_04.mp3")
+;				
+;				LoadSoundAsset("Content\SFX\Music\Intro_01.mp3")
+;				;[End Block]
+;				;[End Block]
+;				
 				;[Block] Interface  --------------------------------------------------
 				AssetState$ = "Fonts"
 				;[Block] Fonts
-				LoadTextureAsset("Content\GFX\Fonts\Chatfont_Normal.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Chatfont_whisper.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Chatfont_Dev.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Chatfont_SRV.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\NormFont_TopLayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\NormFont_GameLayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\BigFont_Toplayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Bigfont_Gamelayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\InfoFont_GameLayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\InfoFont_RedTop.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\InfoFont_GreenTop.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\QuestFont_GameLayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\QuestFont_GameLayer_White.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\QuestFont_GameLayer_Big.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_dist.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_ENEM.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_FRIE.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_POLI.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_PLAY.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_SHD.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_GRN.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Marketfont_Toplayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Marketfont_Deny_Toplayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Marketfont_Allow_Toplayer.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_dist.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_SHD.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\Locationfont_GRN.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\SmallFont.png", 2)
-				LoadTextureAsset("Content\GFX\Fonts\StreamFontGrey.PNG", 2)
-				LoadTextureAsset("Content\GFX\Fonts\StreamFontGreen.PNG", 2)
-				LoadTextureAsset("Content\GFX\Fonts\StreamFontRed.PNG", 2)
-				LoadTextureAsset("Content\GFX\Fonts\StreamNamePurple.PNG", 2)
-				LoadTextureAsset("Content\GFX\Fonts\StreamFont_large.PNG", 2)
+				LoadTextureAsset("Content\2D\Fonts\Chatfont_Normal.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Chatfont_whisper.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Chatfont_Dev.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Chatfont_SRV.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\NormFont_TopLayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\NormFont_GameLayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\BigFont_Toplayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Bigfont_Gamelayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\InfoFont_GameLayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\InfoFont_RedTop.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\InfoFont_GreenTop.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\QuestFont_GameLayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\QuestFont_GameLayer_White.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\QuestFont_GameLayer_Big.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_dist.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_ENEM.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_FRIE.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_POLI.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_PLAY.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_SHD.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_GRN.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Marketfont_Toplayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Marketfont_Deny_Toplayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Marketfont_Allow_Toplayer.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_dist.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_SHD.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\Locationfont_GRN.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\SmallFont.png", 2)
+				LoadTextureAsset("Content\2D\Fonts\StreamFontGrey.PNG", 2)
+				LoadTextureAsset("Content\2D\Fonts\StreamFontGreen.PNG", 2)
+				LoadTextureAsset("Content\2D\Fonts\StreamFontRed.PNG", 2)
+				LoadTextureAsset("Content\2D\Fonts\StreamNamePurple.PNG", 2)
+				LoadTextureAsset("Content\2D\Fonts\StreamFont_large.PNG", 2)
 				;[End Block]
 				AssetState$ = "Mouse"
-				;[Block] Mouse
-				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_standard.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_Mouse_aim.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_hit.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_hit_register.png",2)
-				;[End Block]
+;				;[Block] Mouse
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_standard.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_Mouse_aim.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_hit.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Interface_mouse_hit_register.png",2)
+;				;[End Block]
 				AssetState$ = "Interface icons"
-				;[Block] Interface Icons
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_000.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_001.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_002.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_003.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_004.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_005.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_006.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_007.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_010.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_0.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_1.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_2.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_3.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_4.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_player.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_belt.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_above.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_below.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_Station.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_wreck.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_foe.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_friend.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_neutral.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_gate.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_hostile.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_neutral.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_sirius.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_terra.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_orion.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_battlefield.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_unknown.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_icon_hq.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_shade.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_gate.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_enemy.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_friend.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_neut.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_police.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_derelict.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_lframe.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_sframe.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_transport.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_tsmall.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_cargo.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_dotheight.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_base.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_signature.png",2)
-				
-				For a = 1 To 18
-					LoadTextureAsset("Content\GFX\Interface\Menus\rank"+a+".png",2)
-				Next
-				;[End Block]
-				AssetState$ = "Story Things"
-				;[Block] Story Interface
-				LoadTextureAsset("Content\GFX\Interface\Story\chapter_0_title.png",2)
-				;[End Block]
-				AssetState$ = "Menus and Windows"
-				;[Block] Menu Windows and Buttons
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Quit_Button.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Logoff_Button.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Graphics_Button.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Sound_Button.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Gameplay_Button.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Graphics.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Background.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Menus\Choice_Background.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Twitch_Background.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Left.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Center.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Right.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Menus\Map_Background.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Background.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Button_Quit.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Button_Respawn.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Background.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Friends.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Foes.png",2)
-				
-				;[End Block]
-				AssetState$ = "Main menu Assets"
-				;[Block] Main Menu
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\background.jpg",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_information_capsule.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_frame_cutout.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_background.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_left.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_right.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_left_accept.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_right_accept.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_select.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_sirius.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_terra.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_pirate.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_Crimson.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_neutral.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_sirius.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_terra.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_pirate.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_Crimson.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_neutral.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_New.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Load.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_LoadDis.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Quit.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Credits.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Discord.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch_on.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch_Off.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Confirm.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Settings.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Abort.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Back.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_0.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_1.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_2.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_3.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_4.png",2)
-				
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_game_studio.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_game.png",2)
-				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_fmod.png",2)
-				
-				;[End Block]
-				AssetState$ = "Status Interface"
-				;[Block] Interface Status
-				
-				LoadTextureAsset("Content\GFX\Interface\Status\Status_Background.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Status\status_hull_frame.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Status\status_energy_frame.png",2)
-				LoadTextureAsset("Content\GFX\Interface\Status\status_shield_frame.png",2)
-				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_aimguidance.png",2)
-				
-				;[End Block]
+;				;[Block] Interface Icons
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_000.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_001.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_002.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_003.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_004.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_005.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_006.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_007.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Item_Icon_010.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_0.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_1.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_2.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_3.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\buff_frame_4.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_player.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_belt.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_above.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_below.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_Station.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_wreck.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_foe.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_friend.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_neutral.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_gate.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_hostile.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_neutral.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_sirius.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_terra.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_orion.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_battlefield.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_unknown.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_icon_hq.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_shade.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_sector_gate.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_enemy.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_friend.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_neut.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_combat_police.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_derelict.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_lframe.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_sframe.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_transport.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_tsmall.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\global_icon_cargo.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_dotheight.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_base.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\map_icon_signature.png",2)
+;				
+;				For a = 1 To 18
+;					LoadTextureAsset("Content\GFX\Interface\Menus\rank"+a+".png",2)
+;				Next
+;				;[End Block]
+;				AssetState$ = "Story Things"
+;				;[Block] Story Interface
+;				LoadTextureAsset("Content\GFX\Interface\Story\chapter_0_title.png",2)
+;				;[End Block]
+;				AssetState$ = "Menus and Windows"
+;				;[Block] Menu Windows and Buttons
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Quit_Button.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Logoff_Button.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Graphics_Button.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Sound_Button.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Gameplay_Button.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Graphics.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Options_Background.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Choice_Background.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Twitch_Background.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Left.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Center.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Weapon_BG_Right.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Map_Background.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Background.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Button_Quit.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Menus\Gameover_Button_Respawn.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Background.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Friends.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Icons\Battlefield_Foes.png",2)
+;				
+;				;[End Block]
+;				AssetState$ = "Main menu Assets"
+;				;[Block] Main Menu
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\background.jpg",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_information_capsule.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_frame_cutout.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_background.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_left.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_right.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_left_accept.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_right_accept.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\character_creation_select.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_sirius.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_terra.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_pirate.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_Crimson.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_faction_neutral.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_sirius.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_terra.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_pirate.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_Crimson.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\flag_faction_neutral.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_New.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Load.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_LoadDis.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Quit.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Credits.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Discord.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch_on.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Twitch_Off.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Confirm.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Settings.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Abort.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\Button_Back.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_0.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_1.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_2.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_3.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\DATA_tier_4.png",2)
+;				
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_game_studio.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_game.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\MainMenu\logo_fmod.png",2)
+;				
+;				;[End Block]
+;				AssetState$ = "Status Interface"
+;				;[Block] Interface Status
+;				
+;				LoadTextureAsset("Content\GFX\Interface\Status\Status_Background.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Status\status_hull_frame.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Status\status_energy_frame.png",2)
+;				LoadTextureAsset("Content\GFX\Interface\Status\status_shield_frame.png",2)
+;				LoadTextureAsset("Content\GFX\Environment\Effects\expansion_aimguidance.png",2)
+;				
+;				;[End Block]
 				AssetState$ = "Fallback Fonts"
 				;[Block] Standard Windows Font
 				LoadFontAsset("Arial", 14)
@@ -723,7 +697,6 @@ Repeat
 	;[Block] Visual Update
 	AssetManager_Suspend()
 	DrawImage Loading_BG, GwBy2, GhBy2 ; Background
-	DrawImage Loading_Seiz, GwBy2, GraphicsHeight()-20
 	
 	Color 0, 0, 0:Rect 0, Gh - 45, Gw, 45, 1 ; Bottom Bar
 	Color 220,220,220:Text GwBy2, Gh - 15, Loading_Quote, True, True ; Quote
