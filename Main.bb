@@ -145,7 +145,7 @@ Repeat
 				
 				
 				;[Block] Ships
-				Local LoadOrder = OpenFile("Assets\3D\Ships\LoadShips.lof")
+				Local LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
 				Repeat
 					Local LoadData$ = ReadLine(LoadOrder)
 					LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
@@ -156,7 +156,7 @@ Repeat
 				;[End Block]
 				
 				;[Block] Stations
-				LoadOrder = OpenFile("Assets\3D\Stations\LoadStations.lof")
+				LoadOrder = OpenFile("Assets\Manifest\LoadStations.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
 					LoadMeshAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
@@ -167,7 +167,7 @@ Repeat
 				;[End Block]
 				
 				;[Block] Skybox
-				LoadOrder = OpenFile("Assets\3D\Skybox\LoadSkybox.lof")
+				LoadOrder = OpenFile("Assets\Manifest\LoadSkybox.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
 					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"BK.png",561)
@@ -181,7 +181,7 @@ Repeat
 				;[End Block]
 				
 				;[Block] Fonts
-				LoadOrder = OpenFile("Assets\2D\Fonts\LoadFonts.lof")
+				LoadOrder = OpenFile("Assets\Manifest\LoadFonts.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
 					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".jpg", 2)
@@ -335,6 +335,7 @@ Until (Loading_State = LOADING_STATE_COMPLETE)
 ; 3D: Camera
 Const MODE_CAMERA = 0
 Const MODE_SHIP  = 1
+Const MODE_DOCKED = 2
 
 Global fShipTargetRotation#[2], fCameraRotation#[2]
 Global eMode = MODE_CAMERA, eCameraMode = MODE_CAMERA
