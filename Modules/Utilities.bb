@@ -1126,16 +1126,16 @@ Function UpdateMapPoint()
 		If AIX<CposX+128 And AIX>CposX-128 And AIY<CposY+128 And AIY>CposY-128 And AIZ<CposZ+128 And AIZ>CposZ-128 And HUD=1
 			MapYPoint = ( AIY - EntityY(pvShip,True) ) / 500
 			
-			DrawImage3D(GUI_Interface[19],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ,0,0,1)
+;			DrawImage3D(GUI_Interface[19],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ,0,0,1)
 			
 			If MapYPoint > -128 And MapYPoint< 128 Then
 				If MapYPoint>0 Then
 					For MapLine = 1 To MapYPoint
-						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+mapline,0,0,1)
+;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+mapline,0,0,1)
 					Next
 				Else
 					For MapLine = 1 To -MapYPoint
-						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ-+mapline,0,0,1)
+;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ-+mapline,0,0,1)
 					Next
 				EndIf
 			EndIf

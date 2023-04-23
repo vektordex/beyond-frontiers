@@ -544,6 +544,7 @@ EndIf
 Local Timer_Character_Selection = CreateTimer(60)
 Global State_Character_Selection = 1
 Global State_Menu_Subcontext = 1
+Global State_Menu_Subcontext_Settings = 1
 
 Global Character_NewName$
 
@@ -566,7 +567,7 @@ CloseFile Creditsfile
 
 ;[Block] Character Loading
 LoopSound Music_ID[9]
-;Channel_Music = PlaySound(Music_ID[9])
+Channel_Music = PlaySound(Music_ID[9])
 ChannelVolume Channel_Music,0.0
 Music_Volume = 0.0
 
@@ -618,23 +619,30 @@ Repeat
 			EndIf
 			;[End Block]
 			
+			;[Block] Create New Game / Character
 			If MouseX()>(GraphicsWidth()/2-150) And MouseX()<(GraphicsWidth()/2-5) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;New Game Button
 				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)			
 			Else
 				Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)			
 			EndIf
+			;[End Block]
 			
+			;[Block] Go to Character Overview
 			If MouseX()>(GraphicsWidth()/2+5) And MouseX()<(GraphicsWidth()/2+150) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Continue Button
 				Text3D (Text_Font[8],  80,-250,"C o n t i n u e",1)
 			Else
 				Text3D (Text_Font[7],  80,-250,"C o n t i n u e",1)
 			EndIf
+			;[End Block]
 			
+			;[Block] Options Window
 			If MouseX()>(GraphicsWidth()/2+155) And MouseX()<(GraphicsWidth()/2+290) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Options Button
-				Text3D (Text_Font[8], 228,-250,"O p t i o n s",1)					
+				Text3D (Text_Font[8], 228,-250,"O p t i o n s",1)
+				If MouseHit(1) Then State_Menu_Subcontext = 2
 			Else
 				Text3D (Text_Font[7], 228,-250,"O p t i o n s",1)	
 			EndIf
+			;[End Block]
 			
 			;[Block] Exit Button
 			If MouseX()>(GraphicsWidth()/2+305) And MouseX()<(GraphicsWidth()/2+440) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270 ;Exit Button
@@ -648,7 +656,77 @@ Repeat
 			EndIf
 			;[End Block]
 			
-		Case 2
+		Case 2 ; >> Options
+			DrawImage3D(GUI_Windows[30],0,GraphicsHeight()/2-16,0,0,2)
+			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
+			
+			DrawImage3D(GUI_Windows[21],140,0)
+			DrawImage3D(GUI_Windows[24],-420,0,0,0,1.47)
+;			DrawImage3D(GUI_Windows[23],0,0)
+			
+			Select State_Menu_Subcontext_Settings
+				Case 1 ; >> Graphics
+					DrawImage3D(GUI_Windows[16],-420,210,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
+					Text3D(Text_Font[6],140,252,"G r a p h i c s",1)
+					
+										
+				Case 2 ; >> Audio
+					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
+					DrawImage3D(GUI_Windows[16],-420,170,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
+					Text3D(Text_Font[6],140,252,"S o u n d",1)
+					
+				Case 3 ; >> Music
+					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
+					DrawImage3D(GUI_Windows[16],-420,130,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
+					Text3D(Text_Font[6],140,252,"M u s i c",1)
+					
+				Case 4 ; >> Other
+					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
+					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
+					DrawImage3D(GUI_Windows[16],-420, 90,0,0,1.8)
+					Text3D(Text_Font[6],140,252,"O t h e r",1)
+					
+			End Select
+			
+			DrawImage3D(GUI_Windows[16],-420,-220,0,0,1.8)
+			
+			If MouseX()>GraphicsWidth()/2-515 And MouseX()<GraphicsWidth()/2-330
+				If MouseY()>(GraphicsHeight()/2)-228 And MouseY()<(GraphicsHeight()/2)-192
+					DrawImage3D(GUI_Windows[17],-420,210,0,0,1.8)
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 1
+				ElseIf  MouseY()>(GraphicsHeight()/2)-190 And MouseY()<(GraphicsHeight()/2)-154
+					DrawImage3D(GUI_Windows[17],-420,170,0,0,1.8)
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 2
+				ElseIf  MouseY()>(GraphicsHeight()/2)-152 And MouseY()<(GraphicsHeight()/2)-116
+					DrawImage3D(GUI_Windows[17],-420,130,0,0,1.8)
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 3
+				ElseIf  MouseY()>(GraphicsHeight()/2)-114 And MouseY()<(GraphicsHeight()/2)-78
+					DrawImage3D(GUI_Windows[17],-420, 90,0,0,1.8)
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 4
+				ElseIf  MouseY()>(GraphicsHeight()/2)+202 And MouseY()<(GraphicsHeight()/2)+238
+					DrawImage3D(GUI_Windows[17],-420,-220,0,0,1.8)
+					If MouseHit(1) Then State_Menu_Subcontext = 1
+				EndIf
+			EndIf
+			
+			
+			
+			Text3D(Text_Font[7],-420,210,"G r a p h i c s",1)
+			Text3D(Text_Font[7],-420,170,"S o u n d s",1)
+			Text3D(Text_Font[7],-420,130,"M u s i c",1)
+			Text3D(Text_Font[7],-420, 90,"O t h e r",1)
+			
+			Text3D(Text_Font[7],-420,-220,"C o n f i r m",1)
+			
+			
 			
 		Case 3
 			
@@ -975,7 +1053,7 @@ Repeat
 		
 		HUD = 0
 		
-		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+;		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 		
 		If Options_Nested = 0 Then
 			
@@ -986,7 +1064,7 @@ Repeat
 				
 				;Graphics Settings
 				If MouseY()>GraphicsHeight()/2-87 And MouseY()<GraphicsHeight()/2-55 Then
-					DrawImage3D(GUI_Buttons[2],0,0)
+;					DrawImage3D(GUI_Buttons[2],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
 						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
@@ -1027,7 +1105,7 @@ Repeat
 				;[End Block]
 				;Quit
 				If MouseY()>GraphicsHeight()/2+90 And MouseY()<GraphicsHeight()/2+122 Then
-					DrawImage3D(GUI_Buttons[0],0,0)
+;					DrawImage3D(GUI_Buttons[0],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
 						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
@@ -1161,12 +1239,12 @@ Repeat
 			EntityAlpha eShipBody,0
 			
 			DrawImage3D(GUI_Windows[5],0,0)
-			DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+;			DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 			If MouseX()>GraphicsWidth()/2-85 And MouseX()<GraphicsWidth()/2+85 Then
 				
 				;Quit Game
 				If MouseY()>GraphicsHeight()/2+55 And MouseY()<GraphicsHeight()/2+87 Then
-					DrawImage3D(GUI_Buttons[5],0,0)
+;					DrawImage3D(GUI_Buttons[5],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
 						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
@@ -1176,7 +1254,7 @@ Repeat
 				
 				;Quit
 				If MouseY()>GraphicsHeight()/2+90 And MouseY()<GraphicsHeight()/2+122 Then
-					DrawImage3D(GUI_Buttons[6],0,0)
+;					DrawImage3D(GUI_Buttons[6],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
 						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
@@ -1274,17 +1352,17 @@ Repeat
 		;Information: Environment
 		
 		If eCameraMode=MODE_SHIP Then
-			DrawImage3D(GUI_Interface[1],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+;			DrawImage3D(GUI_Interface[1],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 			CameraProject WorldCamera,EntityX(Weapon_Target_Cube),EntityY(Weapon_Target_Cube),EntityZ(Weapon_Target_Cube)
-			DrawImage3D(GUI_Interface[2],ProjectedX()-(GraphicsWidth()/2),-ProjectedY()+(GraphicsHeight()/2))
+;			DrawImage3D(GUI_Interface[2],ProjectedX()-(GraphicsWidth()/2),-ProjectedY()+(GraphicsHeight()/2))
 			If Timer_HitRegister>0 Then
 				For Hit_Amount= 1 To Timer_HitRegister
-					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)+Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,180)
-					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)-Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,0)
+;					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)+Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,180)
+;					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)-Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,0)
 				Next
 			EndIf
 		Else
-			DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+;			DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 		EndIf
 		
 		gatelimiter=gatelimiter+1
@@ -1583,5 +1661,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#C2#17E#25A#263#27E#28F
+;~F#B7#C2#17E#25B#264#26D#275#286#2DE#36C#37A#388#3B7
 ;~C#Blitz3D

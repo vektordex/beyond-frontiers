@@ -181,10 +181,8 @@ Global Switch_Graphics_Preset
 ;[End Block]
 
 ;[Block] Interface
-Global GUI_Interface[50]
-Global GUI_Windows[30]
+Global GUI_Windows[50]
 Global GUI_Icons[100]
-Global GUI_Buttons[100]
 Global GUI_Items[10]
 Global GUI_Information[20]
 Global GUI_Buffs[5]
@@ -1025,6 +1023,6 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#13#4A#5C#6C#72#90#9A#A7#B2#B6#D5#FF#10D#11C#122#127#12B#131#138#13D
-;~F#143#205#289#297#31A
+;~F#13#4A#5C#6C#72#90#95#9A#A3#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F
+;~F#136#13B#141#152#203#287#295#318
 ;~C#Blitz3D

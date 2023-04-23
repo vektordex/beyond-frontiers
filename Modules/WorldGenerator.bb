@@ -2736,12 +2736,12 @@ Function Battlefield_Update()
 							Amount_FactionB = Existing_Ratio_Terran*2
 							
 							For	PaintX = 1 To Amount_FactionA
-								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
+;								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
 								StartA=StartA+1
 							Next
 							
 							For PaintX = 1 To Amount_FactionB
-								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
+;								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
 								StartB=StartB-1
 							Next
 							
@@ -2756,12 +2756,12 @@ Function Battlefield_Update()
 							Amount_FactionA = Existing_Ratio_Terran*2
 							
 							For PaintX = 1 To Amount_FactionA
-								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
+;								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
 								StartA=StartA+1
 							Next
 							
 							For PaintX = 1 To Amount_FactionB
-								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
+;								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
 								StartB=StartB-1
 							Next
 							
@@ -2890,7 +2890,7 @@ Function Worldmap_Display()
 	
 	If HUD=1 And MAPHUD = 1 And Options = 0 And Upgrade_GlobalMap = 1
 		DrawImage3D(GUI_WorldMap[9],0,0)
-		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+;		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 		For A = 0 To 127
 			
 			If String_SystemDiscovered[a] = 1 And String_SystemName[a]<>"Unmapped Sector" Then
