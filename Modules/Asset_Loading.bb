@@ -9,6 +9,17 @@ Function PreloadAudio()
 ;	Sound_Explosion[1]=AssetManager_GetAsset(EAssetType_3DSound, "Content\SFX\Expansions\Expansion_explosion_small.wav")
 	
 	;[End Block]
+	
+	;[Block] Music
+	Local LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
+	Local LoadCounter = 1
+	Repeat
+		Local LoadData$ = ReadLine(LoadOrder)
+		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".mp3")
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	;[End Block]
 End Function
 
 Function PreloadUI()
@@ -98,5 +109,4 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#1#6
 ;~C#Blitz3D

@@ -247,6 +247,13 @@ Repeat
 				;----------------------------------------------------------------
 				;! Game - Music
 				;----------------------------------------------------------------
+				
+				LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
+				Repeat
+					LoadData$ = ReadLine(LoadOrder)
+					LoadSoundAsset("Assets\Music\"+LoadData$+".mp3")
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
 				;[End Block]
 				
 				;[Block] Voices -------------------------------------------------
@@ -325,7 +332,7 @@ Repeat
 	AssetManager_Suspend()
 	DrawImage Loading_BG, GwBy2, GhBy2 ; Background
 	
-	Color 0, 0, 0:Rect 0, Gh - 45, Gw, 45, 1 ; Bottom Bar
+;	Color 0, 0, 0:Rect 0, Gh - 45, Gw, 45, 1 ; Bottom Bar
 	Color 220,220,220:Text GwBy2, Gh - 15, Loading_Quote, True, True ; Quote
 	
 	Select Loading_State
@@ -341,23 +348,23 @@ Repeat
 				Local ls_p# = ls_n / Float(ls_t)
 				
 				; GFX: Bar
-				Color ls_p * 51, ls_p * 51, ls_p * 51
-				Line 0, ls_loading_barY - ls_n, Gw, ls_loading_barY - ls_n
+;				Color ls_p * 51, ls_p * 51, ls_p * 51
+;				Line 0, ls_loading_barY - ls_n, Gw, ls_loading_barY - ls_n
 				
 				; GFX: Error
 				Color 204 + ls_p * 51, ls_p * 51, ls_p * 51
 				Line GwBy2 * (1.0 - ls_resources_error_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_error_prc), ls_loading_barY - ls_n
 				
 				; GFX: Loading
-				Color 204 + ls_p * 51, 102 + ls_p * 51, ls_p * 51
+				Color 204 + ls_p * 51, ls_p * 51, 102 + ls_p * 51
 				Line GwBy2 * (1.0 - ls_resources_loading_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_loading_prc), ls_loading_barY - ls_n
 				
 				; GFX: Complete
-				Color ls_p * 51, 204 + ls_p * 51, ls_p * 51
+				Color 51 + ls_p * 51, 204 + ls_p * 51, 204 + ls_p * 51
 				Line GwBy2 * (1.0 - ls_resources_loaded_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_loaded_prc), ls_loading_barY - ls_n
 			Next
 			
-			Color 0, 0, 0
+			Color 0,0,0
 			Text GwBy2, ls_loading_barY - 8, Int(Floor(ls_resources_loaded_prc * 1000) / 10) + "% done", 1, 1
 			
 			;[End Block]
@@ -544,35 +551,48 @@ Cls
 
 
 
-;Type Credits
-;	Field TextLine$, Y
-;End Type
-;Local YText = -GraphicsHeight()/2
-;Local Creditsfile = OpenFile("Content\credits.txt")
-;While Not Eof(Creditsfile)
-;	TLine.Credits = New Credits
-;	Tline\Textline$ = ReadLine$(Creditsfile)
-;	TLine\Y = YText
-;	YText = YText - 20
-;Wend
-;CloseFile Creditsfile
-;
-;Stop 
+Type Credits
+	Field TextLine$, Y
+End Type
+Local YText = -GraphicsHeight()/2
+Local Creditsfile = OpenFile("Assets\Manifest\Credits.dat")
+While Not Eof(Creditsfile)
+	TLine.Credits = New Credits
+	Tline\Textline$ = ReadLine$(Creditsfile)
+	TLine\Y = YText
+	YText = YText - 30
+Wend
+CloseFile Creditsfile
 
 ;[Block] Character Loading
-Channel_Music = PlaySound(Music_ID[0])
-ChannelVolume Channel_Music,0.5
+LoopSound Music_ID[9]
+;Channel_Music = PlaySound(Music_ID[9])
+ChannelVolume Channel_Music,0.0
+Music_Volume = 0.0
+
 Repeat
+	ChannelVolume Channel_Music,Music_Volume#
+	If Music_Volume#<0.5 Then Music_Volume# = Music_Volume# + 0.0025
+	If MouseHit(1) = False And MouseHit(2) = False Then FlushMouse()
 	
 	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/20)*15,Sin(MilliSecs()/18)*15)
-	DrawImage3D	(GUI_Windows[2],0,0)
+	
 	DrawImage3D	(GUI_Windows[9],D3DOR-64,D3DOU-64)
 	
 	Util_Timer
 	InputEx_Update
 	
+	tmx = MouseX()-(GraphicsWidth()/2)
+	tmy = MouseY()-(GraphicsHeight()/2)
+	
+	Local WIPString$ = tmx+" | "+tmy
+	Text3D (Text_Font[7], 0,-300,WIPString$,1)
+	
 	Select State_Menu_Subcontext
-		Case 1 ;Menu Main Window
+		Case 1 ; >> Menu Main Window
+			
+			DrawImage3D	(GUI_Windows[2],0,0)
+			
 			DrawImage3D	(GUI_Windows[3],-376,-250)
 			DrawImage3D	(GUI_Windows[4],-228,-250)
 			DrawImage3D	(GUI_Windows[5],-80,-250)
@@ -580,16 +600,79 @@ Repeat
 			DrawImage3D	(GUI_Windows[7],228,-250)
 			DrawImage3D	(GUI_Windows[8],376,-250)
 			
-			Text3D (Text_Font[7],-376,-250,"Discord",1)
-			Text3D (Text_Font[7],-228,-250,"Credits",1)
-			Text3D (Text_Font[7], -80,-250,"New Game",1)
-			Text3D (Text_Font[7],  80,-250,"Continue",1)
-			Text3D (Text_Font[7], 228,-250,"Options",1)
-			Text3D (Text_Font[7], 376,-250,"Exit",1)
+			;[Block] Discord
+			If MouseX()>(GraphicsWidth()/2-440) And MouseX()<(GraphicsWidth()/2-305) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Discord Button
+				Text3D (Text_Font[8],-376,-250,"D i s c o r d",1)
+				If MouseHit(1) Then ExecFile("https://discord.gg/D5e5qRtQkb")
+			Else
+				Text3D (Text_Font[7],-376,-250,"D i s c o r d",1)
+			EndIf
+			;[End Block]
+			
+			;[Block] Credits
+			If MouseX()>(GraphicsWidth()/2-290) And MouseX()<(GraphicsWidth()/2-155) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Credits Button
+				Text3D (Text_Font[8],-228,-250,"C r e d i t s",1)
+				If MouseHit(1) Then State_Menu_Subcontext = 5
+			Else
+				Text3D (Text_Font[7],-228,-250,"C r e d i t s",1)
+			EndIf
+			;[End Block]
+			
+			If MouseX()>(GraphicsWidth()/2-150) And MouseX()<(GraphicsWidth()/2-5) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;New Game Button
+				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)			
+			Else
+				Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)			
+			EndIf
+			
+			If MouseX()>(GraphicsWidth()/2+5) And MouseX()<(GraphicsWidth()/2+150) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Continue Button
+				Text3D (Text_Font[8],  80,-250,"C o n t i n u e",1)
+			Else
+				Text3D (Text_Font[7],  80,-250,"C o n t i n u e",1)
+			EndIf
+			
+			If MouseX()>(GraphicsWidth()/2+155) And MouseX()<(GraphicsWidth()/2+290) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Options Button
+				Text3D (Text_Font[8], 228,-250,"O p t i o n s",1)					
+			Else
+				Text3D (Text_Font[7], 228,-250,"O p t i o n s",1)	
+			EndIf
+			
+			;[Block] Exit Button
+			If MouseX()>(GraphicsWidth()/2+305) And MouseX()<(GraphicsWidth()/2+440) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270 ;Exit Button
+				Text3D (Text_Font[8], 376,-250,"E x i t",1)	
+				If MouseHit(1) Then
+					ClearWorld
+					End
+				EndIf
+			Else
+				Text3D (Text_Font[7], 376,-250,"E x i t",1)	
+			EndIf
+			;[End Block]
 			
 		Case 2
 			
 		Case 3
+			
+		Case 5 ; >> Credits
+			;[Block]
+			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
+			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
+				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
+				If MouseHit(1) Then State_Menu_Subcontext = 1
+			Else
+				Text3D(Text_Font[7],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
+			EndIf
+			
+			For TLine.Credits = Each Credits
+				Text3D(Text_Font[9],0,Tline\Y,Tline\Textline$,1)
+				TLine\Y = Tline\Y + 1
+				
+				If TLine\Y > (GraphicsHeight()/2+25) Then
+					TLine\Y = YText
+					YText=YText - 20
+				EndIf
+			Next
+			;[End Block]
 			
 	End Select
 	
@@ -599,8 +682,6 @@ Repeat
 	
 	WaitTimer(Timer_Character_Selection)
 	Flip 0: Clear3D()
-	
-	If KeyHit(1) Then End
 	
 Until CharDataLoaded=1
 ;[End Block]
@@ -734,7 +815,7 @@ Repeat
 					Ship_Gun_Timer[WeaponHardpoints] = Ship_Gun_Timer[WeaponHardpoints] - 1
 					If Ship_Gun_Timer[WeaponHardpoints] < 1 Then
 						NewShot(Ship_Gun_Slot[WeaponHardpoints],pvShip,15,Ship_Gun_HPX[WeaponHardpoints], Ship_Gun_HPY[WeaponHardpoints], Ship_Gun_HPZ[WeaponHardpoints])
-						EmitSound(Sound_Guns[Ship_Gun_Slot[WeaponHardpoints]],eShipBody)
+;						EmitSound(Sound_Guns[Ship_Gun_Slot[WeaponHardpoints]],eShipBody)
 						Local Gun_Max_Reload = GetWeaponvalue(Ship_Gun_Slot[WeaponHardpoints])
 						Ship_Gun_Timer[WeaponHardpoints] = Gun_Max_Reload
 					EndIf
@@ -1436,7 +1517,7 @@ Repeat
 	UpdateBelt()
 	UpdateLevels()
 	Explosion_Update()
-	Tutorial_Update()
+;	Tutorial_Update()
 	UpdateFastTravel()
 	Planet_Update(WorldCamera, 0, 0, 0)
 	Special_Update()
@@ -1502,5 +1583,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#C2#143#177
+;~F#B7#C2#17E#25A#263#27E#28F
 ;~C#Blitz3D

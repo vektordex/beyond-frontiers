@@ -150,30 +150,6 @@ Global Sprite_Navigation[20]
 ;[Block] Sounds
 Global Sound_UI[50]
 Global Sound_Game[80]
-Global Sound_Ship[10]
-Global Sound_Environment[100]
-Global Sound_Guns[4]
-Global Sound_Explosion[4]
-Global Sound_Expansion[2]
-Global Sound_Tutorial[14]
-Global Sound_Name[17]
-Global Sound_Voice[100]
-Global Sound_Effects[300]
-Global Sound_Character_Creation[20]
-Global Sound_Special[10]
-Global Sound_SystemInit[23]
-Global Sound_Battlefield[10]
-Global Sound_Comms[1]
-Global Sound_Storyline_Gardner[13]
-Global Sound_Storyline_Gull[7]
-Global Sound_Storyline_OLeary[12]
-Global Sound_Storyline_BRIAN[28]
-Global Sound_Storyline_Burnert[12]
-Global Sound_Storyline_Messenger[8]
-Global Sound_Storyline_Crimson[1]
-Global Sound_Event[3]
-Global Sound_Data[5]
-Global Sound_Easteregg[1]
 ;[End Block]
 
 ;[Block] Channels
@@ -186,7 +162,7 @@ Global Channel_SystemInit
 ;[End Block]
 
 ;[Block] Music
-Global Music_ID[14], Music_Description$
+Global Music_ID[11]
 ;[End Block]
 
 ;[Block] Switches
@@ -1049,6 +1025,6 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#4A#5C#6C#72#90#95#B2#BB#BF#CA#CE#ED#117#125#134#13A#13F#143#149#150
-;~F#155#15B#21D#2A1#2AF#332
+;~F#13#4A#5C#6C#72#90#9A#A7#B2#B6#D5#FF#10D#11C#122#127#12B#131#138#13D
+;~F#143#205#289#297#31A
 ;~C#Blitz3D
