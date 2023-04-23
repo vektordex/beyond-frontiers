@@ -1,0 +1,9 @@
+Generate=False
+Name=J9GK-WL22
+Region=The Gap
+Scale=75000
+Owner=None
+Security=0
+LightPitch=-45Modify_Light(-45,50,19000)
+			Modify_Ambient(228,222,200)
+			Asteroid_Belt_Create(12,2,25000,800,-14000,12000,8)			
