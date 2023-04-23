@@ -10,6 +10,7 @@ Include "Libraries\InputEx\InputEx.bb"
 Include "Libraries\System\Threading.bb"
 Include "Libraries\System\ThreadPool.bb"
 Include "Libraries\Draw3D2\Includes\Draw3D2.bb"
+Include "Shared\Containers\LinkedList.bb"
 
 ; Shared
 Include "Shared\Version.bb"
@@ -42,6 +43,10 @@ Include "Modules\Camera_Prep.bb"
 Include "Modules\BasicData.bb"
 Include "Modules\BasicMath.bb"
 Include "Modules\Coordinates.bb"
+Include "Shared\Math\Delta.bb"
+Include "Shared\Math\Shapes.bb"
+Include "Shared\Math\Vector2D.bb"
+Include "Shared\Math\Vector3D.bb"
 
 ; >> Sound
 
@@ -94,8 +99,27 @@ InputEx_SetResolution(Gw, Gh)
 ;----------------------------------------------------------------
 ;! Game - Engine
 ;----------------------------------------------------------------
+; Scene: Camera
+CameraScene = CreateCamera()
+CameraRange CameraScene, CAMERA_NEAR, CAMERA_FAR
+CameraZoom CameraScene, 1.0 / Tan(90 / 2.0) ;!ToDo: Field of View settings, see line below.
+;CameraZoom CameraScene, 1.0 / Tan(FOV# / 2.0) 
 
-Prepare_Camera()
+; UI: Camera
+CameraUI = CreateCamera()
+CameraClsMode CameraUI, 0, 1
+CameraClsColor CameraUI, 127, 127, 127
+CameraRange CameraUI, DRAWDISTANCE-64, DRAWDISTANCE+64
+DrawInit3D(CameraUI)
+HideEntity CameraUI
+
+; Scene: Create a VirtualScene Object (hiding and showing where needed)
+;Scene.VirtualScene = VirtualScene_Create()
+
+; Data: Data Root (Invisible loaded Geometry)
+SceneDataRoot = CreatePivot()
+;EntityAlpha SceneDataRoot, 0
+HideEntity SceneDataRoot
 
 ; Collisions
 Collisions_Initialize()
@@ -114,6 +138,7 @@ Const LOADING_STATE_COMPLETE	= -1
 ; First, load the important stuff.
 SeedRnd MilliSecs()
 Local Loading_BG = LoadImage("Assets\2D\LoadScreens\Loading_Screen.png"):MidHandle(Loading_BG)
+Util_InitTimer()
 
 ;-- Initialize AssetManager
 AssetManager_Initialize()
@@ -124,7 +149,7 @@ Local Loading_State = LOADING_STATE_LOADING, Loading_State_Next, Loading_State_J
 Local Ass.Asset
 
 ; Retrieve a random Quote for this Loading Screen
-Local Loading_Quote$ = "Preloading Sirius: FRONTIERS. This may take some time."
+Local Loading_Quote$ = "Preloading beyond.frontiers - This may take some time."
 
 Local GFXCards = CountGfxModes3D()
 For A = 1 To GFXCards
@@ -141,9 +166,10 @@ Repeat
 			If Loading_State_JustSwitched Then
 				AssetManager_Suspend()
 				
-				;[Block] Meshes and Textures --------------------------------------------------
-				
-				
+				;[Block] Meshes and Textures ------------------------------------
+				;----------------------------------------------------------------
+				;! Game - Meshes
+				;----------------------------------------------------------------
 				;[Block] Ships
 				Local LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
 				Repeat
@@ -179,12 +205,18 @@ Repeat
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
 				;[End Block]
+				;[End Block]
+				
+				;[Block] Interface and Menus ------------------------------------
+				;----------------------------------------------------------------
+				;! Game - Interface
+				;----------------------------------------------------------------
 				
 				;[Block] Fonts
 				LoadOrder = OpenFile("Assets\Manifest\LoadFonts.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".jpg", 2)
+					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".bmp", 2)
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
 				;[End Block]
@@ -194,6 +226,35 @@ Repeat
 				LoadFontAsset("Arial", 20)
 				LoadFontAsset("Arial", 24)
 				;[End Block]
+				
+				;[Block] Main Menu Graphics
+				LoadOrder = OpenFile("Assets\Manifest\LoadMenu.lof")
+				Repeat
+					LoadData$ = ReadLine(LoadOrder)
+					LoadTextureAsset("Assets\2D\Menu\"+LoadData$, 2)
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
+				;[End Block]
+				;[End Block]
+				
+				;[Block] Sounds -------------------------------------------------
+				;----------------------------------------------------------------
+				;! Game - Sounds
+				;----------------------------------------------------------------
+				;[End Block]
+				
+				;[Block] Music --------------------------------------------------
+				;----------------------------------------------------------------
+				;! Game - Music
+				;----------------------------------------------------------------
+				;[End Block]
+				
+				;[Block] Voices -------------------------------------------------
+				;----------------------------------------------------------------
+				;! Game - Voices
+				;----------------------------------------------------------------
+				;[End Block]
+				
 				
 				; Advance to next State
 				Loading_State_Next = LOADING_STATE_LOADING
@@ -327,6 +388,7 @@ Repeat
 	WaitTimer RenderTimer
 	;[End Block]
 Until (Loading_State = LOADING_STATE_COMPLETE)
+;[End Block]
 
 ;----------------------------------------------------------------
 ;! Old Startup
@@ -351,9 +413,9 @@ TurnEntity pvCamera, -10, 0, 0
 Global WorldCamera = CameraScene
 EntityParent WorldCamera, pvCameraOrigin
 
-VirtualScene_Register(Scene, pvShip)
-VirtualScene_Register(Scene, pvShipTarget)
-VirtualScene_Register(Scene, pvtPoint)
+;VirtualScene_Register(Scene, pvShip)
+;VirtualScene_Register(Scene, pvShipTarget)
+;VirtualScene_Register(Scene, pvtPoint)
 
 ; Create Local Player
 Global Player_Location.Location = Location_Create(0, 0, 0)
@@ -363,22 +425,11 @@ Global Player_Location.Location = Location_Create(0, 0, 0)
 
 ;[Block] Old
 SHipInertia#=1.085
-ShipPosXYZ = CreatePivot():VirtualScene_Register(Scene, ShipPosXYZ)
-Weapon_Target_Cube = LoadSprite("Content\GFX\Interface\Icons\interface_mouse_aim.png",2)
-VirtualScene_Register(Scene, Weapon_Target_Cube)
+;ShipPosXYZ = CreatePivot():VirtualScene_Register(Scene, ShipPosXYZ)
+;Weapon_Target_Cube = LoadSprite("Content\GFX\Interface\Icons\interface_mouse_aim.png",2)
+;VirtualScene_Register(Scene, Weapon_Target_Cube)
 
 ;Extensions
-Mesh_Extension[1]=CreatePlane(1)
-Global ECLIPTIC_ALPHA#
-EntityTexture Mesh_Extension[1], Text_Effects[2]
-EntityFX Mesh_Extension[1],1+2+4+8+16
-EntityAlpha Mesh_Extension[1],0.6
-VirtualScene_Register(Scene, Mesh_Extension[1])
-
-Global FastTravelSpot=CreatePivot()
-VirtualScene_Register(Scene,FastTravelSpot)
-Global Travel_To_LastSave=0
-
 ;Set Planet Array
 Global Player_Value_Inertia_Base#
 Global Zoffset, Yoffset
@@ -400,9 +451,6 @@ Global HOTBAR=1
 ShowEntity eShipBody
 EntityPickMode eShipBody,1,True
 EntityRadius eShipBody, 200
-
-
-GetWeaponValues(1)
 
 Global ChatStream 
 
@@ -494,665 +542,56 @@ Global Character_NewName$
 
 Cls
 
-Util_InitTimer()
 
-Type Credits
-	Field TextLine$, Y
-End Type
-Local YText = -GraphicsHeight()/2
-Local Creditsfile = OpenFile("Content\credits.txt")
-While Not Eof(Creditsfile)
-	TLine.Credits = New Credits
-	Tline\Textline$ = ReadLine$(Creditsfile)
-	TLine\Y = YText
-	YText = YText - 20
-Wend
-CloseFile Creditsfile
+
+;Type Credits
+;	Field TextLine$, Y
+;End Type
+;Local YText = -GraphicsHeight()/2
+;Local Creditsfile = OpenFile("Content\credits.txt")
+;While Not Eof(Creditsfile)
+;	TLine.Credits = New Credits
+;	Tline\Textline$ = ReadLine$(Creditsfile)
+;	TLine\Y = YText
+;	YText = YText - 20
+;Wend
+;CloseFile Creditsfile
+;
+;Stop 
 
 ;[Block] Character Loading
 Channel_Music = PlaySound(Music_ID[0])
 ChannelVolume Channel_Music,0.5
 Repeat
-	DrawImage3D(GUI_MainMenu_LImages[0],0,0)
 	
-	DrawImage3D(GUI_MainMenu_SImages[7],0,D3DOU-158,0,0,1.5,0)
-	DrawImage3D(GUI_MainMenu_SImages[3],D3DOR-64,D3DOD+64,0,0,0.5)
-	
-	Local Toplength=(GraphicsWidth()/128)+1
-	
-	Select State_Character_Selection
-		Case 1
-			
-			;[Block]
-			
-			Character_Completion_Toggle=0
-			
-			DrawImage3D(GUI_MainMenu_Button[1], 0,146) ;Continue
-			Select File_CharacterA_Exist
-				Case 1
-					DrawImage3D(GUI_MainMenu_Button[2], 0,100) ;Load Game
-				Case 0
-					DrawImage3D(GUI_MainMenu_Button[13], 0,100) ;No Savegame Exists
-			End Select
-			DrawImage3D(GUI_MainMenu_Button[5], 0,54) ;
-			DrawImage3D(GUI_MainMenu_Button[12], 0,8)  ;Settings
-			DrawImage3D(GUI_MainMenu_Button[3], 0,-38)   ;Credits
-			DrawImage3D(GUI_MainMenu_Button[4], 0,-84) ;Discord
-			DrawImage3D(GUI_MainMenu_Button[10],0,-176) ;Quit
-			
-			Select State_Menu_Subcontext
-				Case 1
-					DrawImage3D(GUI_MainMenu_Button[0], 0,146) 
-				Case 2
-					Select File_CharacterA_Exist
-						Case 1
-							DrawImage3D(GUI_MainMenu_Button[0], 0,100) 
-					End Select
-				Case 3
-					DrawImage3D(GUI_MainMenu_Button[0], 0,54) 
-				Case 4
-					DrawImage3D(GUI_MainMenu_Button[0], 0,8) 
-				Case 5
-					DrawImage3D(GUI_MainMenu_Button[0], 0,-38) 
-				Case 6
-					DrawImage3D(GUI_MainMenu_Button[0], 0,-84) 
-				Case 7
-					DrawImage3D(GUI_MainMenu_Button[0], 0,-176) 
-				Default
-					
-			End Select
-			
-			If MouseX()>(GraphicsWidth()/2-200) And MouseX()<(GraphicsWidth()/2+200) Then
-				If MouseY()>(GraphicsHeight()/2)-169 And MouseY()<(GraphicsHeight()/2)-122
-					State_Menu_Subcontext = 1
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: Starts a new game. This will DELETE your existing savegame.")
-					If MouseDown(1) Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						Select File_CharacterA_Exist
-							Case 1
-								Character_To_Delete=1
-								State_Character_Selection = 3
-							Case 0
-								State_Character_Selection=4
-								Character_Profile_Loaded=1
-								Channel_UI = PlaySound (Sound_UI[3])
-						End Select
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)-122 And MouseY()<(GraphicsHeight()/2)-77
-					State_Menu_Subcontext = 2
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: Load your savegame to continue playing.")
-					Select File_CharacterA_Exist
-						Case 1
-							DrawImage3D(GUI_MainMenu_SImages[0],462,-64)
-							
-							
-							File.Character_Save_Data = First Character_Save_Data
-							Text3D(Text_Font[31],256,0,"Pilot Name: "+File\Name$,1)
-							Select File\Faction
-								Case 1
-									DrawImage3D(GUI_MainMenu_SImages[5],256,132,0,0,0.25)
-									Text3D(Text_Font[31],D3DOR-256,-276,"The Terran Expanse",1)
-								Case 2
-									DrawImage3D(GUI_MainMenu_SImages[4],D3DOR-64,128,0,0,0.25)
-									Text3D(Text_Font[31],D3DOR-256,-276,"Sirian Independent Colonies",1)
-								Case 3
-									DrawImage3D(GUI_MainMenu_SImages[4],D3DOR-64,128,0,0,0.25)
-									Text3D(Text_Font[31],D3DOR-256,-276,"Orion Democratic Council",1)
-							End Select
-							Select File\Ship
-								Case 1
-									DrawImage3D(GUI_MainMenu_Data[1],D3DOR-256,0)
-								Case 2
-									DrawImage3D(GUI_MainMenu_Data[2],D3DOR-256,0)
-								Case 3
-									DrawImage3D(GUI_MainMenu_Data[3],D3DOR-256,0)
-								Case 4
-									DrawImage3D(GUI_MainMenu_Data[4],D3DOR-256,0)
-									
-								Default
-									
-							End Select
-							
-							DrawImage3D(GUI_Rank[File\Character_Value_Level],D3DOR-64,64)
-							Text3D(Text_Font[31],D3DOR-256,-296,String_Rank[File\Character_Value_Level],1)
-							
-							
-							If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-								Channel_UI = PlaySound (Sound_UI[3])
-								Select File_CharacterA_Exist
-									Case 1
-										State_Character_To_Load=1
-										Character_Profile_Loaded=1
-										State_Character_Selection=2
-										Channel_UI = PlaySound (Sound_UI[3])
-								End Select
-							EndIf
-					End Select
-					
-				ElseIf MouseY()>(GraphicsHeight()/2)-77 And MouseY()<(GraphicsHeight()/2)-31
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: No Function yet.")
-					State_Menu_Subcontext = 3
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound(Sound_UI[3])
-						Twitch_Integration = 1 - Twitch_Integration
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)-31 And MouseY()<(GraphicsHeight()/2)+15
-					State_Menu_Subcontext = 4
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: Select Game settings like audio, music and others.")
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						State_Character_Selection = 5
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)+15 And MouseY()<(GraphicsHeight()/2)+61
-					State_Menu_Subcontext = 5
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: Join the Game's Discord.")
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						ExecFile "https://discord.gg/sbFyqVS"
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)+61 And MouseY()<(GraphicsHeight()/2)+107
-					State_Menu_Subcontext = 6
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: See the people who worked on this.")
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						State_Character_Selection = 5
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)+153 And MouseY()<(GraphicsHeight()/2)+199
-					State_Menu_Subcontext = 7
-					Text3D(Text_Font[31],D3DOL+12,D3DOD+20,"HELP: Guess what this does. Hint: Its not playing.")
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						ClearWorld()
-						End
-					EndIf
-				EndIf
-			EndIf
-			
-;			If File_CharacterA_Exist=1 Then
-;				
-;				File.Character_Save_Data = First Character_Save_Data
-;				Text3D(Text_Font[31],D3DOR-256,-256,"Commander "+File\Name$,1)
-;				Select File\Faction
-;					Case 1
-;						DrawImage3D(GUI_MainMenu_SImages[5],D3DOR-64,128,0,0,0.25)
-;						Text3D(Text_Font[31],D3DOR-256,-276,"Terran Defence Fleet",1)
-;					Case 2
-;						DrawImage3D(GUI_MainMenu_SImages[4],D3DOR-64,128,0,0,0.25)
-;						Text3D(Text_Font[31],D3DOR-256,-276,"Sirius Surveying Forces",1)
-;				End Select
-;				Select File\Ship
-;					Case 1
-;						DrawImage3D(GUI_MainMenu_Data[1],D3DOR-256,0)
-;					Case 2
-;						DrawImage3D(GUI_MainMenu_Data[2],D3DOR-256,0)
-;					Case 3
-;						DrawImage3D(GUI_MainMenu_Data[3],D3DOR-256,0)
-;					Case 4
-;						DrawImage3D(GUI_MainMenu_Data[4],D3DOR-256,0)
-;						
-;					Default
-;						
-;				End Select
-;				
-;				DrawImage3D(GUI_Rank[File\Character_Value_Level],D3DOR-64,64)
-;				Text3D(Text_Font[31],D3DOR-256,-296,String_Rank[File\Character_Value_Level],1)
-;				
-;			Else
-			
-;			EndIf
-			;[End Block]
-			
-		Case 2
-			; > Loading Character
-			Goto Spacegamestart
-		Case 3
-			; > Deleting and Recreating Empty Character Data
-			;[Block]
-			File.Character_Save_Data = First Character_Save_Data
-			Delete File
-			Presave=WriteFile(UserData+"\Profiles\CharDataA.txt.nw")
-			WriteLine Presave,0
-			CloseFile Presave
-			
-			CopyFile UserData+"\Profiles\CharDataA.txt.nw", UserData+"\Profiles\CharDataA.txt"
-			DeleteFile UserData+"\Profiles\CharDataA.txt.nw"
-			
-			MainReprogram = OpenFile(UserData+"\Profiles\Maindata.txt")
-			CA=ReadLine(MainReprogram)
-			CloseFile MainReprogram
-			DeleteFile UserData+"\Profiles\Maindata.txt"
-			
-			MainReprogram=WriteFile(UserData+"\Profiles\Maindata.txt")
-			WriteLine MainReprogram,0
-			CloseFile MainReprogram
-			
-			File_Character_Profiles = ReadFile(UserData+"\Profiles\MainData.txt") 
-			File_CharacterA_Exist = ReadLine(File_Character_Profiles)
-			CloseFile File_Character_Profiles
-			
-			State_Character_Selection=11
-			;[End Block]
-		Case 4
-			; >> New Character
-			;[Block]
-			
-			DrawImage3D(GUI_MainMenu_Button[8], D3DOL+138,+8) 
-			DrawImage3D(GUI_MainMenu_Button[9], D3DOL+138,-84) 
-			
-			DrawImage3D(GUI_MainMenu_LImages[1],GraphicsWidth()/6,0,0,0,1.25)
-			
-			If MouseX()<GraphicsWidth()-GraphicsWidth()/6 And MouseX()>GraphicsWidth()-GraphicsWidth()/6-256 Then
-				DrawImage3D(GUI_MainMenu_LImages[3],GraphicsWidth()/6,0,0,0,1.25)
-				If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-					String_Faction = 2
-				EndIf
-			ElseIf MouseX()<GraphicsWidth()-GraphicsWidth()/6-256 And MouseX()>GraphicsWidth()-GraphicsWidth()/6-512 Then
-				DrawImage3D(GUI_MainMenu_LImages[2],GraphicsWidth()/6,0,0,0,1.25)
-				If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-					String_Faction = 1
-				EndIf
-			EndIf
-			
-			If MouseX()<GraphicsWidth()/2
-				If MouseY()>(GraphicsHeight()/2)+61 And MouseY()<(GraphicsHeight()/2)+103
-					State_Menu_Subcontext = 5
-					Text3D(Text_Font[31],D3DOL+312,-84,"Back to Menu.")
-					DrawImage3D(GUI_MainMenu_Button[0], D3DOL+512,-84) 
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						Channel_UI = PlaySound (Sound_UI[3])
-						State_Character_Selection = 1
-					EndIf
-				ElseIf MouseY()>(GraphicsHeight()/2)-31 And MouseY()<(GraphicsHeight()/2)+15
-					State_Menu_Subcontext = 4
-					
-					If String_Faction = 0 And Character_NewName$="" Then
-						Text3D(Text_Font[31],D3DOL+312,8,"Please enter a name and select a faction to continue.")
-					ElseIf String_Faction = 0 And Character_NewName$>"" 
-						Text3D(Text_Font[31],D3DOL+312,8,"Please select a faction to continue.")
-					ElseIf String_Faction > 0 And Character_NewName$="" 
-						Text3D(Text_Font[31],D3DOL+312,8,"Please enter a name to continue.")
-					ElseIf String_Faction > 0 And Character_NewName$>"" 
-						Text3D(Text_Font[31],D3DOL+312,8,"Confirm your selection.")
-					EndIf
-					
-					DrawImage3D(GUI_MainMenu_Button[0], D3DOL+512,8) 
-					If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-						If String_Faction > 0 And Character_NewName$>""  Then
-							Channel_UI = PlaySound (Sound_UI[3])
-							Character_Completion_Toggle = 1
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-			
-			
-			Text3D(Text_Font[31],GraphicsWidth()/6,-250,Character_NewName$,1)
-			
-			Select String_Faction
-				Case 1
-					DrawImage3D(GUI_MainMenu_LImages[2],GraphicsWidth()/6,0,0,0,1.25)
-					DrawImage3D(GUI_MainMenu_LImages[4],GraphicsWidth()/6,0,0,0,1.25)
-				Case 2
-					DrawImage3D(GUI_MainMenu_LImages[3],GraphicsWidth()/6,0,0,0,1.25)
-					DrawImage3D(GUI_MainMenu_LImages[5],GraphicsWidth()/6,0,0,0,1.25)
-			End Select
-			
-			;[Block] Letter Recognition
-			Local key=GetKey() 
-			If key>=9 And key<=125 Then 
-				PlaySound(Sound_UI[1])
-				Character_NewName$=Character_NewName$+Chr(key) 
-			EndIf
-			If KeyHit(71) Then Character_NewName$=Character_NewName$+"7"
-			If KeyHit(72) Then Character_NewName$=Character_NewName$+"8"
-			If KeyHit(73) Then Character_NewName$=Character_NewName$+"9"
-			If KeyHit(75) Then Character_NewName$=Character_NewName$+"4"
-			If KeyHit(76) Then Character_NewName$=Character_NewName$+"5"
-			If KeyHit(77) Then Character_NewName$=Character_NewName$+"6"
-			If KeyHit(79) Then Character_NewName$=Character_NewName$+"1"
-			If KeyHit(80) Then Character_NewName$=Character_NewName$+"2"
-			If KeyHit(81) Then Character_NewName$=Character_NewName$+"3"
-			If KeyHit(82) Then Character_NewName$=Character_NewName$+"0"
-			
-			If KeyDown(14) Then 
-				Tcounter=Tcounter+1
-				If Tcounter>3 Then 
-					Character_NewName$=Mid(Character_NewName$,1,Len(Character_NewName$)-1) 
-					Tcounter=0
-				EndIf
-			Else 
-				Tcounter=4
-			EndIf
-			
-			String_NameLength=Len(Character_NewName$)
-			
-			If Character_Completion_Toggle=1 Then
-				FlushKeys()
-				FlushMouse()
-				Local TMSG$=Character_NewName$
-				Character_NewName$=""
-				Tlan=Len(TMSG$)
-				Local ChatLetter$
-				Local ChatLen=Len(TMSG$)
-				
-				For CleanseChat = 1 To ChatLen
-					ChatLetter$=Mid(TMSG$,CleanseChat,1)
-					Select ChatLetter
-						Case "a"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "b"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "c"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "d"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "e"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "f"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "g"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "h"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "i"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "j"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "k"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "l"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "m"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "n"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "o"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "p"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "q"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "r"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "s"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "t"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "u"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "v"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "w"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "x"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "y"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "z"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "A"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "B"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "C"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "D"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "E"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "F"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "G"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "H"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "I"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "J"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "K"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "L"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "M"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "N"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "O"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "P"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "Q"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "R"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "S"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "T"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "U"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "V"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "W"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "X"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "Y"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "Z"
-							Character_NewName$=Character_NewName$+ChatLetter
-							
-						Case "1"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "2"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "3"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "4"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "5"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "6"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "7"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "8"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "9"
-							Character_NewName$=Character_NewName$+ChatLetter
-						Case "0"
-							Character_NewName$=Character_NewName$+ChatLetter
-							
-					End Select
-					
-				Next
-				New_Tutorialstep = 0
-				New_x=0
-				New_Y=0
-				New_Z=0
-				New_Combat=1
-				Character_Completion_Toggle = 0
-				State_Character_Selection=9
-				
-			EndIf
-			;[End Block]
-			;[End Block]
-			
-		Case 5
-			; >> Credits
-			;[Block]
-			DrawImage3D(GUI_MainMenu_Button[11], D3DOL+138,-84) 
-			
-			If MouseY()>(GraphicsHeight()/2)+61 And MouseY()<(GraphicsHeight()/2)+103
-				State_Menu_Subcontext = 5
-				Text3D(Text_Font[31],D3DOL+312,-84,"Back to Menu.")
-				DrawImage3D(GUI_MainMenu_Button[0], D3DOL+512,-84) 
-				If MouseDown(1) And ChannelPlaying(Channel_UI) = False Then
-					PlaySound (Sound_UI[3])
-					State_Character_Selection = 1
-				EndIf
-			EndIf
-			
-			For TLine.Credits = Each Credits
-				If TLine\Textline$="PAINT_1" Then
-					
-					DrawImage3D(GUI_MainMenu_SImages[6],GraphicsWidth()/5,Tline\Y)
-					
-					TLine\Y = Tline\Y + 1
-					
-					If TLine\Y > (GraphicsHeight()/2+25) Then
-						TLine\Y = YText
-						YText=YText - 20
-					EndIf
-				ElseIf TLine\Textline$="PAINT_2" Then
-					DrawImage3D(GUI_MainMenu_SImages[3],GraphicsWidth()/5,Tline\Y)
-					
-					TLine\Y = Tline\Y + 1
-					
-					If TLine\Y > (GraphicsHeight()/2+25) Then
-						TLine\Y = YText
-						YText=YText - 20
-					EndIf
-				Else
-					Text3D(Text_Font[9],GraphicsWidth()/5,Tline\Y,Tline\Textline$,1)
-					TLine\Y = Tline\Y + 1
-					
-					If TLine\Y > (GraphicsHeight()/2+25) Then
-						TLine\Y = YText
-						YText=YText - 20
-					EndIf
-				EndIf
-			Next
-			
-			;[End Block]
-			
-		Case 6
-			; >> Settings
-			;[Block]
-			
-			
-			
-			;[End Block]
-			
-		Case 9
-			;[Block] >> Save New Character Data and return to Main
-			Select Character_Profile_Loaded
-				Case 1
-					Presave=WriteFile(UserData+"\Profiles\CharDataA.txt.nw")
-			End Select
-			
-			WriteLine Presave,MilliSecs()			;ID
-			WriteLine Presave,Character_NewName$	;Name
-			WriteLine Presave,CurrentDate$()		;DOB
-			WriteLine Presave,String_Faction		;Faction
-			WriteLine Presave,New_TutorialStep		;Tstep
-			WriteLine Presave,New_X					;LastKnown X
-			WriteLine Presave,New_Y					;LastKnown Y
-			WriteLine Presave,New_Z					;LastKnown Z
-			WriteLine Presave,20					;LastKnown StarSystem
-			WriteLine Presave,0						;Experience
-			WriteLine Presave,1						;Level
-			WriteLine Presave,0						;Money
-			WriteLine Presave,New_Combat			;Ship
-			WriteLine Presave,1						;Weapon
-			WriteLine Presave,0						;inventory
-			
-			CloseFile Presave
-			
-			CopyFile UserData+"\Profiles\CharDataA.txt.nw", UserData+"\Profiles\CharDataA.txt"
-			DeleteFile UserData+"\Profiles\CharDataA.txt.nw"
-			
-			DeleteFile UserData+"\Profiles\Maindata.txt"
-			
-			MainReprogram=WriteFile(UserData+"\Profiles\Maindata.txt")
-			WriteLine MainReprogram,1
-			CloseFile MainReprogram
-			
-			Character_NewName$="": String_Faction=0
-			
-			State_Character_Selection=12
-			;[End Block]
-			
-		Case 10
-			; > Abort and End Character Creation
-			
-			State_Character_Selection=1
-			
-		Case 11
-			; > Reload Character Data and Progress to Creation
-			;[Block]
-			File_Character_Profiles = ReadFile(UserData+"\Profiles\MainData.txt") 
-			File_CharacterA_Exist = ReadLine(File_Character_Profiles)
-			CloseFile File_Character_Profiles
-			
-			For File.Character_Save_Data = Each Character_Save_Data
-				Delete File
-			Next
-			
-			If File_CharacterA_Exist<>0 Then
-				File_Character_ProfileA = ReadFile(UserData+"\Profiles\CharDataA.txt")
-				File.Character_Save_Data = New Character_Save_Data
-				File\CreationID    = ReadLine(File_Character_ProfileA)
-				File\Name$	       = ReadLine(File_Character_ProfileA)
-				File\CreationDate$ = ReadLine(File_Character_ProfileA)
-				File\Faction	   = ReadLine(File_Character_ProfileA)
-				File\TutorialStep  = ReadLine(File_Character_ProfileA)
-				File\LX			   = ReadLine(File_Character_ProfileA)
-				File\LY			   = ReadLine(File_Character_ProfileA)
-				File\LZ		       = ReadLine(File_Character_ProfileA)
-				File\LS		       = ReadLine(File_Character_ProfileA)
-				File\Character_Value_XP     = ReadLine(File_Character_ProfileA)
-				File\Character_Value_Level  = ReadLine(File_Character_ProfileA)
-				File\Wallet		   = ReadLine(File_Character_ProfileA)
-				File\Ship	       = ReadLine(File_Character_ProfileA)
-				File\Weapon		   = ReadLine(File_Character_ProfileA)
-				File\Inventory     = ReadLine(File_Character_ProfileA)
-				CloseFile File_Character_ProfileA
-			EndIf
-			
-			State_Character_Selection=4
-			;[End Block]
-		Case 12
-			; > Reload Character Data
-			;[Block]
-			File_Character_Profiles = ReadFile(UserData+"\Profiles\MainData.txt") 
-			File_CharacterA_Exist = ReadLine(File_Character_Profiles)
-			CloseFile File_Character_Profiles
-			
-			For File.Character_Save_Data = Each Character_Save_Data
-				Delete File
-			Next
-			
-			If File_CharacterA_Exist<>0 Then
-				File_Character_ProfileA = ReadFile(UserData+"\Profiles\CharDataA.txt")
-				File.Character_Save_Data = New Character_Save_Data
-				File\CreationID    = ReadLine(File_Character_ProfileA)
-				File\Name$	       = ReadLine(File_Character_ProfileA)
-				File\CreationDate$ = ReadLine(File_Character_ProfileA)
-				File\Faction	   = ReadLine(File_Character_ProfileA)
-				File\TutorialStep  = ReadLine(File_Character_ProfileA)
-				File\LX			   = ReadLine(File_Character_ProfileA)
-				File\LY			   = ReadLine(File_Character_ProfileA)
-				File\LZ		       = ReadLine(File_Character_ProfileA)
-				File\LS		       = ReadLine(File_Character_ProfileA)
-				File\Character_Value_XP     = ReadLine(File_Character_ProfileA)
-				File\Character_Value_Level  = ReadLine(File_Character_ProfileA)
-				File\Wallet		   = ReadLine(File_Character_ProfileA)
-				File\Ship	       = ReadLine(File_Character_ProfileA)
-				File\Weapon		   = ReadLine(File_Character_ProfileA)
-				File\Inventory     = ReadLine(File_Character_ProfileA)
-				CloseFile File_Character_ProfileA
-			EndIf
-			
-			State_Character_Selection=1
-			;[End Block]
-	End Select
-	
-	DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
+	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/20)*15,Sin(MilliSecs()/18)*15)
+	DrawImage3D	(GUI_Windows[2],0,0)
+	DrawImage3D	(GUI_Windows[9],D3DOR-64,D3DOU-64)
 	
 	Util_Timer
 	InputEx_Update
+	
+	Select State_Menu_Subcontext
+		Case 1 ;Menu Main Window
+			DrawImage3D	(GUI_Windows[3],-376,-250)
+			DrawImage3D	(GUI_Windows[4],-228,-250)
+			DrawImage3D	(GUI_Windows[5],-80,-250)
+			DrawImage3D	(GUI_Windows[6],80,-250)
+			DrawImage3D	(GUI_Windows[7],228,-250)
+			DrawImage3D	(GUI_Windows[8],376,-250)
+			
+			Text3D (Text_Font[7],-376,-250,"Discord",1)
+			Text3D (Text_Font[7],-228,-250,"Credits",1)
+			Text3D (Text_Font[7], -80,-250,"New Game",1)
+			Text3D (Text_Font[7],  80,-250,"Continue",1)
+			Text3D (Text_Font[7], 228,-250,"Options",1)
+			Text3D (Text_Font[7], 376,-250,"Exit",1)
+			
+		Case 2
+			
+		Case 3
+			
+	End Select
 	
 	UpdateWorld	
 	
@@ -1160,6 +599,8 @@ Repeat
 	
 	WaitTimer(Timer_Character_Selection)
 	Flip 0: Clear3D()
+	
+	If KeyHit(1) Then End
 	
 Until CharDataLoaded=1
 ;[End Block]
@@ -1985,7 +1426,7 @@ Repeat
 		WorldClock$=CurrentTime()
 	EndIf
 	
-	VirtualScene_Show(Scene):ShowEntity WorldCamera
+;	VirtualScene_Show(Scene):ShowEntity WorldCamera
 	
 	Worldmap_Display()
 	Update_Item()
@@ -2013,7 +1454,7 @@ Repeat
 	RaceTrack_Update()
 	
 	RenderWorld
-	VirtualScene_Hide(Scene):HideEntity WorldCamera
+;	VirtualScene_Hide(Scene):HideEntity WorldCamera
 	
 	Performance_Render_3D_Tris = TrisRendered()
 	Performance_Render_3D = MilliSecs() - ms_Performance_Render_3D
@@ -2061,4 +1502,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
+;~F#B7#C2#143#177
 ;~C#Blitz3D

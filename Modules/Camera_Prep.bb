@@ -14,7 +14,7 @@ DrawInit3D(CameraUI)
 HideEntity CameraUI
 
 ; Scene: Create a VirtualScene Object (hiding and showing where needed)
-Scene.VirtualScene = VirtualScene_Create()
+;Scene.VirtualScene = VirtualScene_Create()
 
 ; Data: Data Root (Invisible loaded Geometry)
 SceneDataRoot = CreatePivot()

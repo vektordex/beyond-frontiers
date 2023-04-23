@@ -47,7 +47,7 @@ Function NewShot(gun, sourceid, btyp, offsetx, offsety, offsetz)
 			player\decay=Rnd(200,300)
 	End Select
 	
-	VirtualScene_Register(Scene, player\pivot)
+;	VirtualScene_Register(Scene, player\pivot)
 	
 	PositionEntity player\pivot, EntityX(sourceid,True), EntityY(sourceid,True), EntityZ(sourceid,True)
 	PointEntity player\Pivot,Weapon_Target_Cube
@@ -77,7 +77,8 @@ Function UpdateShot()
 		
 		If player\decay < 1 Then
 			FreeEntity player\mesh
-			FreeEntity player\pivot:VirtualScene_Unregister(Scene, player\pivot)
+			FreeEntity player\pivot
+;			VirtualScene_Unregister(Scene, player\pivot)
 			Delete player
 		EndIf
 	Next

@@ -3,10 +3,12 @@
 
 
 Function DST_Create_Dust(dst_cam, dst_count, dst_typ=0, Parent=0)
-	If DST_TempPivot=0 Then DST_TempPivot=CreatePivot(Parent):VirtualScene_Register(Scene, DST_TempPivot)
+	If DST_TempPivot=0 Then DST_TempPivot=CreatePivot(Parent)
+;	VirtualScene_Register(Scene, DST_TempPivot)
 	dst_dust.DST_Dustobject = New DST_Dustobject
 	dst_dust\camera=dst_cam
-	dst_dust\pivot=CreatePivot(Parent):VirtualScene_Register(Scene, dst_dust\pivot)
+	dst_dust\pivot=CreatePivot(Parent)
+;	VirtualScene_Register(Scene, dst_dust\pivot)
 	dst_dust\campivot=CreatePivot(dst_dust\camera)
 ; PositionEntity dst_dust\campivot,0,0,0 : RotateEntity dst_dust\campivot,0,0,0
 	EntityParent dst_dust\campivot,dst_dust\pivot
@@ -31,7 +33,8 @@ End Function
 
 Function DST_Create_Dustzone(dst_dust_handle,dst_clamp=0)
 	dst_zone.DST_Dustzone = New DST_Dustzone
-	dst_zone\pivot=CreatePivot():VirtualScene_Register(Scene, dst_zone\pivot)
+	dst_zone\pivot=CreatePivot()
+;	VirtualScene_Register(Scene, dst_zone\pivot)
 	If dst_clamp>0 Then EntityParent dst_zone\pivot,dst_dust_handle
 	dst_zone\brush=CreateBrush()
 	For dst_dust.DST_Dustobject = Each DST_Dustobject
@@ -56,28 +59,29 @@ Function DST_Free_Dust(dst_dust)
 			For dst_part.DST_Particle = Each DST_Particle
 				If dst_part\dust_handle=Handle (dst_dust2.DST_Dustobject)
 					FreeEntity dst_part\partpivot : Delete dst_part
-					:VirtualScene_Unregister(Scene, dst_part\partpivot)
+;					VirtualScene_Unregister(Scene, dst_part\partpivot)
 				EndIf
 			Next
 			For dst_zone.DST_Dustzone = Each DST_Dustzone
 				If dst_zone\dust_handle=Handle (dst_dust2.DST_Dustobject)
 					FreeEntity dst_zone\pivot : FreeTexture dst_zone\texture : FreeBrush dst_zone\brush
-					:VirtualScene_Unregister(Scene, dst_zone\pivot)
+;					VirtualScene_Unregister(Scene, dst_zone\pivot)
 					Delete dst_zone
 				EndIf
 			Next
 			FreeEntity dst_dust2\pivot : Delete dst_dust2
-			:VirtualScene_Unregister(Scene, dst_dust2\pivot)
+;			VirtualScene_Unregister(Scene, dst_dust2\pivot)
 			Exit
 		EndIf
 	Next
-	If First DST_Dustobject=Null And DST_TempPivot<>0 Then FreeEntity DST_TempPivot : DST_TempPivot=0 :VirtualScene_Unregister(Scene, DST_TempPivot)
+	If First DST_Dustobject=Null And DST_TempPivot<>0 Then FreeEntity DST_TempPivot : DST_TempPivot=0 
+;	VirtualScene_Unregister(Scene, DST_TempPivot)
 End Function
 
 Function DST_Free_DustZone(dst_zone)
 	For dst_zone2.DST_Dustzone = Each DST_Dustzone
 		If dst_zone2\pivot=dst_zone
-			VirtualScene_Unregister(Scene, dst_zone2\pivot)
+;			VirtualScene_Unregister(Scene, dst_zone2\pivot)
 			FreeEntity dst_zone2\pivot : FreeTexture dst_zone2\texture : FreeBrush dst_zone2\brush
 			Delete dst_zone2 : Exit
 		EndIf
@@ -513,7 +517,8 @@ Function PCL_NewCloud(pcl_mesh,pcl_anz,pcl_groups=1)
 	Local pcl_vertex[3]
 	Local pcl_dummy2=CreatePivot()
 	PCL_NewCloud.pcl_cloud=New PCL_Cloud
-	PCL_NewCloud\pivot=CreatePivot():VirtualScene_Register(Scene, PCL_NewCloud\pivot)
+	PCL_NewCloud\pivot=CreatePivot():
+;	VirtualScene_Register(Scene, PCL_NewCloud\pivot)
 	For a=1 To pcl_anz
 		SeedRnd Rand(10,999999)
 		PCL_NewCloud\part1[a]=PCL_Createflat(PCL_NewCloud\pivot)
@@ -763,8 +768,9 @@ Function PCL_CopyCloud(pcl_pivot)
 	For pcl_cld.pcl_cloud=Each PCL_Cloud
 		If pcl_cld\pivot=pcl_pivot
 			PCL_NewCloud.pcl_cloud=New PCL_Cloud
-			PCL_NewCloud\pivot=CreatePivot():VirtualScene_Register(Scene, PCL_NewCloud\pivot)
-			VirtualScene_Register(Scene, PCL_NewCloud\pivot)
+			PCL_NewCloud\pivot=CreatePivot():
+;			VirtualScene_Register(Scene, PCL_NewCloud\pivot)
+;			VirtualScene_Register(Scene, PCL_NewCloud\pivot)
 			For a=1 To pcl_cld\anz_part
 				PCL_NewCloud\part1[a]=CopyEntity(pcl_cld\part1[a], PCL_NewCloud\pivot)
 				PCL_NewCloud\part2[a]=pcl_cld\part2[a]
@@ -850,7 +856,7 @@ End Function
 Function PCL_DeleteCloud(pcl_pivot)
 	For pcl_cld.pcl_cloud=Each PCL_Cloud
 		If pcl_cld\pivot=pcl_pivot
-			VirtualScene_Unregister(Scene, pcl_cld\pivot)
+;			VirtualScene_Unregister(Scene, pcl_cld\pivot)
 			FreeEntity pcl_cld\pivot
 			Delete pcl_cld
 			Exit
@@ -1096,7 +1102,7 @@ Function PCL_SetAutofade(pcl_pivot,pcl_near#,pcl_far#,pcl_group=0)
 						RotateEntity b,EntityPitch#(pcl_cld\part1[a]),EntityYaw#(pcl_cld\part1[a]),EntityRoll#(pcl_cld\part1[a])
 						PaintEntity b,GetEntityBrush(pcl_cld\part1[a])
 						ScaleEntity b,pcl_cld\part5#[a],pcl_cld\part5#[a],pcl_cld\part5#[a]
-						:VirtualScene_Register(Scene, pcl_cld\part1[a])
+;						:VirtualScene_Register(Scene, pcl_cld\part1[a])
 						FreeEntity pcl_cld\part1[a] : pcl_cld\part1[a]=b
 						For pcl_gr.pcl_groupbrush=Each pcl_groupbrush
 							If pcl_cld\pivot=pcl_gr\pivot And pcl_group=pcl_gr\number

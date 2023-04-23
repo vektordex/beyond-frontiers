@@ -2236,7 +2236,8 @@ Function World_Clear()
 ;	Next
 ;	
 	For Can.ItemDrop = Each ItemDrop
-		FreeEntity Can\Mesh: VirtualScene_Unregister(Scene, Can\mesh)
+		FreeEntity Can\Mesh: 
+;		VirtualScene_Unregister(Scene, Can\mesh)
 		Delete Can
 	Next
 	
@@ -2248,36 +2249,36 @@ Function World_Clear()
 	
 	For Effect.Explosion = Each Explosion
 		FreeEntity Effect\Sprite
-		VirtualScene_Unregister(Scene, Effect\Sprite)
+;		VirtualScene_Unregister(Scene, Effect\Sprite)
 		Delete Effect
 	Next
 	
 	For roid.belt = Each Belt
-		VirtualScene_Unregister(Scene, roid\mesh) : FreeEntity roid\mesh
+;		VirtualScene_Unregister(Scene, roid\mesh) : FreeEntity roid\mesh
 		Delete roid
 	Next
 	
 	For da.station = Each Station
-		VirtualScene_Unregister(Scene, da\mesh_essential) : FreeEntity da\mesh_essential
-		VirtualScene_Unregister(Scene, da\mesh_factory) : FreeEntity da\mesh_Factory
-		VirtualScene_Unregister(Scene, da\mesh_power) : FreeEntity da\mesh_Power
-		VirtualScene_Unregister(Scene, da\mesh_ring) : FreeEntity da\mesh_Ring
+;		VirtualScene_Unregister(Scene, da\mesh_essential) : FreeEntity da\mesh_essential
+;		VirtualScene_Unregister(Scene, da\mesh_factory) : FreeEntity da\mesh_Factory
+;		VirtualScene_Unregister(Scene, da\mesh_power) : FreeEntity da\mesh_Power
+;		VirtualScene_Unregister(Scene, da\mesh_ring) : FreeEntity da\mesh_Ring
 		Delete da
 	Next
 	
 	For SC.ScrapField = Each ScrapField
-		VirtualScene_Unregister(Scene, sc\mesh): FreeEntity sc\mesh
+;		VirtualScene_Unregister(Scene, sc\mesh): FreeEntity sc\mesh
 		Delete sc
 	Next
 	
 	For Portal.Stargate = Each Stargate
-		VirtualScene_Unregister(Scene, Portal\Mesh_Effect_Horizon): FreeEntity Portal\Mesh_Effect_Horizon
-		VirtualScene_Unregister(Scene, Portal\Mesh): FreeEntity Portal\Mesh
-		VirtualScene_Unregister(Scene, Portal\Mesh_effect): FreeEntity Portal\Mesh_Effect
+;		VirtualScene_Unregister(Scene, Portal\Mesh_Effect_Horizon): FreeEntity Portal\Mesh_Effect_Horizon
+;		VirtualScene_Unregister(Scene, Portal\Mesh): FreeEntity Portal\Mesh
+;		VirtualScene_Unregister(Scene, Portal\Mesh_effect): FreeEntity Portal\Mesh_Effect
 		Delete Portal
 	Next
 	
-	VirtualScene_Unregister(Scene, Object_Environment[2])
+;	VirtualScene_Unregister(Scene, Object_Environment[2])
 	FreeEntity Object_Environment[2]
 	
 	For XY.MapWaypoints = Each MapWaypoints
@@ -2285,13 +2286,14 @@ Function World_Clear()
 	Next
 	
 	For TP.TPlanet = Each TPlanet
-		VirtualScene_Unregister(Scene, TP\Ring): FreeEntity TP\Ring
-		VirtualScene_Unregister(Scene, TP\Mesh): FreeEntity TP\Mesh
+;		VirtualScene_Unregister(Scene, TP\Ring): FreeEntity TP\Ring
+;		VirtualScene_Unregister(Scene, TP\Mesh): FreeEntity TP\Mesh
 		Delete TP
 	Next
 	
 	For GFlag.Flag = Each Flag
-		FreeEntity GFlag\Mesh: VirtualScene_Unregister(Scene, GFlag\Mesh)
+		FreeEntity GFlag\Mesh: 
+;		VirtualScene_Unregister(Scene, GFlag\Mesh)
 		Delete GFlag
 	Next
 	
@@ -2333,9 +2335,9 @@ Function CreateGate(Target_System, PosX, PosY, PosZ, TX, TY, TZ)
 	EntityAlpha Portal\Mesh_effect,0.92
 	EntityAlpha Portal\Mesh_effect_Horizon,0.4
 	
-	VirtualScene_Register(Scene,Portal\Mesh)
-	VirtualScene_Register(Scene,Portal\Mesh_Effect)
-	VirtualScene_Register(Scene,Portal\Mesh_Effect_HOrizon)
+;	VirtualScene_Register(Scene,Portal\Mesh)
+;	VirtualScene_Register(Scene,Portal\Mesh_Effect)
+;	VirtualScene_Register(Scene,Portal\Mesh_Effect_HOrizon)
 	
 	EntityAutoFade portal\mesh_effect, 20000,21000
 	
@@ -2473,7 +2475,7 @@ Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, B
 				
 		End Select
 		
-		VirtualScene_Register(Scene, Roid\Mesh)
+;		VirtualScene_Register(Scene, Roid\Mesh)
 		
 		PositionEntity roid\mesh, BeltX, BeltY, BeltZ
 		Roid\tur#=Rnd(0.1,359)
@@ -2560,7 +2562,7 @@ Function Scrapfield_Create(amount,x,y,z,span, MaxScale#=2, Maxturn#=1, Minscale#
 		EntityTexture SC\Mesh, Text_Scrap
 		Local Scale#=Rnd(Minscale#,MaxScale#)
 		ScaleEntity SC\Mesh,Scale#, Scale#, Scale#
-		VirtualScene_Register(Scene,SC\Mesh)
+;		VirtualScene_Register(Scene,SC\Mesh)
 		EntityAutoFade SC\Mesh, 70000,72500
 		If Fading=1 Then SC\decaytimer=1
 	Next
@@ -2591,7 +2593,8 @@ Function Scrapfield_Update()
 					
 				EndIf
 				
-				FreeEntity player\mesh:VirtualScene_Unregister(Scene, player\mesh)
+				FreeEntity player\mesh:
+;				VirtualScene_Unregister(Scene, player\mesh)
 				Delete player
 				
 				Removestate=1
@@ -2600,7 +2603,8 @@ Function Scrapfield_Update()
 		Next
 		
 		If Removestate=1 Then
-			FreeEntity sc\mesh: VirtualScene_Unregister(Scene, sc\mesh)
+			FreeEntity sc\mesh: 
+;			VirtualScene_Unregister(Scene, sc\mesh)
 			Delete sc
 			Exit
 		EndIf
@@ -2878,7 +2882,7 @@ Function Gateflag_Create(x,y,z,texture,subtype=1)
 	EntityFX GFLag\Mesh,1+16+32
 	If subtype = 1 Then MoveEntity GFlag\Mesh,12000,0,0
 	If subtype = 2 Then MoveEntity GFlag\Mesh,-12000,0,0
-	VirtualScene_Register(Scene,GFlag\mesh)
+;	VirtualScene_Register(Scene,GFlag\mesh)
 End Function
 
 Function Worldmap_Display()
@@ -2984,7 +2988,7 @@ Function RaceTrack_Create(StartX, StartY, StartZ, Segments)
     For Idx = 1 To Segments
         Local TrackSegment.RaceTrack = New RaceTrack
         TrackSegment\Mesh = CopyEntity(Mesh_Gate[4])
-        VirtualScene_Register(Scene, TrackSegment\Mesh)
+;        VirtualScene_Register(Scene, TrackSegment\Mesh)
         RaceTrack_BaseID = RaceTrack_BaseID + 1
         TrackSegment\ID = RaceTrack_BaseID
 		
@@ -3028,7 +3032,7 @@ Function LoadSkyBox(TxID, Parent%=0)
 	Local texFlags=1+512;+16+32+512
 	
 	Local Mesh = CreateMesh(Parent)
-	VirtualScene_Register(Scene, Mesh)
+;	VirtualScene_Register(Scene, Mesh)
 	Local Brush, Surface
 	Brush = CreateBrush()
 	
@@ -3095,7 +3099,8 @@ Function Lighting_Initialize()
 	
 	Object_Environment[0] = CreatePivot()
 	
-	Object_Light[0] = CreateLight(1, Object_Environment[0]):VirtualScene_Register(Scene, Object_Light[0])
+	Object_Light[0] = CreateLight(1, Object_Environment[0]):
+;	VirtualScene_Register(Scene, Object_Light[0])
 	
 ;	LightRange Object_Light[0],200000000000
 	
@@ -3202,10 +3207,10 @@ Function Asset_Station_Create(x,y,z,Rotation=0, Station_Subtype=1, Station_Facti
 	RotateEntity da\Mesh_Ring,0,Rotation,0
 	RotateEntity da\Mesh_Power,0,Rotation,0
 	
-	VirtualScene_Register(Scene, da\Mesh_Essential)
-	VirtualScene_Register(Scene, da\Mesh_Factory)
-	VirtualScene_Register(Scene, da\Mesh_Power)
-	VirtualScene_Register(Scene, da\Mesh_Ring)
+;	VirtualScene_Register(Scene, da\Mesh_Essential)
+;	VirtualScene_Register(Scene, da\Mesh_Factory)
+;	VirtualScene_Register(Scene, da\Mesh_Power)
+;	VirtualScene_Register(Scene, da\Mesh_Ring)
 	
 	CreateMapPoint(x,y,z,2)
 	
@@ -3234,7 +3239,7 @@ Function Special_Create(x,y,z,variant)
 			EntityTexture Disc\Mesh,Text_Special[0]
 			EntityShininess Disc\Mesh,0.9
 			ScaleEntity Disc\Mesh,20,20,0.2
-			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
 			PositionEntity Disc\Mesh,x,y,z
 			
 		Case 2
@@ -3248,10 +3253,10 @@ Function Special_Create(x,y,z,variant)
 			ScaleEntity Disc\FrameMesh,100,100,100
 			
 			EntityShininess Disc\Mesh,1
-			VirtualScene_Register(Scene, Disc\Mesh)
-			VirtualScene_Register(Scene, Disc\SecMesh)
-			VirtualScene_Register(Scene, Disc\FrameMesh)
-			VirtualScene_Register(Scene, Disc\BeamMesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\SecMesh)
+;			VirtualScene_Register(Scene, Disc\FrameMesh)
+;			VirtualScene_Register(Scene, Disc\BeamMesh)
 			PointEntity Disc\Mesh,Object_Light[0]
 			PointEntity Disc\FrameMesh,Object_Light[0]
 			
@@ -3278,9 +3283,9 @@ Function Special_Create(x,y,z,variant)
 			ScaleEntity Disc\SecMesh,1000,1000,1000
 			ScaleEntity Disc\FrameMesh,1000,1000,1000
 			
-			VirtualScene_Register(Scene, Disc\Mesh)
-			VirtualScene_Register(Scene, Disc\SecMesh)
-			VirtualScene_Register(Scene, Disc\FrameMesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\SecMesh)
+;			VirtualScene_Register(Scene, Disc\FrameMesh)
 			
 			PositionEntity Disc\Mesh,x,y,z
 			PositionEntity Disc\SecMesh,x,y,z
@@ -3302,9 +3307,9 @@ Function Special_Create(x,y,z,variant)
 			ScaleEntity Disc\FrameMesh,100,100,100
 			
 			EntityShininess Disc\Mesh,1
-			VirtualScene_Register(Scene, Disc\Mesh)
-			VirtualScene_Register(Scene, Disc\SecMesh)
-			VirtualScene_Register(Scene, Disc\FrameMesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\SecMesh)
+;			VirtualScene_Register(Scene, Disc\FrameMesh)
 			
 			PointEntity Disc\Mesh,Object_Light[0]
 			PointEntity Disc\FrameMesh,Object_Light[0]
@@ -3317,14 +3322,14 @@ Function Special_Create(x,y,z,variant)
 			
 		Case 5
 			Disc\Mesh = CopyEntity(Mesh_Ship[8])
-			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
 			ScaleEntity Disc\Mesh,16,16,16
 			PositionEntity Disc\Mesh,x,y,z
 			PositionEntity Story_Pivot,x,y,z
 			
 		Case 6
 			Disc\Mesh = CopyEntity(Mesh_Ship[5])
-			VirtualScene_Register(Scene, Disc\Mesh)
+;			VirtualScene_Register(Scene, Disc\Mesh)
 			ScaleEntity Disc\Mesh,2,2,2
 			PositionEntity Disc\Mesh,x,y,z
 			PositionEntity Story_Pivot,x,y,z
@@ -3384,7 +3389,7 @@ Function Drop_Item(x,y,z,attrib,lvl=1)
 	TurnEntity Can\mesh,17,0,0
 	Can\Level = lvl
 	Can\AttribTime = 30*lvl
-	VirtualScene_Register(Scene, Can\Mesh)
+;	VirtualScene_Register(Scene, Can\Mesh)
 End Function
 
 Function Update_Item()
@@ -3434,7 +3439,7 @@ Function Update_Item()
 			
 			PlaySound Sound_UI[6]
 			FreeEntity Can\Mesh
-			VirtualScene_Unregister(Scene, Can\Mesh)
+;			VirtualScene_Unregister(Scene, Can\Mesh)
 			Delete Can
 			
 		EndIf
@@ -3531,7 +3536,7 @@ Function Planet_Create(DistanceTocenter, Size, SurfaceType, Rotx, RotY, Ring=0, 
 	
 	EntityTexture TP\Mesh, Text_Planet[SurfaceType],0,0
 	
-	VirtualScene_Register(Scene, TP\Mesh)
+;	VirtualScene_Register(Scene, TP\Mesh)
 	
 	TP\Tilt=Ring_Tilt
 ;	
@@ -3543,7 +3548,7 @@ Function Planet_Create(DistanceTocenter, Size, SurfaceType, Rotx, RotY, Ring=0, 
 	
 	If Ring=1 Then 
 		Tp\Ring = Ring_Create(.9*TP\Size,2.5*TP\Size,180,1+2+32,3,192,224,255,64,128,255,.5,TP\Size,Ring_Type)
-		VirtualScene_Register(Scene,TP\ring)
+;		VirtualScene_Register(Scene,TP\ring)
 	EndIf
 	
 End Function
@@ -3616,7 +3621,7 @@ Function Explosion_Create(x,y,z,subtype=1, Scale=1, Shockwave=0)
 	Effect.Explosion = New Explosion
 	Effect\Sprite = CreateSprite()
 	Effect\Stage = 1
-	VirtualScene_Register(Scene,effect\Sprite)
+;	VirtualScene_Register(Scene,effect\Sprite)
 	
 	PositionEntity Effect\Sprite, x,y,z
 	SpriteViewMode Effect\Sprite,4
@@ -3645,7 +3650,7 @@ Function Explosion_Update()
 		
 		If Effect\Stage=64 Then
 			FreeEntity Effect\Sprite
-			VirtualScene_Unregister(Scene, Effect\Sprite)
+;			VirtualScene_Unregister(Scene, Effect\Sprite)
 			Delete Effect
 		EndIf
 	Next
@@ -3666,7 +3671,7 @@ Function CreateShockwave(x,y,z,level=0)
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
 	EntityTexture sh\mesh,Text_Effects[3]
-	VirtualScene_Register(Scene, sh\mesh)
+;	VirtualScene_Register(Scene, sh\mesh)
 	;EntityColor sh\mesh,255,0,0
 End Function
 
@@ -3685,7 +3690,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,0,0,45
 	EntityTexture sh\mesh,Text_Effects[3]
-	VirtualScene_Register(Scene, sh\mesh)
+;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
 	sh.Shockwave=New Shockwave
@@ -3702,7 +3707,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,0,0,-45
 	EntityTexture sh\mesh,Text_Effects[3]
-	VirtualScene_Register(Scene, sh\mesh)
+;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
 	sh.Shockwave=New Shockwave
@@ -3719,7 +3724,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,45,0,0
 	EntityTexture sh\mesh,Text_Effects[3]
-	VirtualScene_Register(Scene, sh\mesh)
+;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
 	sh.Shockwave=New Shockwave
@@ -3736,7 +3741,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,-45,0,0
 	EntityTexture sh\mesh,Text_Effects[3]
-	VirtualScene_Register(Scene, sh\mesh)
+;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 End Function
 
@@ -3758,7 +3763,8 @@ Function UpdateShockwave()
 		EndIf
 		
 		If sh\alpha#<0.01 Then
-			FreeEntity sh\mesh:VirtualScene_Unregister(Scene, sh\mesh)
+			FreeEntity sh\mesh:
+;			VirtualScene_Unregister(Scene, sh\mesh)
 			Delete sh
 		EndIf
 		
@@ -3768,4 +3774,5 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#2B#6B#82#9B#B3#CB
 ;~C#Blitz3D

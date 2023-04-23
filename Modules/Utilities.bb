@@ -138,53 +138,53 @@ End Function
 
 Global VirtualSceneEntity_Empty.VirtualSceneEntity = New VirtualSceneEntity
 
-Function VirtualScene_Create.VirtualScene()
-	Local VS.VirtualScene = New VirtualScene
-	Return VS
-End Function
-
-Function VirtualScene_Destroy(VS.VirtualScene)
-	Local VSE.VirtualSceneEntity
-	For VSE.VirtualSceneEntity = Each VirtualSceneEntity
-		If VSE\VS = VS Then Delete VSE
-	Next
-	Delete VS
-End Function
-
-Function VirtualScene_Register(VS.VirtualScene, Entity%)
-	Local VSE.VirtualSceneEntity = New VirtualSceneEntity
-	VSE\VS = VS
-	VSE\Entity = Entity
-	VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
-End Function
-
-Function VirtualScene_Unregister(VS.VirtualScene, Entity%)
-	Local VSE.VirtualSceneEntity
-	For VSE = Each VirtualSceneEntity
-		If (VSE\VS = VS) And (VSE\Entity = Entity) Then
-			Delete VSE:Exit
-		EndIf
-	Next
-End Function
-
-Function VirtualScene_Hide(VS.VirtualScene)
-	Local VSE.VirtualSceneEntity
-	For VSE = Each VirtualSceneEntity
-		If (VSE\VS = VS) Then
-			VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
-			HideEntity VSE\Entity
-		EndIf
-	Next
-End Function
-
-Function VirtualScene_Show(Vs.VirtualScene)
-	Local VSE.VirtualSceneEntity
-	For VSE = Each VirtualSceneEntity
-		If (VSE\VS = Vs) And (VSE\State = 1) Then
-			ShowEntity VSE\Entity
-		EndIf
-	Next
-End Function
+;Function VirtualScene_Create.VirtualScene()
+;	Local VS.VirtualScene = New VirtualScene
+;	Return VS
+;End Function
+;
+;Function VirtualScene_Destroy(VS.VirtualScene)
+;	Local VSE.VirtualSceneEntity
+;	For VSE.VirtualSceneEntity = Each VirtualSceneEntity
+;		If VSE\VS = VS Then Delete VSE
+;	Next
+;	Delete VS
+;End Function
+;
+;Function VirtualScene_Register(VS.VirtualScene, Entity%)
+;	Local VSE.VirtualSceneEntity = New VirtualSceneEntity
+;	VSE\VS = VS
+;	VSE\Entity = Entity
+;	VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
+;End Function
+;
+;Function VirtualScene_Unregister(VS.VirtualScene, Entity%)
+;	Local VSE.VirtualSceneEntity
+;	For VSE = Each VirtualSceneEntity
+;		If (VSE\VS = VS) And (VSE\Entity = Entity) Then
+;			Delete VSE:Exit
+;		EndIf
+;	Next
+;End Function
+;
+;Function VirtualScene_Hide(VS.VirtualScene)
+;	Local VSE.VirtualSceneEntity
+;	For VSE = Each VirtualSceneEntity
+;		If (VSE\VS = VS) Then
+;			VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
+;			HideEntity VSE\Entity
+;		EndIf
+;	Next
+;End Function
+;
+;Function VirtualScene_Show(Vs.VirtualScene)
+;	Local VSE.VirtualSceneEntity
+;	For VSE = Each VirtualSceneEntity
+;		If (VSE\VS = Vs) And (VSE\State = 1) Then
+;			ShowEntity VSE\Entity
+;		EndIf
+;	Next
+;End Function
 
 ;------------------------------------------------------------------------------
 ;! Utility Functions
@@ -839,7 +839,7 @@ End Function
 
 Function PlayerSwitchShip(sid)
 ;	p.pdata = First pdata
-	VirtualScene_Unregister(Scene, eShipBody)
+;	VirtualScene_Unregister(Scene, eShipBody)
 	
 	FreeEntity eShipBody
 	Character_Value_Ship = sid
@@ -862,7 +862,7 @@ Function PlayerSwitchShip(sid)
 	Yoffset=55
 	Zoffset=-150
 	
-	VirtualScene_Register(Scene,eShipBody)
+;	VirtualScene_Register(Scene,eShipBody)
 	
 End Function
 

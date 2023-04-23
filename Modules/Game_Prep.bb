@@ -30,7 +30,7 @@ Function Prepare_Graphics()
 			LogMessage(LOG_INFO, "Initializing Graphics at "+Settings_Graphics_Size[0]+"x"+Settings_Graphics_Size[1]+" in Borderless mode...")
 			Graphics3D Settings_Graphics_Size[0], Settings_Graphics_Size[1], 32, 2
 		
-			BU_Helper_Window_MakeBorderless()
+;			BU_Helper_Window_MakeBorderless()
 			BU_Helper_Window_Resize(Settings_Graphics_Size[0], Settings_Graphics_Size[1])
 			BU_Helper_Window_Center(1,1)
 			;[End Block]
