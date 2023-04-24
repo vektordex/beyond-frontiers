@@ -10,11 +10,22 @@ Function PreloadAudio()
 	
 	;[End Block]
 	
-	;[Block] Music
-	Local LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
+	;[Block] Sounds
+	Local LoadOrder = OpenFile("Assets\Manifest\LoadSounds.lof")
 	Local LoadCounter = 1
 	Repeat
 		Local LoadData$ = ReadLine(LoadOrder)
+		Sound_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Sounds\"+LoadData$+".ogg")
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	;[End Block]
+	
+	;[Block] Music
+	LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
+	LoadCounter = 1
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
 		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".mp3")
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)

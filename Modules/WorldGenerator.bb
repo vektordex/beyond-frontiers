@@ -3437,7 +3437,7 @@ Function Update_Item()
 					Buff_Add(3,30*Can\Level)
 			End Select
 			
-			PlaySound Sound_UI[6]
+;			PlaySound Sound_UI[6]
 			FreeEntity Can\Mesh
 ;			VirtualScene_Unregister(Scene, Can\Mesh)
 			Delete Can

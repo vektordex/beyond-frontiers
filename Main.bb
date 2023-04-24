@@ -241,6 +241,13 @@ Repeat
 				;----------------------------------------------------------------
 				;! Game - Sounds
 				;----------------------------------------------------------------
+				
+				LoadOrder = OpenFile("Assets\Manifest\LoadSounds.lof")
+				Repeat
+					LoadData$ = ReadLine(LoadOrder)
+					LoadSoundAsset("Assets\Sounds\"+LoadData$+".ogg")
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
 				;[End Block]
 				
 				;[Block] Music --------------------------------------------------
@@ -574,9 +581,9 @@ Music_Volume = 0.0
 Repeat
 	ChannelVolume Channel_Music,Music_Volume#
 	If Music_Enabled = 1 Then
-		If Music_Volume#<Desired_MVolume# Then Music_Volume# = Music_Volume# + 0.0025
+		If Music_Volume#<Desired_MVolume# Then Music_Volume# = Music_Volume# + 0.005
 		
-		If Music_Volume#>Desired_MVolume# Then Music_Volume# = Music_Volume# - 0.0025
+		If Music_Volume#>Desired_MVolume# Then Music_Volume# = Music_Volume# - 0.005
 	EndIf
 	If MouseHit(1) = False And MouseHit(2) = False Then FlushMouse()
 	
@@ -608,7 +615,7 @@ Repeat
 			;[Block] Discord
 			If MouseX()>(GraphicsWidth()/2-440) And MouseX()<(GraphicsWidth()/2-305) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Discord Button
 				Text3D (Text_Font[8],-376,-250,"D i s c o r d",1)
-				If MouseHit(1) Then ExecFile("https://discord.gg/D5e5qRtQkb")
+				If MouseHit(1) Then ExecFile("https://discord.gg/D5e5qRtQkb"): PlaySound(Sound_ID[1])
 			Else
 				Text3D (Text_Font[7],-376,-250,"D i s c o r d",1)
 			EndIf
@@ -617,7 +624,7 @@ Repeat
 			;[Block] Credits
 			If MouseX()>(GraphicsWidth()/2-290) And MouseX()<(GraphicsWidth()/2-155) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Credits Button
 				Text3D (Text_Font[8],-228,-250,"C r e d i t s",1)
-				If MouseHit(1) Then State_Menu_Subcontext = 5
+				If MouseHit(1) Then State_Menu_Subcontext = 5: PlaySound(Sound_ID[1])
 			Else
 				Text3D (Text_Font[7],-228,-250,"C r e d i t s",1)
 			EndIf
@@ -642,7 +649,7 @@ Repeat
 			;[Block] Options Window
 			If MouseX()>(GraphicsWidth()/2+155) And MouseX()<(GraphicsWidth()/2+290) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Options Button
 				Text3D (Text_Font[8], 228,-250,"O p t i o n s",1)
-				If MouseHit(1) Then State_Menu_Subcontext = 2
+				If MouseHit(1) Then State_Menu_Subcontext = 2: PlaySound(Sound_ID[1])
 			Else
 				Text3D (Text_Font[7], 228,-250,"O p t i o n s",1)	
 			EndIf
@@ -661,6 +668,7 @@ Repeat
 			;[End Block]
 			
 		Case 2 ; >> Options
+			;[Block] Options
 			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
 			
@@ -712,9 +720,9 @@ Repeat
 							If MouseHit(1)
 								If Music_Enabled = 1 Then
 									Music_Enabled = 0
-									Music_Volume = 0
+									Music_Volume = 0: PlaySound(Sound_ID[4])
 								ElseIf Music_Enabled = 0 Then
-									Music_Enabled = 1
+									Music_Enabled = 1: PlaySound(Sound_ID[4])
 								EndIf
 							EndIf
 						EndIf
@@ -730,10 +738,10 @@ Repeat
 					
 					If MouseY()>GhBy2-140 And MouseY()<GhBy2-120
 						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
-							If MouseHit(1) Then Desired_MVolume = Desired_MVolume - 0.05
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume - 0.05: PlaySound(Sound_ID[1])
 						EndIf
 						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
-							If MouseHit(1) Then Desired_MVolume = Desired_MVolume + 0.05
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume + 0.05: PlaySound(Sound_ID[1])
 						EndIf
 					EndIf
 					
@@ -756,19 +764,19 @@ Repeat
 			If MouseX()>GraphicsWidth()/2-515 And MouseX()<GraphicsWidth()/2-330
 				If MouseY()>(GraphicsHeight()/2)-228 And MouseY()<(GraphicsHeight()/2)-192
 					DrawImage3D(GUI_Windows[17],-420,210,0,0,1.8)
-					If MouseHit(1) Then State_Menu_Subcontext_Settings = 1
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 1: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-190 And MouseY()<(GraphicsHeight()/2)-154
 					DrawImage3D(GUI_Windows[17],-420,170,0,0,1.8)
-					If MouseHit(1) Then State_Menu_Subcontext_Settings = 2
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 2: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-152 And MouseY()<(GraphicsHeight()/2)-116
 					DrawImage3D(GUI_Windows[17],-420,130,0,0,1.8)
-					If MouseHit(1) Then State_Menu_Subcontext_Settings = 3
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 3: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-114 And MouseY()<(GraphicsHeight()/2)-78
 					DrawImage3D(GUI_Windows[17],-420, 90,0,0,1.8)
-					If MouseHit(1) Then State_Menu_Subcontext_Settings = 4
+					If MouseHit(1) Then State_Menu_Subcontext_Settings = 4: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)+202 And MouseY()<(GraphicsHeight()/2)+238
 					DrawImage3D(GUI_Windows[16],-420,-220,0,0,1.8)
-					If MouseHit(1) Then State_Menu_Subcontext = 1
+					If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[3])
 				EndIf
 			EndIf
 			
@@ -782,6 +790,7 @@ Repeat
 			Text3D(Text_Font[7],-420,-220,"C o n f i r m",1)
 			
 			
+			;[End Block]
 			
 		Case 3
 			
@@ -791,7 +800,7 @@ Repeat
 			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
 				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
-				If MouseHit(1) Then State_Menu_Subcontext = 1
+				If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[1])
 			Else
 				Text3D(Text_Font[7],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
 			EndIf
@@ -814,7 +823,8 @@ Repeat
 	RenderWorld
 	
 	WaitTimer(Timer_Character_Selection)
-	Flip 0: Clear3D()
+	Flip 0: 
+	Clear3D()
 	
 Until CharDataLoaded=1
 ;[End Block]
@@ -1122,7 +1132,7 @@ Repeat
 ;					DrawImage3D(GUI_Buttons[2],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
-						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
+;						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
 						Options_Nested=1
 					EndIf
 				EndIf
@@ -1163,7 +1173,7 @@ Repeat
 ;					DrawImage3D(GUI_Buttons[0],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
-						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
+;						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
 						Game_End=1
 					EndIf
 				EndIf
@@ -1257,7 +1267,7 @@ Repeat
 				
 				If MouseY()>GraphicsHeight()/2-222 And MouseY()<GraphicsHeight()/2-201 Then
 					If MouseDown(1) Then
-						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[5])
+;						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[5])
 						Options_Nested=0
 					EndIf
 				EndIf
@@ -1302,7 +1312,7 @@ Repeat
 ;					DrawImage3D(GUI_Buttons[5],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
-						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
+;						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
 						Game_End=1
 					EndIf
 				EndIf
@@ -1312,7 +1322,7 @@ Repeat
 ;					DrawImage3D(GUI_Buttons[6],0,0)
 					FlushMouse()
 					If MouseDown(1) Then
-						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
+;						If ChannelPlaying(Channel_UI) = False Then Channel_UI=PlaySound(Sound_UI[4])
 						Player_State_Alive=2
 					EndIf
 				EndIf
@@ -1708,7 +1718,7 @@ Repeat
 	
 	Performance = MilliSecs() - ms_Performance
 	
-;	Clear3D()
+	Clear3D()
 	
 Until Game_End=1
 UserDataSave(Character_Profile_Loaded)
@@ -1716,5 +1726,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#C2#17E#25F#268#271#279#28A#315#3A3#3B1#3BF#3EE
+;~F#B7#C2#185#280#291#3AD#3BB#3C9#3F8
 ;~C#Blitz3D

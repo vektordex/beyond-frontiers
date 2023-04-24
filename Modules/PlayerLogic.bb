@@ -27,7 +27,7 @@ Function UpdateLevels()
 		Character_Value_XP=Character_Value_XP-(150*Character_Value_Level*Character_Value_Level)
 		Character_Value_Level=Character_Value_Level+1
 		CreateLevelWave(EntityX(pvShip),EntityY(pvShip), EntityZ(pvShip))
-		PlaySound Sound_UI[0]
+;		PlaySound Sound_UI[0]
 ;		PlaySound Sound_Battlefield[9]
 		
 		Player_Value_Shield_Current = Player_Value_Shield_Maximum

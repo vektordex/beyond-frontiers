@@ -148,7 +148,7 @@ Global Sprite_Navigation[20]
 ;[End Block]
 
 ;[Block] Sounds
-Global Sound_UI[50]
+Global Sound_ID[50]
 Global Sound_Game[80]
 ;[End Block]
 
@@ -1023,6 +1023,6 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#13#4A#5C#6C#72#90#95#9A#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F#136
-;~F#13B#141#152#203#287#295#318
+;~F#13#4A#5C#6C#72#90#9A#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F#136#13B
+;~F#141#152#203#287#295#318
 ;~C#Blitz3D
