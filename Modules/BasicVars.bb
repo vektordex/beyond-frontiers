@@ -162,7 +162,7 @@ Global Channel_SystemInit
 ;[End Block]
 
 ;[Block] Music
-Global Music_ID[11]
+Global Music_ID[11], Music_Enabled=1, Desired_MVolume# = 0.5
 ;[End Block]
 
 ;[Block] Switches
@@ -1023,6 +1023,6 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#13#4A#5C#6C#72#90#95#9A#A3#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F
-;~F#136#13B#141#152#203#287#295#318
+;~F#13#4A#5C#6C#72#90#95#9A#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F#136
+;~F#13B#141#152#203#287#295#318
 ;~C#Blitz3D

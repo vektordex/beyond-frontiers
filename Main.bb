@@ -573,7 +573,11 @@ Music_Volume = 0.0
 
 Repeat
 	ChannelVolume Channel_Music,Music_Volume#
-	If Music_Volume#<0.5 Then Music_Volume# = Music_Volume# + 0.0025
+	If Music_Enabled = 1 Then
+		If Music_Volume#<Desired_MVolume# Then Music_Volume# = Music_Volume# + 0.0025
+		
+		If Music_Volume#>Desired_MVolume# Then Music_Volume# = Music_Volume# - 0.0025
+	EndIf
 	If MouseHit(1) = False And MouseHit(2) = False Then FlushMouse()
 	
 	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/20)*15,Sin(MilliSecs()/18)*15)
@@ -657,11 +661,11 @@ Repeat
 			;[End Block]
 			
 		Case 2 ; >> Options
-			DrawImage3D(GUI_Windows[30],0,GraphicsHeight()/2-16,0,0,2)
+			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
 			
-			DrawImage3D(GUI_Windows[21],140,0)
-			DrawImage3D(GUI_Windows[24],-420,0,0,0,1.47)
+			DrawImage3D(GUI_Windows[29],140,0)
+			DrawImage3D(GUI_Windows[21],-420,0,0,0,1.47)
 ;			DrawImage3D(GUI_Windows[23],0,0)
 			
 			Select State_Menu_Subcontext_Settings
@@ -672,13 +676,17 @@ Repeat
 					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
 					Text3D(Text_Font[6],140,252,"G r a p h i c s",1)
 					
-										
+;					Text X -250, Y - 230
+					
+					Text3D(Text_Font[7],-210,210,"S e t   u p   g r a p h i c s   o p t i o n s   h e r e .")					
 				Case 2 ; >> Audio
 					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
 					DrawImage3D(GUI_Windows[16],-420,170,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
 					Text3D(Text_Font[6],140,252,"S o u n d",1)
+					
+					Text3D(Text_Font[7],-210,210,"S e t   u p   a u d i o   o p t i o n s   h e r e .")
 					
 				Case 3 ; >> Music
 					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
@@ -687,6 +695,51 @@ Repeat
 					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
 					Text3D(Text_Font[6],140,252,"M u s i c",1)
 					
+					Text3D(Text_Font[7],-210,210,"S e t   u p   m u s i c   o p t i o n s   h e r e .")
+					
+					Text3D(Text_Font[7],-210,160,"M u s i c")
+					Text3D(Text_Font[7],-210,130,"V o l u m e")
+					
+					If Music_Enabled = 1 Then
+						DrawImage3D(GUI_Windows[24],+490,160)
+						Text3D(Text_Font[7],+410,160,"O n",1)
+					Else
+						DrawImage3D(GUI_Windows[25],+490,160,0,180)
+						Text3D(Text_Font[7],+410,160,"O f f",1)
+					EndIf
+					If MouseY()>GhBy2-170 And MouseY()<GhBy2-150
+						If MouseX()>GwBy2+470 And MouseX()<GwBy2+510
+							If MouseHit(1)
+								If Music_Enabled = 1 Then
+									Music_Enabled = 0
+									Music_Volume = 0
+								ElseIf Music_Enabled = 0 Then
+									Music_Enabled = 1
+								EndIf
+							EndIf
+						EndIf
+					EndIf
+					
+					DrawImage3D(GUI_Windows[22],+170,130,0,90,1.5)
+					DrawImage3D(GUI_Windows[22],+205,130,0,-90,1.5)
+					
+					DrawImage3D(GUI_Windows[23],+340,130,0,0,1.5)
+					
+					Local MusicVol = Desired_MVolume#*100
+					Text3D(Text_Font[7],+380,130,MusicVol+" %",1)
+					
+					If MouseY()>GhBy2-140 And MouseY()<GhBy2-120
+						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume - 0.05
+						EndIf
+						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume + 0.05
+						EndIf
+					EndIf
+					
+					If Desired_MVolume > 1 Then Desired_MVolume = 1
+					If Desired_MVolume < 0 Then Desired_MVolume = 0
+						
 				Case 4 ; >> Other
 					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
@@ -694,9 +747,11 @@ Repeat
 					DrawImage3D(GUI_Windows[16],-420, 90,0,0,1.8)
 					Text3D(Text_Font[6],140,252,"O t h e r",1)
 					
+					Text3D(Text_Font[7],-210,210,"S e t   u p   o t h e r   o p t i o n s   h e r e .")
+					
 			End Select
 			
-			DrawImage3D(GUI_Windows[16],-420,-220,0,0,1.8)
+			DrawImage3D(GUI_Windows[19],-420,-220,0,0,1.8)
 			
 			If MouseX()>GraphicsWidth()/2-515 And MouseX()<GraphicsWidth()/2-330
 				If MouseY()>(GraphicsHeight()/2)-228 And MouseY()<(GraphicsHeight()/2)-192
@@ -712,7 +767,7 @@ Repeat
 					DrawImage3D(GUI_Windows[17],-420, 90,0,0,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext_Settings = 4
 				ElseIf  MouseY()>(GraphicsHeight()/2)+202 And MouseY()<(GraphicsHeight()/2)+238
-					DrawImage3D(GUI_Windows[17],-420,-220,0,0,1.8)
+					DrawImage3D(GUI_Windows[16],-420,-220,0,0,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext = 1
 				EndIf
 			EndIf
@@ -1653,7 +1708,7 @@ Repeat
 	
 	Performance = MilliSecs() - ms_Performance
 	
-	Clear3D()
+;	Clear3D()
 	
 Until Game_End=1
 UserDataSave(Character_Profile_Loaded)
@@ -1661,5 +1716,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#C2#17E#25B#264#26D#275#286#2DE#36C#37A#388#3B7
+;~F#B7#C2#17E#25F#268#271#279#28A#315#3A3#3B1#3BF#3EE
 ;~C#Blitz3D
