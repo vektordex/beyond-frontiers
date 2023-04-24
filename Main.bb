@@ -552,6 +552,7 @@ Local Timer_Character_Selection = CreateTimer(60)
 Global State_Character_Selection = 1
 Global State_Menu_Subcontext = 1
 Global State_Menu_Subcontext_Settings = 1
+Global State_Menu_Subcontext_Character = 1
 
 Global Character_NewName$
 
@@ -597,9 +598,6 @@ Repeat
 	tmx = MouseX()-(GraphicsWidth()/2)
 	tmy = MouseY()-(GraphicsHeight()/2)
 	
-	Local WIPString$ = tmx+" | "+tmy
-	Text3D (Text_Font[7], 0,-300,WIPString$,1)
-	
 	Select State_Menu_Subcontext
 		Case 1 ; >> Menu Main Window
 			
@@ -632,7 +630,8 @@ Repeat
 			
 			;[Block] Create New Game / Character
 			If MouseX()>(GraphicsWidth()/2-150) And MouseX()<(GraphicsWidth()/2-5) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;New Game Button
-				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)			
+				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)		
+				If MouseHit(1) Then State_Menu_Subcontext = 3: PlaySound(Sound_ID[1])
 			Else
 				Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)			
 			EndIf
@@ -792,8 +791,43 @@ Repeat
 			
 			;[End Block]
 			
-		Case 3
+		Case 3 ; >> New Game
 			
+			
+			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
+				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
+				If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[1])
+			Else
+				Text3D(Text_Font[7],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
+			EndIf
+			Select State_Menu_Subcontext_Character
+				Case 1
+					DrawImage3D(GUI_Windows[36],0,0,0,0,1.25)
+					If MouseX()>GwBy2-638 And MouseX()<GwBy2-215 Then
+						DrawImage3D(GUI_Windows[33],0,Sin(MilliSecs()/50)*15,0,0,1.25)
+						DrawImage3D(GUI_Windows[32],-423,0,0,0,1.25)
+						Text3D(Text_Font[7],-432,400,"T e r r a n   C o n g l o m e r a t e",1)
+						Text3D(Text_Font[10],-432,380,"Money is Power",1)
+						
+;						WordWrap - 
+						Local Desc$ = WordWrap("A democratic and capitalist society composed of various corporations, with a strong focus on technological innovation and military power. The Conglomerate seeks to expand its influence throughout the galaxy, both through diplomacy and military conquest.",400)
+						Text3D(Text_Font[10],-432,320,Desc$,1)
+					ElseIf MouseX()>GwBy2-215 And MouseX()<GwBy2+205 Then
+						DrawImage3D(GUI_Windows[34],0,Sin(MilliSecs()/50)*15,0,0,1.25)
+						DrawImage3D(GUI_Windows[32],0,0,0,0,1.25)
+						Text3D(Text_Font[7],0,400,"S i r i u s   D o m i n i o n",1)
+						Text3D(Text_Font[10],0,380,"Freedom and Liberty",1)
+					ElseIf MouseX()>GwBy2+205 And MouseX()<GwBy2+605 Then
+						DrawImage3D(GUI_Windows[35],0,Sin(MilliSecs()/50)*15,0,0,1.25)
+						DrawImage3D(GUI_Windows[32],428,0,0,0,1.27)
+						Text3D(Text_Font[7],428,400,"O r i o n   C o u n c i l",1)
+						Text3D(Text_Font[10],428,380,"Better Oneself",1)
+					EndIf
+			End Select
+			
+			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
+			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"N e w   G a m e",1)
 		Case 5 ; >> Credits
 			;[Block]
 			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
@@ -817,6 +851,9 @@ Repeat
 			;[End Block]
 			
 	End Select
+	
+	Local WIPString$ = tmx+" | "+tmy
+	Text3D (Text_Font[7], 50-GwBy2,-300,WIPString$,1)
 	
 	UpdateWorld	
 	
@@ -954,15 +991,6 @@ Repeat
 			
 			;[Block] Shooting
 			If MouseDown(1) Or KeyDown(29) Then 
-				For WeaponHardpoints = 1 To Ship_Gun_Hardpoints
-					Ship_Gun_Timer[WeaponHardpoints] = Ship_Gun_Timer[WeaponHardpoints] - 1
-					If Ship_Gun_Timer[WeaponHardpoints] < 1 Then
-						NewShot(Ship_Gun_Slot[WeaponHardpoints],pvShip,15,Ship_Gun_HPX[WeaponHardpoints], Ship_Gun_HPY[WeaponHardpoints], Ship_Gun_HPZ[WeaponHardpoints])
-;						EmitSound(Sound_Guns[Ship_Gun_Slot[WeaponHardpoints]],eShipBody)
-						Local Gun_Max_Reload = GetWeaponvalue(Ship_Gun_Slot[WeaponHardpoints])
-						Ship_Gun_Timer[WeaponHardpoints] = Gun_Max_Reload
-					EndIf
-				Next	
 			EndIf
 			;[End Block]
 			
@@ -1099,10 +1127,6 @@ Repeat
 	
 	;[Block] Build User Interface
 	Local ms_Performance_Update_UI = MilliSecs()
-	
-	If GUI_Cooldown[0] > 0 Then
-		GUI_Cooldown[0] = GUI_Cooldown[0] - 1
-	EndIf
 	
 	If KeyHit(1) Then 
 		Options = 1 - Options
@@ -1435,24 +1459,6 @@ Repeat
 		;[Block] ARC Hud ;NEW HUD IN THE WORKS
 ;		Text3D(Text_Font[1],0,GraphicsHeight()/2-160,currloc$,True)
 		
-		DrawImage3D(GUI_Status[0],0,0,0,0,1)
-		
-		Local Player_Value_Armor_Percentage# = Player_Value_Armor_Current / (Player_Value_Armor_Maximum / 100)
-		Local Player_Value_Shield_Percentage# = Player_Value_Shield_Current / (Player_Value_Shield_Maximum / 100)
-		Local Player_Value_Energy_Percentage# = Player_Value_Energy_Current / (Player_Value_Energy_Maximum / 100)
-		
-		If Player_Value_Armor_Percentage > 100 Then Player_Value_Armor_Percentage = 100
-		If Player_Value_Shield_Percentage > 100 Then Player_Value_Shield_Percentage = 100
-		If Player_Value_Energy_Percentage > 100 Then Player_Value_Energy_Percentage = 100
-		
-		Local Temp_Armor_State#=Player_Value_Armor_Percentage*2.56
-		Local Temp_Shield_State#=Player_Value_Shield_Percentage*2.56
-		Local Temp_Energy_State#=Player_Value_Energy_Percentage*2.56
-		
-		DrawRect3D(GUI_Status[1],-256,0,0,0,Temp_Armor_State,256)
-		DrawRect3D(GUI_Status[2],0,0,0,0,Temp_Energy_State,256)
-		DrawRect3D(GUI_Status[3],256,0,0,0,Temp_Shield_State,256)
-		
 ;		AddChat(Player_Value_Speed_Percentage+"(  "+(Player_Value_Speed_Maximum/100)+" 1%, "+Player_Value_Speed_Current+" current speed",255,255,255,"")
 		
 		Text3D(Text_Font[19], -256, -140,Player_Value_Armor_Percentage+"%",0)
@@ -1726,5 +1732,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#C2#185#280#291#3AD#3BB#3C9#3F8
+;~F#B7#185#264#26D#290#29D#340#3E5#414
 ;~C#Blitz3D

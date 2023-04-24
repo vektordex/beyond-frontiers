@@ -120,4 +120,5 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#0#C
 ;~C#Blitz3D

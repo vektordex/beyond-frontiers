@@ -167,7 +167,7 @@ End Function
 Function DST_Set_texture(dst_zone,dst_file$,dst_flag)
 	For dst_zone2.DST_Dustzone = Each DST_Dustzone
 		If dst_zone2\pivot=dst_zone
-			dst_zone2\texture=Text_Effects[9]
+;			dst_zone2\texture=Text_Effects[9]
 			BrushTexture dst_zone2\brush,dst_zone2\texture
 		EndIf
 	Next
@@ -503,7 +503,7 @@ Function CreateNewDust(ID,DustX,DustY,DustZ,DustRad, DustScale1, DustScale2, DA1
 	Zone_Dust_External[ID]=DST_Create_Dustzone(Zone_Dust_Handle,1)
 	PositionEntity Zone_Dust_External[ID],DustX,DustY,DustZ
 	DST_Set_ZoneRadius(Zone_Dust_External[ID],DustRad)
-	DST_Set_texture(Zone_Dust_External[ID],Text_Effects[9],2)
+;	DST_Set_texture(Zone_Dust_External[ID],Text_Effects[9],2)
 	DST_Set_FadingFar(Zone_Dust_External[ID],250,350)
 	DST_Set_FadingNear(Zone_Dust_External[ID],30,60)
 	DST_Set_ScaleRange(Zone_Dust_External[ID],150,200)

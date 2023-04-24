@@ -132,6 +132,35 @@ Function ParseCmdLineOption(Key$, Value$) ; Parse Options
 End Function
 ;[End Block]
 
+Function WordWrap(content$, maxWidth)
+	
+    ; Split the text into words
+    Local words$ = SplitString(Text, " ")
+	
+    ; Build the wrapped text
+    Local wrapped$ = ""
+    Local Linestring$ = ""
+    For Local i = 0 To words$-1
+        Local word$ = words[i]
+        If Len(Linestring) + Len(word) + 1 > maxWidth Then
+            ; Add the current line to the wrapped text and start a new line
+            wrapped = wrapped + Line + "\n"
+            Line = word
+        Else
+            ; Add the current word to the current line
+            If Len(Linestring) > 0 Then Linestring = Linestring + " "
+            Linestring = Linestring + word
+        EndIf
+    Next
+	
+    ; Add the final line to the wrapped text
+    wrapped = wrapped + Linestring
+	
+    ; Return the wrapped text
+    Return wrapped
+	
+End Function
+
 ;------------------------------------------------------------------------------
 ;! Virtual Scene Management
 ;------------------------------------------------------------------------------
@@ -867,125 +896,125 @@ Function PlayerSwitchShip(sid)
 End Function
 
 Function GetPlayerShipValues(ShipID)
-	
-	
-	SHIxREL=Player_Value_Shield_Maximum/100
-	SHIxTIC=80
-	
-	Select ShipID
-			;CombatShips
-			
-		Case 1
-			Player_Value_Shield_Maximum=25000 
-			Player_Value_Armor_Maximum=12500 
-			Player_Value_Energy_Maximum=25000
-			Ship_Shield_Reload_Tick = 25
-			Ship_Shield_Reload_Amount = 190
-			
-			Player_Value_Miner_Strength#=.1
-			Player_Value_Inertia_Modifier#=1
-			
-			Ship_Value_ScanningStrength = 18000
-			
-			Player_Value_Inertia_Negative# = 0.94
-			Player_Value_Inertia_Positive# = 1.08
-			Player_Value_Inertia_Base# = 3
-			Player_Value_Speed_Maximum=15
-			
-			Ship_Gun_Hardpoints = 2
-			Ship_Gun_Slot[1] = 1
-			Ship_Gun_Slot[2] = 3
-			Ship_Gun_Timer[1] = 26
-			Ship_Gun_Timer[2] = 0
-			
-			Ship_Gun_HPX[1]=-18
-			Ship_Gun_HPY[1]=-3
-			Ship_Gun_HPZ[1]=7
-			
-			Ship_Gun_HPX[2]=18
-			Ship_Gun_HPY[2]=-3
-			Ship_Gun_HPZ[2]=7
-			
-			Ship_Rad_Resistance#=1
-		Case 2
-			Player_Value_Shield_Maximum=50000
-			Player_Value_Armor_Maximum=2500 
-			Player_Value_Energy_Maximum=2500
-			
-			Ship_Shield_Reload_Tick = 25
-			Ship_Shield_Reload_Amount = 190
-			
-			Player_Value_Miner_Strength#=.1
-			Player_Value_Inertia_Modifier#=1
-			
-			Ship_Value_ScanningStrength = 18000
-			
-			Player_Value_Inertia_Negative# = 0.99
-			Player_Value_Inertia_Positive# = 1.1
-			Player_Value_Inertia_Base# = 3
-			Player_Value_Speed_Maximum=18
-			
-			Ship_Rad_Resistance#=.75
-		Case 3
-			Player_Value_Shield_Maximum=45000
-			Player_Value_Armor_Maximum=16000 
-			Player_Value_Energy_Maximum=2000
-			
-			Ship_Shield_Reload_Tick = 25
-			Ship_Shield_Reload_Amount = 190
-			
-			Player_Value_Miner_Strength#=.1
-			Player_Value_Inertia_Modifier#=1
-			
-			Ship_Value_ScanningStrength = 18000
-			
-			Player_Value_Inertia_Negative# = 0.94
-			Player_Value_Inertia_Positive# = 1.04
-			Player_Value_Inertia_Base# = 3
-			Player_Value_Speed_Maximum=10
-			
-			Ship_Rad_Resistance#=.5
-		Case 4
-			Player_Value_Shield_Maximum=52500
-			Player_Value_Armor_Maximum=25000 
-			Player_Value_Energy_Maximum=2000
-			
-			Ship_Shield_Reload_Tick = 25
-			Ship_Shield_Reload_Amount = 190
-			
-			
-			
-			Player_Value_Miner_Strength#=.1
-			Player_Value_Inertia_Negative# = 0.99
-			Player_Value_Inertia_Positive# = 1.3
-			Player_Value_Inertia_Modifier#=1
-			
-			Ship_Value_ScanningStrength = 18000
-			
-			Player_Value_Inertia_Base# = 2.7
-			Player_Value_Speed_Maximum=8
-			Ship_Rad_Resistance#=.25
-			
-		Default
-			Player_Value_Shield_Maximum=25000: Player_Value_Armor_Maximum=12500 :Player_Value_Energy_Maximum=2500
-			Ship_Shield_Reload_Tick = 25: Ship_Shield_Reload_Amount = 190
-			
-			Player_Value_Miner_Strength#=.1
-			Player_Value_Inertia_Modifier#=1
-			
-			Ship_Value_ScanningStrength = 18000
-			
-			Player_Value_Inertia_Base# = 3.5: Player_Value_Speed_Maximum=15: Ship_Rad_Resistance#=1
-	End Select
-	
-	GetMiningBonusValues(ShipID)
-	
-	Player_Value_Shield_Current=Player_Value_Shield_Maximum 
-	Player_Value_Armor_Current=Player_Value_Armor_Maximum
-	Player_Value_Energy_Current=Player_Value_Energy_Maximum
-	
-	Zoffset=140
-	Yoffset=22
+;	
+;	
+;	SHIxREL=Player_Value_Shield_Maximum/100
+;	SHIxTIC=80
+;	
+;	Select ShipID
+;			;CombatShips
+;			
+;		Case 1
+;			Player_Value_Shield_Maximum=25000 
+;			Player_Value_Armor_Maximum=12500 
+;			Player_Value_Energy_Maximum=25000
+;			Ship_Shield_Reload_Tick = 25
+;			Ship_Shield_Reload_Amount = 190
+;			
+;			Player_Value_Miner_Strength#=.1
+;			Player_Value_Inertia_Modifier#=1
+;			
+;			Ship_Value_ScanningStrength = 18000
+;			
+;			Player_Value_Inertia_Negative# = 0.94
+;			Player_Value_Inertia_Positive# = 1.08
+;			Player_Value_Inertia_Base# = 3
+;			Player_Value_Speed_Maximum=15
+;			
+;			Ship_Gun_Hardpoints = 2
+;;			Ship_Gun_Slot[1] = 1
+;;			Ship_Gun_Slot[2] = 3
+;;			Ship_Gun_Timer[1] = 26
+;;			Ship_Gun_Timer[2] = 0
+;			
+;;			Ship_Gun_HPX[1]=-18
+;;			Ship_Gun_HPY[1]=-3
+;;			Ship_Gun_HPZ[1]=7
+;			
+;;			Ship_Gun_HPX[2]=18
+;;			Ship_Gun_HPY[2]=-3
+;;			Ship_Gun_HPZ[2]=7
+;			
+;			Ship_Rad_Resistance#=1
+;		Case 2
+;			Player_Value_Shield_Maximum=50000
+;			Player_Value_Armor_Maximum=2500 
+;			Player_Value_Energy_Maximum=2500
+;			
+;			Ship_Shield_Reload_Tick = 25
+;			Ship_Shield_Reload_Amount = 190
+;			
+;			Player_Value_Miner_Strength#=.1
+;			Player_Value_Inertia_Modifier#=1
+;			
+;			Ship_Value_ScanningStrength = 18000
+;			
+;			Player_Value_Inertia_Negative# = 0.99
+;			Player_Value_Inertia_Positive# = 1.1
+;			Player_Value_Inertia_Base# = 3
+;			Player_Value_Speed_Maximum=18
+;			
+;			Ship_Rad_Resistance#=.75
+;		Case 3
+;			Player_Value_Shield_Maximum=45000
+;			Player_Value_Armor_Maximum=16000 
+;			Player_Value_Energy_Maximum=2000
+;			
+;			Ship_Shield_Reload_Tick = 25
+;			Ship_Shield_Reload_Amount = 190
+;			
+;			Player_Value_Miner_Strength#=.1
+;			Player_Value_Inertia_Modifier#=1
+;			
+;			Ship_Value_ScanningStrength = 18000
+;			
+;			Player_Value_Inertia_Negative# = 0.94
+;			Player_Value_Inertia_Positive# = 1.04
+;			Player_Value_Inertia_Base# = 3
+;			Player_Value_Speed_Maximum=10
+;			
+;			Ship_Rad_Resistance#=.5
+;		Case 4
+;			Player_Value_Shield_Maximum=52500
+;			Player_Value_Armor_Maximum=25000 
+;			Player_Value_Energy_Maximum=2000
+;			
+;			Ship_Shield_Reload_Tick = 25
+;			Ship_Shield_Reload_Amount = 190
+;			
+;			
+;			
+;			Player_Value_Miner_Strength#=.1
+;			Player_Value_Inertia_Negative# = 0.99
+;			Player_Value_Inertia_Positive# = 1.3
+;			Player_Value_Inertia_Modifier#=1
+;			
+;			Ship_Value_ScanningStrength = 18000
+;			
+;			Player_Value_Inertia_Base# = 2.7
+;			Player_Value_Speed_Maximum=8
+;			Ship_Rad_Resistance#=.25
+;			
+;		Default
+;			Player_Value_Shield_Maximum=25000: Player_Value_Armor_Maximum=12500 :Player_Value_Energy_Maximum=2500
+;			Ship_Shield_Reload_Tick = 25: Ship_Shield_Reload_Amount = 190
+;			
+;			Player_Value_Miner_Strength#=.1
+;			Player_Value_Inertia_Modifier#=1
+;			
+;			Ship_Value_ScanningStrength = 18000
+;			
+;			Player_Value_Inertia_Base# = 3.5: Player_Value_Speed_Maximum=15: Ship_Rad_Resistance#=1
+;	End Select
+;	
+;	GetMiningBonusValues(ShipID)
+;	
+;	Player_Value_Shield_Current=Player_Value_Shield_Maximum 
+;	Player_Value_Armor_Current=Player_Value_Armor_Maximum
+;	Player_Value_Energy_Current=Player_Value_Energy_Maximum
+;	
+;	Zoffset=140
+;	Yoffset=22
 	
 End Function
 
@@ -1115,7 +1144,7 @@ Function UpdateMapPoint()
 	Local MapString$=Left(MapScale#,4)
 	
 	If HUD=1 And MAPHUD = 0 Then 
-		DrawImage3D(GUI_MapIcon[0],MapOriginX, MapOriginZ,False,EntityYaw(pvShip)*-1,2)
+;		DrawImage3D(GUI_MapIcon[0],MapOriginX, MapOriginZ,False,EntityYaw(pvShip)*-1,2)
 	EndIf
 	
 	For Portal.Stargate = Each Stargate
@@ -1143,7 +1172,7 @@ Function UpdateMapPoint()
 			MapIconPosX=AIX-CposX
 			MapIconPosZ=AIZ-CposZ
 			
-			DrawImage3D(GUI_MapIcon[7],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ + MapYPoint,0,0,1)
+;			DrawImage3D(GUI_MapIcon[7],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ + MapYPoint,0,0,1)
 			
 		EndIf
 	Next
@@ -1390,5 +1419,5 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#BF#C7#D7#F0#10F#120#130#143#1F9#21F#254#307
+;~F#5#46#DC#E4#F4#10D#12C#13D#14D#160#216#23C#271#324
 ;~C#Blitz3D

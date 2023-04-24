@@ -2372,10 +2372,10 @@ Function UpdateGates()
 			Local TX = Portal\TX
 			Local TY = Portal\TY
 			Local TZ = Portal\TZ
-			If GUI_Cooldown[0] < 1 Then
-				Gate_Jump = 1
-				GUI_Cooldown[0] = 60
-			EndIf
+;			If GUI_Cooldown[0] < 1 Then
+;				Gate_Jump = 1
+;				GUI_Cooldown[0] = 60
+;			EndIf
 			Exit
 		EndIf
 	Next
@@ -2554,7 +2554,7 @@ Function Scrapfield_Create(amount,x,y,z,span, MaxScale#=2, Maxturn#=1, Minscale#
 	For Scraps = 1 To amount
 		SC.ScrapField=New ScrapField
 		Mesh=Rand(1,4)
-		SC\Mesh=CopyEntity(Mesh_Scrap[Mesh])
+;		SC\Mesh=CopyEntity(Mesh_Scrap[Mesh])
 		SC\Maxturn#=Maxturn#
 		PositionEntity SC\Mesh,x,y,z
 		RotateEntity SC\Mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
@@ -2729,8 +2729,8 @@ Function Battlefield_Update()
 					Local StartB =  99
 					Select Character_Value_Faction
 						Case Faction_Sirian
-							DrawImage3D(GUI_MainMenu_SImages[4],-128,D3DOU-100,0,0,0.2)
-							DrawImage3D(GUI_MainMenu_SImages[5], 128,D3DOU-100,0,0,0.2)
+;							DrawImage3D(GUI_MainMenu_SImages[4],-128,D3DOU-100,0,0,0.2)
+;							DrawImage3D(GUI_MainMenu_SImages[5], 128,D3DOU-100,0,0,0.2)
 							
 							Amount_FactionA = Existing_Ratio_Sirian*2
 							Amount_FactionB = Existing_Ratio_Terran*2
@@ -2749,8 +2749,8 @@ Function Battlefield_Update()
 							Text3D(Text_Font[31],-128,D3DOU-140,Existing_Terran+" Ships",1)
 							
 						Case Faction_Terran
-							DrawImage3D(GUI_MainMenu_SImages[5],-128,D3DOU-100,0,0,0.2)
-							DrawImage3D(GUI_MainMenu_SImages[4], 128,D3DOU-100,0,0,0.2)
+;							DrawImage3D(GUI_MainMenu_SImages[5],-128,D3DOU-100,0,0,0.2)
+;							DrawImage3D(GUI_MainMenu_SImages[4], 128,D3DOU-100,0,0,0.2)
 							
 							Amount_FactionB = Existing_Ratio_Sirian*2
 							Amount_FactionA = Existing_Ratio_Terran*2
@@ -2771,7 +2771,7 @@ Function Battlefield_Update()
 					End Select
 				EndIf
 				
-				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
+;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
 				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
 				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
 				
@@ -2794,9 +2794,9 @@ Function Battlefield_Update()
 					Text3D(Text_Font[31],0,D3DOU-260,"--> HOSTILE SPACE <--",1)
 				EndIf
 				
-				DrawImage3D(GUI_MainMenu_SImages[4],0,D3DOU-100,0,0,0.5)
+;				DrawImage3D(GUI_MainMenu_SImages[4],0,D3DOU-100,0,0,0.5)
 				
-				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
+;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
 				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
 				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
 				
@@ -2819,8 +2819,8 @@ Function Battlefield_Update()
 					Text3D(Text_Font[31],0,D3DOU-260,"--> HOSTILE SPACE <--",1)
 				EndIf
 				
-				DrawImage3D(GUI_MainMenu_SImages[5],0,D3DOU-100,0,0,0.5)
-				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
+;				DrawImage3D(GUI_MainMenu_SImages[5],0,D3DOU-100,0,0,0.5)
+;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
 				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
 				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
 				
@@ -2828,7 +2828,7 @@ Function Battlefield_Update()
 				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
 				
 			Case Faction_Neutral
-				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
+;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
 				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
 				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
 				
@@ -2837,7 +2837,7 @@ Function Battlefield_Update()
 				
 			Default
 				
-				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
+;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
 				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
 				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
 				
@@ -2878,7 +2878,7 @@ Function Gateflag_Create(x,y,z,texture,subtype=1)
 	PositionEntity GFlag\Mesh,x,y,z
 	PointEntity GFlag\mesh,Object_Zero
 	ScaleSprite GFLag\Mesh,1500,1500
-	EntityTexture GFlag\Mesh,Text_Flag[texture]
+;	EntityTexture GFlag\Mesh,Text_Flag[texture]
 	EntityFX GFLag\Mesh,1+16+32
 	If subtype = 1 Then MoveEntity GFlag\Mesh,12000,0,0
 	If subtype = 2 Then MoveEntity GFlag\Mesh,-12000,0,0
@@ -2889,76 +2889,76 @@ Function Worldmap_Display()
 	Local Mapdist=80
 	
 	If HUD=1 And MAPHUD = 1 And Options = 0 And Upgrade_GlobalMap = 1
-		DrawImage3D(GUI_WorldMap[9],0,0)
+;		DrawImage3D(GUI_WorldMap[9],0,0)
 ;		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
 		For A = 0 To 127
 			
 			If String_SystemDiscovered[a] = 1 And String_SystemName[a]<>"Unmapped Sector" Then
 				Select String_SystemFaction[a]
 					Case Faction_Pirate, Faction_Crimson
-						DrawImage3D(GUI_WorldMap[1],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[1],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Neutral
-						DrawImage3D(GUI_WorldMap[2],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[2],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Terran
-						DrawImage3D(GUI_WorldMap[3],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[3],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Sirian
-						DrawImage3D(GUI_WorldMap[4],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[4],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Battleground_OS, Faction_Battleground_TO, Faction_Battleground_TS
-						DrawImage3D(GUI_WorldMap[5],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[5],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Unknown
-						DrawImage3D(GUI_WorldMap[7],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[7],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case Faction_Orion
-						DrawImage3D(GUI_WorldMap[8],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[8],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 				End Select
 				
 				Select String_SystemGate[a]
 					Case 1
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case 2
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 3
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 4
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
 					Case 5
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
 					Case 6
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
 					Case 7
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 8
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
 					Case 9
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
 					Case 10
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 11
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 12
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
 					Case 13
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,0)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,0)
 					Case 14
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 					Case 15
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
+;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
 				End Select
 				
 				Text3D(Text_Font[11],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist-18,String_SystemName[a],1)
@@ -2966,7 +2966,7 @@ Function Worldmap_Display()
 			EndIf
 		Next
 		
-		DrawImage3D(GUI_WorldMap[0],0,0)
+;		DrawImage3D(GUI_WorldMap[0],0,0)
 		
 	Else
 		
@@ -3162,7 +3162,7 @@ Function CreateMainDust()
 	Zone_Dust_Handle=DST_Create_Dust(WorldCamera,100,1)
 	Zone_Dust_Base=DST_Create_Dustzone(Zone_Dust_Handle)
 	DST_Set_ZoneRadius(Zone_Dust_Base,300)
-	DST_Set_texture(Zone_Dust_Base,Text_Effects[9],1+2+4)
+;	DST_Set_texture(Zone_Dust_Base,Text_Effects[9],1+2+4)
 	DST_Set_FadingFar(Zone_Dust_Base,200,150)
 	DST_Set_AlphaRange(Zone_Dust_Base,0.4,0.7)
 	DST_Set_Dense(Zone_Dust_Base,1)
@@ -3236,7 +3236,7 @@ Function Special_Create(x,y,z,variant)
 	Select variant
 		Case 1
 			Disc\Mesh = CreateCube()
-			EntityTexture Disc\Mesh,Text_Special[0]
+;			EntityTexture Disc\Mesh,Text_Special[0]
 			EntityShininess Disc\Mesh,0.9
 			ScaleEntity Disc\Mesh,20,20,0.2
 ;			VirtualScene_Register(Scene, Disc\Mesh)
@@ -3244,13 +3244,13 @@ Function Special_Create(x,y,z,variant)
 			
 		Case 2
 			
-			Disc\Mesh = CopyEntity(Mesh_Special[0])
-			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
-			Disc\SecMesh = CopyEntity(Mesh_Special[1])
-			Disc\BeamMesh = CopyEntity(Mesh_Weapon[1])
-			ScaleEntity Disc\Mesh,100,100,100
-			ScaleEntity Disc\SecMesh,100,100,100
-			ScaleEntity Disc\FrameMesh,100,100,100
+;			Disc\Mesh = CopyEntity(Mesh_Special[0])
+;			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
+;			Disc\SecMesh = CopyEntity(Mesh_Special[1])
+;			Disc\BeamMesh = CopyEntity(Mesh_Weapon[1])
+;			ScaleEntity Disc\Mesh,100,100,100
+;			ScaleEntity Disc\SecMesh,100,100,100
+;			ScaleEntity Disc\FrameMesh,100,100,100
 			
 			EntityShininess Disc\Mesh,1
 ;			VirtualScene_Register(Scene, Disc\Mesh)
@@ -3265,7 +3265,7 @@ Function Special_Create(x,y,z,variant)
 			PositionEntity Disc\FrameMesh,x,y,z
 			PositionEntity Disc\BeamMesh,x,y,z
 			
-			EntityTexture DISc\BeamMesh, Text_Special[3]
+;			EntityTexture DISc\BeamMesh, Text_Special[3]
 			
 			ScaleEntity Disc\BeamMesh,50,50,50
 			
@@ -3275,9 +3275,9 @@ Function Special_Create(x,y,z,variant)
 			
 		Case 3
 			
-			Disc\Mesh = CopyEntity(Mesh_Special[3])
-			Disc\FrameMesh = CopyEntity(Mesh_Special[4])
-			Disc\SecMesh = CopyEntity(Mesh_Special[4])
+;			Disc\Mesh = CopyEntity(Mesh_Special[3])
+;			Disc\FrameMesh = CopyEntity(Mesh_Special[4])
+;			Disc\SecMesh = CopyEntity(Mesh_Special[4])
 			
 			ScaleEntity Disc\Mesh,1000,1000,1000
 			ScaleEntity Disc\SecMesh,1000,1000,1000
@@ -3298,9 +3298,9 @@ Function Special_Create(x,y,z,variant)
 			
 		Case 4
 			
-			Disc\Mesh = CopyEntity(Mesh_Special[0])
-			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
-			Disc\SecMesh = CopyEntity(Mesh_Special[1])
+;			Disc\Mesh = CopyEntity(Mesh_Special[0])
+;			Disc\FrameMesh = CopyEntity(Mesh_Special[2])
+;			Disc\SecMesh = CopyEntity(Mesh_Special[1])
 			
 			ScaleEntity Disc\Mesh,100,100,100
 			ScaleEntity Disc\SecMesh,100,100,100
@@ -3365,7 +3365,7 @@ End Type
 
 Function Drop_Item(x,y,z,attrib,lvl=1)
 	Can.ItemDrop = New ItemDrop
-	Can\Mesh = CopyEntity(Mesh_Effects[5])
+;	Can\Mesh = CopyEntity(Mesh_Effects[5])
 	PositionEntity Can\Mesh,x,y,z
 	Can\Attribute = attrib
 	
@@ -3373,17 +3373,17 @@ Function Drop_Item(x,y,z,attrib,lvl=1)
 	
 	Select attrib
 		Case 1
-			EntityTexture can\mesh, Text_Effects[8]
+;			EntityTexture can\mesh, Text_Effects[8]
 		Case 2
-			EntityTexture can\mesh, Text_Effects[9]
+;			EntityTexture can\mesh, Text_Effects[9]
 		Case 3
-			EntityTexture can\mesh, Text_Effects[10]
+;			EntityTexture can\mesh, Text_Effects[10]
 		Case 4
-			EntityTexture can\mesh, Text_Effects[11]
+;			EntityTexture can\mesh, Text_Effects[11]
 		Case 5
-			EntityTexture can\mesh, Text_Effects[12]
+;			EntityTexture can\mesh, Text_Effects[12]
 		Default
-			EntityTexture can\mesh, Text_Effects[8]
+;			EntityTexture can\mesh, Text_Effects[8]
 	End Select
 	
 	TurnEntity Can\mesh,17,0,0
@@ -3493,27 +3493,27 @@ Function Buff_Update()
 	
 	If HUD=1 And MAPHUD = 0
 		If Upgrade_Weapon_Damage > 0 Then
-			DrawImage3D(GUI_Buffs[3], D3DOL+32, +128)
+;			DrawImage3D(GUI_Buffs[3], D3DOL+32, +128)
 			Text3D(Text_Font[31],D3DOL+32,128,"+"+Upgrade_Weapon_Damage,1)
 		EndIf
 		
 		If Upgrade_Weapon_Multiplier > 1 Then
-			DrawImage3D(GUI_Buffs[4], D3DOL+32, +64)
+;			DrawImage3D(GUI_Buffs[4], D3DOL+32, +64)
 			Text3D(Text_Font[31],D3DOL+32,64,"+"+Bonus_Perc_WPMulti+"%",1)
 		EndIf
 		
 		If Upgrade_XP_Modifier > 1 Then
-			DrawImage3D(GUI_Buffs[5], D3DOL+32, +0)
+;			DrawImage3D(GUI_Buffs[5], D3DOL+32, +0)
 			Text3D(Text_Font[31],D3DOL+32,0,"+"+Bonus_Perc_XPMulti+"%",1)
 		EndIf
 		
 		If Upgrade_Shield_Recharge > 0 Then
-			DrawImage3D(GUI_Buffs[1], D3DOL+32, -64)
+;			DrawImage3D(GUI_Buffs[1], D3DOL+32, -64)
 			Text3D(Text_Font[31],D3DOL+32,-64,"+"+Upgrade_Shield_Recharge,1)
 		EndIf
 		
 		If Upgrade_Armor_Repair > 0 Then
-			DrawImage3D(GUI_Buffs[2], D3DOL+32, -128)
+;			DrawImage3D(GUI_Buffs[2], D3DOL+32, -128)
 			Text3D(Text_Font[31],D3DOL+32,-128,"+"+Upgrade_Armor_Repair,1)
 		EndIf
 	EndIf
@@ -3528,13 +3528,13 @@ Function Planet_Create(DistanceTocenter, Size, SurfaceType, Rotx, RotY, Ring=0, 
 	
 	; Create Entity
 	TP\Pivot = CreatePivot()
-	TP\Mesh = CopyEntity(Mesh_Effects[0],TP\Pivot)
+;	TP\Mesh = CopyEntity(Mesh_Effects[0],TP\Pivot)
 	ScaleEntity TP\Mesh, TP\Size, TP\Size, TP\Size
 	TurnEntity TP\Pivot, Rotx, RotY,0
 	
 	MoveEntity TP\Mesh, 0, 0, DistanceTocenter*10
 	
-	EntityTexture TP\Mesh, Text_Planet[SurfaceType],0,0
+;	EntityTexture TP\Mesh, Text_Planet[SurfaceType],0,0
 	
 ;	VirtualScene_Register(Scene, TP\Mesh)
 	
@@ -3604,9 +3604,9 @@ Function Ring_Create(radius1#=1.0,radius2#=2.0,segments%=360,fx%=0,blend%=0,r1%=
 		
       ; Create Triangles 
 		AddTriangle surf,v2,v1,v0 
-		PaintSurface surf,Text_Brush[Basebrush]
+;		PaintSurface surf,Text_Brush[Basebrush]
 		AddTriangle surf,v0,v3,v2
-		PaintSurface surf,Text_Brush[Basebrush+1]
+;		PaintSurface surf,Text_Brush[Basebrush+1]
 	Next 
     
 	If fx>0 Then EntityFX mesh,fx 
@@ -3627,7 +3627,7 @@ Function Explosion_Create(x,y,z,subtype=1, Scale=1, Shockwave=0)
 	SpriteViewMode Effect\Sprite,4
 	ScaleSprite Effect\Sprite,Scale*500,Scale*500
 	
-	EntityTexture Effect\Sprite, Text_Explosion[1]
+;	EntityTexture Effect\Sprite, Text_Explosion[1]
 	
 	RotateSprite Effect\Sprite,Rnd(0,360.0)
 	
@@ -3646,7 +3646,7 @@ Function Explosion_Update()
 			Effect\StageTimer = 0
 		EndIf
 		
-		EntityTexture Effect\Sprite, Text_Explosion[Effect\Stage]
+;		EntityTexture Effect\Sprite, Text_Explosion[Effect\Stage]
 		
 		If Effect\Stage=64 Then
 			FreeEntity Effect\Sprite
@@ -3670,7 +3670,7 @@ Function CreateShockwave(x,y,z,level=0)
 	EntityFX sh\mesh,1+16
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
-	EntityTexture sh\mesh,Text_Effects[3]
+;	EntityTexture sh\mesh,Text_Effects[3]
 ;	VirtualScene_Register(Scene, sh\mesh)
 	;EntityColor sh\mesh,255,0,0
 End Function
@@ -3689,7 +3689,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	EntityFX sh\mesh,1+16
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,0,0,45
-	EntityTexture sh\mesh,Text_Effects[3]
+;	EntityTexture sh\mesh,Text_Effects[3]
 ;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
@@ -3706,7 +3706,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	EntityFX sh\mesh,1+16
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,0,0,-45
-	EntityTexture sh\mesh,Text_Effects[3]
+;	EntityTexture sh\mesh,Text_Effects[3]
 ;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
@@ -3723,7 +3723,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	EntityFX sh\mesh,1+16
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,45,0,0
-	EntityTexture sh\mesh,Text_Effects[3]
+;	EntityTexture sh\mesh,Text_Effects[3]
 ;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 	
@@ -3740,7 +3740,7 @@ Function CreateLevelWave(x,y,z,Level=1)
 	EntityFX sh\mesh,1+16
 	PositionEntity sh\mesh,sh\x,sh\y,sh\z
 	RotateEntity sh\mesh,-45,0,0
-	EntityTexture sh\mesh,Text_Effects[3]
+;	EntityTexture sh\mesh,Text_Effects[3]
 ;	VirtualScene_Register(Scene, sh\mesh)
 	EntityColor sh\mesh,255,255,0
 End Function
@@ -3774,5 +3774,5 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#2B#6B#82#9B#B3#CB
+;~F#2B#6B#82#9B#B3#CB#E5D
 ;~C#Blitz3D

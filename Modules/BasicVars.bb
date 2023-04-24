@@ -93,16 +93,8 @@ Global Performance_Wait
 ;[Block] Meshes
 Global Mesh_Roid[8]
 Global Mesh_Ship[11]
-Global Mesh_Generic[50]
-Global Mesh_Adboards[2]
-Global Mesh_Effects[20]
-Global Mesh_Special[10]
-Global Mesh_Scrap[4]
 Global Mesh_Gate[4]
 Global Mesh_Station[4]
-Global Mesh_Weapon[1]
-Global Mesh_Extension[1]
-Global Mesh_Planet[1]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 ;[End Block]
 
@@ -117,16 +109,10 @@ Global Text_Ship[11]
 Global Text_Ship_FX[11]
 Global Text_Roid[20]
 Global Text_Roid_Illumination[20]
-Global Text_Generic[50]
-Global Text_Station[2]
-Global Text_Station_Illumination[2]
-Global Text_Gate[3]
-Global Text_Effects[20]
-Global Text_Festive[2]
-Global Text_Scrap
-Global Text_Flare[5]
-Global Text_Special[10]
-Global Text_Weapon[16]
+Global Text_Station[4]
+Global Text_Station_Illumination[4]
+Global Text_Gate[4]
+
 Global Text_SkyBK[30]
 Global Text_SkyDN[30]
 Global Text_SkyFT[30]
@@ -135,16 +121,6 @@ Global Text_SkyRT[30]
 Global Text_SkyUP[30]
 Global Text_SkyCM[30]
 Global Text_Font[35]
-Global Text_Planet[25]
-Global Text_PlRings[5]
-Global Text_Explosion[64]
-Global Text_Brush[6]
-Global Text_Flag[6]
-;[End Block]
-
-;[Block] Sprites
-Global Sprite_Generic[50]
-Global Sprite_Navigation[20]
 ;[End Block]
 
 ;[Block] Sounds
@@ -155,6 +131,8 @@ Global Sound_Game[80]
 ;[Block] Channels
 Global Channel_UI
 Global Channel_Music
+Global Channel_Sound
+Global Channel_Voice
 Global Channel_Tutorial
 Global Channel_Tutorial_Name
 Global Channel_Story
@@ -165,119 +143,26 @@ Global Channel_SystemInit
 Global Music_ID[11], Music_Enabled=1, Desired_MVolume# = 0.5
 ;[End Block]
 
-;[Block] Switches
-Global Tutorial_Switch
-Global Tutorial_Step
-Global Tutorial_Mention_Streamer_Name
-Global Tutorial_Streamer_Name$
-Global Tutorial_Event_Toggle[15]
-Global Character_Completion_Toggle
-Global Tutorial_Crates_Destroyed=0
-Global Switch_System_init
-;[End Block]
-
-;[Block] Graphics Settings
-Global Switch_Graphics_Preset
-;[End Block]
-
 ;[Block] Interface
 Global GUI_Windows[50]
-Global GUI_Icons[100]
-Global GUI_Items[10]
-Global GUI_Information[20]
-Global GUI_Buffs[5]
-Global GUI_Markers[25]
-Global GUI_Utilities[100]
-Global GUI_Status[45]
-Global GUI_Tutorial[30]
-Global GUI_Cooldown[1]
-Global GUI_MapIcon[20]
-Global GUI_MapPing[5]
-Global GUI_Rank[18]
-Global GUI_Story[1]
-
-Global GUI_WorldMap[9]
-
-Global GUI_MainMenu_Data[10]
-Global GUI_MainMenu_Button[25]
-Global GUI_MainMenu_LImages[5]
-Global GUI_MainMenu_SImages[7]
 
 Const DrawLayer_Game_Low = -90
 Const DrawLayer_Game_Mid = -89
 Const DrawLayer_Game_Top = -88
+
 Global HUD
 ;[End Block]
 
 ;[Block] Character Values
-Global Character_Name$
-Global Player_Value_Ship_Worth=0
-Global Player_Value_Miner_Strength#
-Global Player_Value_Miner_Bonus#
-Global Player_Value_Inertia_Modifier#
-Global Player_Value_Shield_Maximum
-Global Player_Value_Shield_Current#
-Global Player_Value_Armor_Maximum
-Global Player_Value_Armor_Current#
-Global Player_Value_Energy_Current#
-Global Player_Value_Energy_Maximum
-Global Player_Value_Speed_Current#
-Global Player_Value_Speed_Maximum
-Global Player_Value_Speed_Target#
-Global Player_Status_Shield
-Global Player_Effect_Drift_X
-Global Player_Effect_Drift_Y
-Global Player_Weapon_Array
-Global Player_Value_Inertia_Positive#
-Global Player_Value_Inertia_Negative#
-Global Player_Value_Movement_State
-Global Player_Value_Boost_State
 
-Global Character_Value_ID      
-Global Character_Value_Name$   
-Global Character_Value_DOC$    
-Global Character_Value_Faction 
-Global Character_Value_LastX#		
-Global Character_Value_LastY#		
-Global Character_Value_LastZ#
-Global Character_Value_System
-Global Character_Value_Weapon
-Global Character_Value_Ship
-Global Character_Value_Level
-Global Character_Value_XP
-Global Temp_Inventory_Contents
-Global Character_Profile_Loaded
-
-Global CharCreate_Select_Faction
 ;[End Block]
 
 ;[Block] Ship Expansions
-Global Ship_Function_Boost
-Global Ship_Function_Projector
-Global Ship_Function_Scanner
 
-Global Ship_Gun_Hardpoints
-Global Ship_Core_Hardpoints
-Global Ship_Prop_Hardpoints
-Global Ship_Gun_HPX[8], Ship_Gun_HPY[8], Ship_Gun_HPZ[8]
-Global Ship_Gun_Slot[8], Ship_Gun_Timer[8]
-Global Ship_Core_Slot[2]
-Global Ship_Prop_Slot[2]
 ;[End Block]
 
 ;[Block] AI Voices
-Global AI_Voice_Channel
-Global AI_Voice_Sender$
-Global AI_Voice_Male_Available=5
-Global AI_Voice_Female_Available=5
-Global AI_Voice_Track_Male_Aggro[10]
-Global AI_Voice_Track_Male_Chatter[10]
-Global AI_Voice_Track_Male_Victory[10]
-Global AI_Voice_Track_Male_Death[10]
-Global AI_Voice_Track_Female_Aggro[10]
-Global AI_Voice_Track_Female_Chatter[10]
-Global AI_Voice_Track_Female_Victory[10]
-Global AI_Voice_Track_Female_Death[10]
+
 ;[End Block]
 
 ;[Block] Ship Movement Identifiers
@@ -1023,6 +908,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#13#4A#5C#6C#72#90#9A#A7#B2#B6#D3#FD#10B#11A#120#125#129#12F#136#13B
-;~F#141#152#203#287#295#318
+;~F#13#4A#A7#AD#B2#B6#BC#C3#C8#CE#DF#190#214#222#2A5
 ;~C#Blitz3D
