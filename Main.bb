@@ -485,68 +485,36 @@ Global D3DCY=0
 Global CharDataLoaded=0
 ;! SPOT: SaveGame loading and user data ------------------------------------------------------------------------------------------------------------------------
 
-Local Character_To_Delete
-Local File_Character_Profiles
-Local File_Character_ProfileA
-Local File_CharacterA_Exists=0
-
 ShowEntity CameraUI
 
 If FileType(UserData+"\Profiles") <> 2 Then CreateDir(UserData+"\Profiles")
+If FileType(UserData+"\Profiles\Player.dat") <> 1 Then WriteFile(UserData+"\Profiles\Player.dat")
+If FileType(UserData+"\Profiles\Inventory.dat") <> 1 Then WriteFile(UserData+"\Profiles\Inventory.dat")
+If FileType(UserData+"\Profiles\Economy.dat") <> 1 Then WriteFile(UserData+"\Profiles\Economy.dat")
+If FileType(UserData+"\Profiles\Universe.dat") <> 1 Then WriteFile(UserData+"\Profiles\Universe.dat")
 
-If FileType(UserData+"\Profiles\CharDataA.txt") <> 1 Then
-	File_Character_ProfileA=WriteFile(UserData+"\Profiles\CharDataA.txt")
-	WriteLine File_Character_ProfileA,0
-	CloseFile File_Character_ProfileA
-Else 
-	File_CharacterA_Exists=1
-EndIf
 
 ;!TODO: Read existing savefiles and make them be recognized as "complete" or "incomplete" when failsafing.
 
-If FileType(UserData+"\Profiles\MainData.txt") <> 1 Then
-	File_Character_Profiles=WriteFile(UserData+"\Profiles\MainData.txt")
-	WriteLine File_Character_Profiles,File_CharacterA_Exists
-	CloseFile File_Character_Profiles
-EndIf
-
-Type Character_Save_Data
-	Field CreationID, Name$
-	Field CreationDate$
-	Field Gender, Race
-	Field Faction, Job, TutorialStep
-	Field LX, LY, LZ, LS
-	Field Character_Value_XP
-	Field Character_Value_Level
-	Field Wallet, Ship, Weapon
-	Field Inventory
+Type Character_Information
+	Field Name$
+	Field Faction
+	Field Money
+	Field LastSystem, LastX, LastY, LastZ
 End Type
 
-;Start Parsing Character Data
-File_Character_Profiles = ReadFile(UserData+"\Profiles\MainData.txt") 
-Local File_CharacterA_Exist = ReadLine(File_Character_Profiles)
-CloseFile File_Character_Profiles
+Type Character_Inventory
+	Field ItemID
+	Field Amount
+End Type
 
-If File_CharacterA_Exist<>0 Then
-	File_Character_ProfileA = ReadFile(UserData+"\Profiles\CharDataA.txt")
-	File.Character_Save_Data 	= New Character_Save_Data
-	File\CreationID    			= ReadLine(File_Character_ProfileA)
-	File\Name$	       			= ReadLine(File_Character_ProfileA)
-	File\CreationDate$ 			= ReadLine(File_Character_ProfileA)
-	File\Faction	   			= ReadLine(File_Character_ProfileA)
-	File\TutorialStep		    = ReadLine(File_Character_ProfileA)
-	File\LX					    = ReadLine(File_Character_ProfileA)
-	File\LY			   			= ReadLine(File_Character_ProfileA)
-	File\LZ		    		    = ReadLine(File_Character_ProfileA)
-	File\LS		       			= ReadLine(File_Character_ProfileA)
-	File\Character_Value_XP     = ReadLine(File_Character_ProfileA)
-	File\Character_Value_Level  = ReadLine(File_Character_ProfileA)
-	File\Wallet		   			= ReadLine(File_Character_ProfileA)
-	File\Ship	       			= ReadLine(File_Character_ProfileA)
-	File\Weapon		   			= ReadLine(File_Character_ProfileA)
-	File\Inventory     			= ReadLine(File_Character_ProfileA)
-	CloseFile File_Character_ProfileA
-EndIf
+Type Character_Station
+	Field SystemID
+	Field StationX, StationY, StationZ
+	Field StationType, StationProduct
+End Type
+
+;String_SystemDiscovered[LoadID]
 
 Local Timer_Character_Selection = CreateTimer(60)
 Global State_Character_Selection = 1
@@ -794,39 +762,141 @@ Repeat
 		Case 3 ; >> New Game
 			
 			
-			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
 				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
 				If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[1])
 			Else
 				Text3D(Text_Font[7],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
 			EndIf
+			
 			Select State_Menu_Subcontext_Character
 				Case 1
+					;[Block] Faction Selection
+					Local BaseX = -432
+					
+					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					Text3D(Text_Font[7],BaseX,400,"T e r r a n   C o n g l o m e r a t e",1)
+					Text3D(Text_Font[10],BaseX,370,"Money is Power",1)
+					
+					Text3D(Text_Font[1],BaseX,260,"A capitalist society composed of and ruled by various corporations,",1)
+					Text3D(Text_Font[1],BaseX,240,"with a strong focus on financial And military power. The",1)
+					Text3D(Text_Font[1],BaseX,220,"Conglomerate seeks to expand its influence throughout the galaxy",1)
+					Text3D(Text_Font[1],BaseX,200,"both through monetary and military conquest.",1)
+;					Text3D(Text_Font[1],BaseX,180,"",1)
+					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					Text3D(Text_Font[2],BaseX,120,"Luna",1)
+;					Text3D(Text_Font[1],BaseX,120,"3",1)
+					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[3],BaseX, 60,"25.000 Cr.",1)
+;					Text3D(Text_Font[1],BaseX, 60,"6",1)
+;					Text3D(Text_Font[1],BaseX, 40,"7",1)
+					Text3D(Text_Font[1],BaseX, 20,"Terrans have the biggest Empire, but are only connected to the rest",1)
+					Text3D(Text_Font[1],BaseX,  0,"of the Network on two chokepoint systems. An abundance of stations",1)
+					Text3D(Text_Font[1],BaseX,-20,"accelerates every Traders aspirations",1)
+					
+					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					
+					BaseX = 0
+					
+					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					Text3D(Text_Font[7],BaseX,400,"S i r i u s   D o m i n i o n",1)
+					Text3D(Text_Font[10],BaseX,370,"Freedom and Liberty",1)
+					
+					Text3D(Text_Font[1],BaseX,260,"A liberal democracy with a strong emphasis on personal freedom and",1)
+					Text3D(Text_Font[1],BaseX,240,"exploration, governed by a president, chancellor, and seven chambers",1)
+					Text3D(Text_Font[1],BaseX,220,"of advisors. The Dominion has a mixed economy, with both private",1)
+					Text3D(Text_Font[1],BaseX,200,"enterprise and government control, and prioritizes the well-being",1)
+					Text3D(Text_Font[1],BaseX,180,"of its citizens.",1)
+					
+					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					Text3D(Text_Font[2],BaseX,120,"Kurai",1)
+;					Text3D(Text_Font[1],BaseX,120,"3",1)
+					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[3],BaseX, 60,"9.000 Cr.",1)
+;					Text3D(Text_Font[1],BaseX, 60,"6",1)
+;					Text3D(Text_Font[1],BaseX, 40,"7",1)
+					Text3D(Text_Font[1],BaseX, 20,"The Dominion is the first independent Empire and has the most open",1)
+					Text3D(Text_Font[1],BaseX,  0,"battlefield sectors in the Network, a good chance for budding",1)
+					Text3D(Text_Font[1],BaseX,-20,"privateers.",1)
+					
+					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					
+					BaseX = 428
+					
+					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					Text3D(Text_Font[7],BaseX,400,"O r i o n   C o u n c i l",1)
+					Text3D(Text_Font[10],BaseX,370,"Better Oneself",1)
+					
+					Text3D(Text_Font[1],BaseX,260,"A meritocratic society of highly enducated people, with each member",1)
+					Text3D(Text_Font[1],BaseX,240,"of the Council representing a different region of the Orionic",1)
+					Text3D(Text_Font[1],BaseX,220,"Empire. The Council is responsible for making major decisions regarding",1)
+					Text3D(Text_Font[1],BaseX,200,"the empire, with the goal of maintaining a strong and stable society",1)
+					Text3D(Text_Font[1],BaseX,180,"based on tradition and order.",1)
+					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					Text3D(Text_Font[2],BaseX,120,"Maia",1)
+;					Text3D(Text_Font[1],BaseX,120,"3",1)
+					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[3],BaseX, 60,"10.000 Cr.",1)
+;					Text3D(Text_Font[1],BaseX, 60,"6",1)
+;					Text3D(Text_Font[1],BaseX, 40,"7",1)
+					Text3D(Text_Font[1],BaseX, 20,"As the smallest and newest Empire, the council has many bordering",1)
+					Text3D(Text_Font[1],BaseX,  0,"unexplored sectors and can provide many opportunities for",1)
+					Text3D(Text_Font[1],BaseX,-20,"adventurers.",1)
+					
+					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					
+					
+					
 					DrawImage3D(GUI_Windows[36],0,0,0,0,1.25)
 					If MouseX()>GwBy2-638 And MouseX()<GwBy2-215 Then
 						DrawImage3D(GUI_Windows[33],0,Sin(MilliSecs()/50)*15,0,0,1.25)
-						DrawImage3D(GUI_Windows[32],-423,0,0,0,1.25)
-						Text3D(Text_Font[7],-432,400,"T e r r a n   C o n g l o m e r a t e",1)
-						Text3D(Text_Font[10],-432,380,"Money is Power",1)
+						DrawImage3D(GUI_Windows[32],-432,0,0,0,1.25)
 						
-;						WordWrap - 
-						Local Desc$ = WordWrap("A democratic and capitalist society composed of various corporations, with a strong focus on technological innovation and military power. The Conglomerate seeks to expand its influence throughout the galaxy, both through diplomacy and military conquest.",400)
-						Text3D(Text_Font[10],-432,320,Desc$,1)
+						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
+							DrawImage3D(GUI_Windows[16],-432,-350,0,0,2)
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+						EndIf
+						
 					ElseIf MouseX()>GwBy2-215 And MouseX()<GwBy2+205 Then
 						DrawImage3D(GUI_Windows[34],0,Sin(MilliSecs()/50)*15,0,0,1.25)
 						DrawImage3D(GUI_Windows[32],0,0,0,0,1.25)
-						Text3D(Text_Font[7],0,400,"S i r i u s   D o m i n i o n",1)
-						Text3D(Text_Font[10],0,380,"Freedom and Liberty",1)
+						
+						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
+							DrawImage3D(GUI_Windows[16],0,-350,0,0,2)
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+						EndIf
+						
+						
 					ElseIf MouseX()>GwBy2+205 And MouseX()<GwBy2+605 Then
 						DrawImage3D(GUI_Windows[35],0,Sin(MilliSecs()/50)*15,0,0,1.25)
 						DrawImage3D(GUI_Windows[32],428,0,0,0,1.27)
-						Text3D(Text_Font[7],428,400,"O r i o n   C o u n c i l",1)
-						Text3D(Text_Font[10],428,380,"Better Oneself",1)
+						
+						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
+							DrawImage3D(GUI_Windows[16],428,-350,0,0,2)
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+						EndIf
+						
 					EndIf
+					
+					Text3D(Text_Font[7],-432,-350,"S e l e c t",1)
+					Text3D(Text_Font[7],   0,-350,"S e l e c t",1)
+					Text3D(Text_Font[7], 428,-350,"S e l e c t",1)
+					;[End Block]
+					
+				Case 2
+					
+					DrawImage3D(GUI_Windows[31],0,-50,0,0,3)
+					Text3D(Text_Font[7],0,150,"E n t e r   y o u r   n a m e",1)
+					
+					Text3D(Text_Font[1],0,260,"With this name, you will be known to friends and foes in the gate network alike. Please be aware that this name represents you and will be seen by other players should you choose to enable networking.",1)
+					Text3D(Text_Font[1],0,240,"of the Council representing a different region of the Orionic",1)
+					Text3D(Text_Font[1],0,220,"Empire. The Council is responsible for making major decisions regarding",1)
+					Text3D(Text_Font[1],0,200,"the empire, with the goal of maintaining a strong and stable society",1)
 			End Select
 			
-			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
+			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,5)
+			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"N e w   G a m e",1)
 		Case 5 ; >> Credits
 			;[Block]
@@ -1732,5 +1802,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#185#264#26D#290#29D#340#3E5#414
+;~F#B7#185#244#24D#256#270#27D#386#42B#45A
 ;~C#Blitz3D

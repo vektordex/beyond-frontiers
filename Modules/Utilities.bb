@@ -132,32 +132,12 @@ Function ParseCmdLineOption(Key$, Value$) ; Parse Options
 End Function
 ;[End Block]
 
-Function WordWrap(content$, maxWidth)
-	
-    ; Split the text into words
-    Local words$ = SplitString(Text, " ")
-	
-    ; Build the wrapped text
-    Local wrapped$ = ""
-    Local Linestring$ = ""
-    For Local i = 0 To words$-1
-        Local word$ = words[i]
-        If Len(Linestring) + Len(word) + 1 > maxWidth Then
-            ; Add the current line to the wrapped text and start a new line
-            wrapped = wrapped + Line + "\n"
-            Line = word
-        Else
-            ; Add the current word to the current line
-            If Len(Linestring) > 0 Then Linestring = Linestring + " "
-            Linestring = Linestring + word
-        EndIf
-    Next
-	
-    ; Add the final line to the wrapped text
-    wrapped = wrapped + Linestring
-	
-    ; Return the wrapped text
-    Return wrapped
+Function WordWrap(content$, maxWidth, StartX, StartY)
+	Local CompleteLength = Len(content$)
+	;Use Left to cut string into bits
+	Repeat
+		
+	Until Instr (content$, " ") = False
 	
 End Function
 
@@ -267,6 +247,7 @@ End Function
 
 Global SplitCount
 Dim SplittedString(0)
+
 Function SplitString(In$, StringSplitter$ = "|")
 	Local Pos,Ch$,All$
 	SplitCount = 0
@@ -1419,5 +1400,5 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#DC#E4#F4#10D#12C#13D#14D#160#216#23C#271#324
+;~F#5#46#C8#D0#E0#119#12A#13A#14D#203#229#25E#311
 ;~C#Blitz3D
