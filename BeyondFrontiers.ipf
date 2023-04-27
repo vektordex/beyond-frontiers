@@ -14,7 +14,7 @@
  AbsPath="\Graphics" Expanded="True"
  AbsPath="\Libraries" Expanded="True"
  AbsPath="\Libraries\Draw3D2" Expanded="True"
- AbsPath="\Libraries\Xaymar" Expanded="False"
+ AbsPath="\Libraries\Xaymar" Expanded="True"
  AbsPath="\Math" Expanded="True"
  AbsPath="\Sound" Expanded="False"
  AbsPath="\Utility" Expanded="True"

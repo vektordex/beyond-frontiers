@@ -888,10 +888,10 @@ Repeat
 					DrawImage3D(GUI_Windows[31],0,-50,0,0,3)
 					Text3D(Text_Font[7],0,150,"E n t e r   y o u r   n a m e",1)
 					
-					Text3D(Text_Font[1],0,260,"With this name, you will be known to friends and foes in the gate network alike. Please be aware that this name represents you and will be seen by other players should you choose to enable networking.",1)
-					Text3D(Text_Font[1],0,240,"of the Council representing a different region of the Orionic",1)
-					Text3D(Text_Font[1],0,220,"Empire. The Council is responsible for making major decisions regarding",1)
-					Text3D(Text_Font[1],0,200,"the empire, with the goal of maintaining a strong and stable society",1)
+					Text3D(Text_Font[1],0,120,"With this name, you will be known to friends and foes in the gate network alike. Please be aware that this name represents you and will be seen by other players should you choose to enable networking.",1)
+					Text3D(Text_Font[1],0,100,"To enable Twitch-Assisted Gameplay, please select so in the settings window.",1)
+					Text3D(Text_Font[3],0, 60,"You selected",1)
+					Text3D(Text_Font[4],0, 40,"the empire, with the goal of maintaining a strong and stable society",1)
 			End Select
 			
 			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,5)
