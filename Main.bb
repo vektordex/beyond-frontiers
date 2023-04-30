@@ -216,7 +216,7 @@ Repeat
 				LoadOrder = OpenFile("Assets\Manifest\LoadFonts.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".bmp", 2)
+					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".png", 2)
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
 				;[End Block]
@@ -258,7 +258,7 @@ Repeat
 				LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
-					LoadSoundAsset("Assets\Music\"+LoadData$+".mp3")
+					LoadSoundAsset("Assets\Music\"+LoadData$+".ogg")
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
 				;[End Block]
@@ -426,10 +426,6 @@ TurnEntity pvCamera, -10, 0, 0
 
 Global WorldCamera = CameraScene
 EntityParent WorldCamera, pvCameraOrigin
-
-;VirtualScene_Register(Scene, pvShip)
-;VirtualScene_Register(Scene, pvShipTarget)
-;VirtualScene_Register(Scene, pvtPoint)
 
 ; Create Local Player
 Global Player_Location.Location = Location_Create(0, 0, 0)
@@ -599,7 +595,7 @@ Repeat
 			;[Block] Create New Game / Character
 			If MouseX()>(GraphicsWidth()/2-150) And MouseX()<(GraphicsWidth()/2-5) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;New Game Button
 				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)		
-				If MouseHit(1) Then State_Menu_Subcontext = 3: PlaySound(Sound_ID[1])
+				If MouseHit(1) Then State_Menu_Subcontext_Character=1: State_Menu_Subcontext = 3: PlaySound(Sound_ID[1])
 			Else
 				Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)			
 			EndIf
@@ -854,7 +850,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],-432,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Terran Conglomerate": NewChar_Money=12000:NewChar_System$="Luna":State_Menu_Subcontext_Character=2
 						EndIf
 						
 					ElseIf MouseX()>GwBy2-215 And MouseX()<GwBy2+205 Then
@@ -863,7 +859,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],0,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Sirius Dominion": NewChar_Money=8000:NewChar_System$="Kurai":State_Menu_Subcontext_Character=2
 						EndIf
 						
 						
@@ -873,7 +869,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],428,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Orionic Council Republic": NewChar_Money=10000:NewChar_System$="Maia":State_Menu_Subcontext_Character=2
 						EndIf
 						
 					EndIf
@@ -888,16 +884,139 @@ Repeat
 					DrawImage3D(GUI_Windows[31],0,-50,0,0,3)
 					Text3D(Text_Font[7],0,150,"E n t e r   y o u r   n a m e",1)
 					
-					Text3D(Text_Font[1],0,120,"With this name, you will be known to friends and foes in the gate network alike. Please be aware that this name represents you and will be seen by other players should you choose to enable networking.",1)
-					Text3D(Text_Font[1],0,100,"To enable Twitch-Assisted Gameplay, please select so in the settings window.",1)
-					Text3D(Text_Font[3],0, 60,"You selected",1)
-					Text3D(Text_Font[4],0, 40,"the empire, with the goal of maintaining a strong and stable society",1)
+					Text3D(Text_Font[1],0,100,"With this name, you will be known to friends and foes in the gate network alike. Please be aware that this name represents you and will be seen by other players should you choose to enable networking.",1)
+					Text3D(Text_Font[1],0, 80,"To enable Twitch-Assisted Gameplay, please select so in the settings window.",1)
+					Text3D(Text_Font[3],-200, 20,"You start in",1)
+					Text3D(Text_Font[4],-200,  0,NewChar_System$,1)
+					
+					Text3D(Text_Font[3],   0, 40,"You selected",1)
+					Text3D(Text_Font[4],   0, 20,NewChar_Faction$,1)
+					
+					Text3D(Text_Font[3], 200, 20,"Your Starting Money",1)
+					Text3D(Text_Font[4], 200, 0,Newchar_Money+" Cr.",1)
+					
+					Text3D(Text_Font[1],0, -110,"I hereby pledge my loyalty to "+NewCharacter_Faction$+" and will do my best to adhere to their values,",1)
+					Text3D(Text_Font[1],0, -170,"(supported letters and characters are a-z, A-Z, 0-9 and !-_.:)",1)
+					
+					DrawImage3D(GUI_Windows[23],0,-140,0,0,2.2)
+					Text3D(Text_Font[7],-150, -140,Character_NewName$)
+					Text3D(Text_Font[7],-240, -140,"Cmdr.",1)
+					
+					Text3D(Text_Font[7],0,-300,"Confirm and Play!",1)
+					
+					If MouseX()>GwBy2-100 And MouseX()<GwBy2+100 And MouseY()>GhBy2+250 And MouseY()<GhBy2+350 Then
+						DrawImage3D(GUI_Windows[16], 0,-300,0,0,2)	
+						If MouseHit(1) Then Goto Spacegamestart: PlaySound(Sound_ID[1])
+					Else
+						DrawImage3D(GUI_Windows[19], 0,-300,0,0,2)
+					EndIf
+					
+					
+					;[Block] Key Polling
+					
+					If InputEx_KeyDown(KEY_SHIFT_LEFT) = True
+						If InputEx_KeyHit(KEY_A) Then Character_NewName$=Character_NewName$+"A": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_B) Then Character_NewName$=Character_NewName$+"B": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_C) Then Character_NewName$=Character_NewName$+"C": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_D) Then Character_NewName$=Character_NewName$+"D": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_E) Then Character_NewName$=Character_NewName$+"E": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_F) Then Character_NewName$=Character_NewName$+"F": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_G) Then Character_NewName$=Character_NewName$+"G": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_H) Then Character_NewName$=Character_NewName$+"H": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_I) Then Character_NewName$=Character_NewName$+"I": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_J) Then Character_NewName$=Character_NewName$+"J": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_K) Then Character_NewName$=Character_NewName$+"K": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_M) Then Character_NewName$=Character_NewName$+"M": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_N) Then Character_NewName$=Character_NewName$+"N": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_O) Then Character_NewName$=Character_NewName$+"O": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_P) Then Character_NewName$=Character_NewName$+"P": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Q) Then Character_NewName$=Character_NewName$+"Q": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_R) Then Character_NewName$=Character_NewName$+"R": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_S) Then Character_NewName$=Character_NewName$+"S": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_T) Then Character_NewName$=Character_NewName$+"T": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_U) Then Character_NewName$=Character_NewName$+"U": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_V) Then Character_NewName$=Character_NewName$+"V": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_W) Then Character_NewName$=Character_NewName$+"W": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_X) Then Character_NewName$=Character_NewName$+"Y": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Y) Then Character_NewName$=Character_NewName$+"X": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Z) Then Character_NewName$=Character_NewName$+"Z": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_1) Then Character_NewName$=Character_NewName$+"!": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_2) Then Character_NewName$=Character_NewName$+"2": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_3) Then Character_NewName$=Character_NewName$+"3": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_4) Then Character_NewName$=Character_NewName$+"4": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_5) Then Character_NewName$=Character_NewName$+"5": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_6) Then Character_NewName$=Character_NewName$+"6": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_7) Then Character_NewName$=Character_NewName$+"7": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_8) Then Character_NewName$=Character_NewName$+"8": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_9) Then Character_NewName$=Character_NewName$+"9": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_0) Then Character_NewName$=Character_NewName$+"0": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_DASH) Then Character_NewName$=Character_NewName$+"_": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_PERIOD) Then Character_NewName$=Character_NewName$+":": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_PLUS) Then Character_NewName$=Character_NewName$+"*": PlaySound(Sound_ID[1])
+					Else
+						If InputEx_KeyHit(KEY_A) Then Character_NewName$=Character_NewName$+"a": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_B) Then Character_NewName$=Character_NewName$+"b": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_C) Then Character_NewName$=Character_NewName$+"c": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_D) Then Character_NewName$=Character_NewName$+"d": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_E) Then Character_NewName$=Character_NewName$+"e": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_F) Then Character_NewName$=Character_NewName$+"f": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_G) Then Character_NewName$=Character_NewName$+"g": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_H) Then Character_NewName$=Character_NewName$+"h": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_I) Then Character_NewName$=Character_NewName$+"i": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_J) Then Character_NewName$=Character_NewName$+"j": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_K) Then Character_NewName$=Character_NewName$+"k": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"l": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_M) Then Character_NewName$=Character_NewName$+"m": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_N) Then Character_NewName$=Character_NewName$+"n": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_O) Then Character_NewName$=Character_NewName$+"o": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_P) Then Character_NewName$=Character_NewName$+"p": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Q) Then Character_NewName$=Character_NewName$+"q": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_R) Then Character_NewName$=Character_NewName$+"r": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_S) Then Character_NewName$=Character_NewName$+"s": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_T) Then Character_NewName$=Character_NewName$+"t": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_U) Then Character_NewName$=Character_NewName$+"u": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_V) Then Character_NewName$=Character_NewName$+"v": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_W) Then Character_NewName$=Character_NewName$+"w": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_X) Then Character_NewName$=Character_NewName$+"x": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Y) Then Character_NewName$=Character_NewName$+"y": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_Z) Then Character_NewName$=Character_NewName$+"z": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_1) Then Character_NewName$=Character_NewName$+"1": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_2) Then Character_NewName$=Character_NewName$+"2": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_3) Then Character_NewName$=Character_NewName$+"3": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_4) Then Character_NewName$=Character_NewName$+"4": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_5) Then Character_NewName$=Character_NewName$+"5": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_6) Then Character_NewName$=Character_NewName$+"6": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_7) Then Character_NewName$=Character_NewName$+"7": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_8) Then Character_NewName$=Character_NewName$+"8": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_9) Then Character_NewName$=Character_NewName$+"9": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_0) Then Character_NewName$=Character_NewName$+"0": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_DASH) Then Character_NewName$=Character_NewName$+"-": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_PERIOD) Then Character_NewName$=Character_NewName$+".": PlaySound(Sound_ID[1])
+						If InputEx_KeyHit(KEY_PLUS) Then Character_NewName$=Character_NewName$+"+": PlaySound(Sound_ID[1])
+						
+;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
+;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
+					EndIf
+					
+					If InputEx_KeyDown(KEY_BACKSPACE) And Character_NewName$>"" Then 
+						Tcounter=Tcounter+1
+						If Tcounter>7 Then 
+							Character_NewName$=Mid(Character_NewName$,1,Len(Character_NewName$)-1) 
+							Tcounter=0
+							PlaySound(Sound_ID[1])
+						EndIf
+					Else 
+						Tcounter=4
+					EndIf
+										;[End Block]
+					
 			End Select
 			
 			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,5)
 			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			
-			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"N e w   G a m e",1)
+			Text3D(Text_Font[7],0,GraphicsHeight()/2-24,"N e w   G a m e",1)
 		Case 5 ; >> Credits
 			;[Block]
 			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
@@ -923,7 +1042,9 @@ Repeat
 	End Select
 	
 	Local WIPString$ = tmx+" | "+tmy
-	Text3D (Text_Font[7], 50-GwBy2,-300,WIPString$,1)
+	Text3D (Text_Font[7], 50-GwBy2,-300,key,1)
+	
+	InputEx_Update
 	
 	UpdateWorld	
 	
@@ -943,7 +1064,7 @@ StopChannel Channel_Music
 
 Music_Volume#=.2
 
-UserDataLoad(State_Character_To_Load)
+;UserDataLoad(State_Character_To_Load)
 
 Music_Update()
 
@@ -963,12 +1084,12 @@ Global Speed#      = 500
 
 Global nearestdist#,nearestscale#,nearestname%,nearestglowscale# 
 
-Player_Weapon_Array = CreatePivot()
+;Player_Weapon_Array = CreatePivot()
 
 
 
-PlayerSwitchShip(Character_Value_Ship)
-GetPlayerShipValues(Character_Value_Ship)
+;PlayerSwitchShip(Character_Value_Ship)
+;GetPlayerShipValues(Character_Value_Ship)
 
 Story_Pivot = CreatePivot()
 
@@ -987,7 +1108,7 @@ Global DebugInfo_Enabled
 ;!Todo: Find out why this doesn't call itself earlier.
 ;[End Block]
 
-World_Generate(Character_Value_System, Character_Value_LastX#, Character_Value_LastY#, Character_Value_LastZ#)
+World_Generate(2, 0,0,0)
 
 ;!ToDo: Temporary
 Local multiplier#
@@ -1198,13 +1319,6 @@ Repeat
 	;[Block] Build User Interface
 	Local ms_Performance_Update_UI = MilliSecs()
 	
-	If KeyHit(1) Then 
-		Options = 1 - Options
-		If Options = 0 Then
-			HUD = 1
-		EndIf
-	EndIf
-	
 	;[Block] Options Menu
 	If Options = 1 Then
 		
@@ -1310,52 +1424,6 @@ Repeat
 			EndIf
 			
 			If Switch_Graphics_Preset = 1 Or Switch_Graphics_Preset > 4 Then Switch_Graphics_Preset = 1
-			Select Switch_Graphics_Preset
-				Case 1
-					PostProcess_Active = 0
-					PostProcess_GR_Strength#=0;0.075
-					PostProcess_GR_RayLength#=0;0.2
-					PostProcess_GR_Layers=0
-					PostProcess_GR_Smoothing=0
-					
-					PostProcess_GS_Strength#=0
-					
-					PostProcess_BL_Strength#=0
-					Postprocess_BL_Smoothing=0
-				Case 2
-					PostProcess_Active = 0
-					PostProcess_GR_Strength#=0;0.075
-					PostProcess_GR_RayLength#=0;0.2
-					PostProcess_GR_Layers=0
-					PostProcess_GR_Smoothing=0
-					
-					PostProcess_GS_Strength#=0
-					
-					PostProcess_BL_Strength#=0
-					Postprocess_BL_Smoothing=0
-				Case 3
-					PostProcess_Active = 0
-					PostProcess_GR_Strength#=0;0.075
-					PostProcess_GR_RayLength#=0;0.2
-					PostProcess_GR_Layers=0
-					PostProcess_GR_Smoothing=0
-					
-					PostProcess_GS_Strength#=0
-					
-					PostProcess_BL_Strength#=0
-					Postprocess_BL_Smoothing=0
-				Case 4
-					PostProcess_Active = 0
-					PostProcess_GR_Strength#=0;0.075
-					PostProcess_GR_RayLength#=0;0.2
-					PostProcess_GR_Layers=0
-					PostProcess_GR_Smoothing=0
-					
-					PostProcess_GS_Strength#=0
-					
-					PostProcess_BL_Strength#=0
-					Postprocess_BL_Smoothing=0
-			End Select
 			
 			If MouseX()>GraphicsWidth()/2+231 And MouseX()<GraphicsWidth()/2+252 Then
 				
@@ -1450,20 +1518,6 @@ Repeat
 	If HUD=1 And MAPHUD = 0 Then
 		
 		;[Block]  Weapon DIsplay
-		Select Character_Value_Weapon
-			Case 1
-				DrawImage3D(GUI_Windows[15],0,D3DOD+233)
-				DrawImage3D(GUI_Windows[16],0,D3DOD+213)
-				DrawImage3D(GUI_Windows[17],0,D3DOD+213)
-			Case 2
-				DrawImage3D(GUI_Windows[15],0,D3DOD+213)
-				DrawImage3D(GUI_Windows[16],0,D3DOD+233)
-				DrawImage3D(GUI_Windows[17],0,D3DOD+213)
-			Case 3
-				DrawImage3D(GUI_Windows[15],0,D3DOD+213)
-				DrawImage3D(GUI_Windows[16],0,D3DOD+213)
-				DrawImage3D(GUI_Windows[17],0,D3DOD+233)
-		End Select
 		
 		;[End Block]
 		
@@ -1802,5 +1856,5 @@ UserDataSave(Character_Profile_Loaded)
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#B7#185#244#24D#256#270#27D#386#42B#45A
+;~F#B7#185#240#249#252#26C#279#3FE#4A5#4D4
 ;~C#Blitz3D

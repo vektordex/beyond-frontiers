@@ -26,7 +26,7 @@ Function PreloadAudio()
 	LoadCounter = 1
 	Repeat
 		LoadData$ = ReadLine(LoadOrder)
-		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".mp3")
+		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".ogg")
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -50,7 +50,7 @@ Function Preload3DFont()
 	Local TextID = 1
 	Repeat
 		Local LoadData$=ReadLine(LoadOrder)
-		Text_Font[TextID]=FontRange3D(LoadImage3D("Assets\2D\Fonts\"+LoadData$+".bmp",2,1,0,-120))
+		Text_Font[TextID]=FontRange3D(LoadImage3D("Assets\2D\Fonts\"+LoadData$+".png",2,1,0,-120))
 		TextID = TextID+1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -75,31 +75,22 @@ Function PreloadMesh()
 	CloseFile LoadOrder
 	;[End Block]
 	
-;	;[Block] Prepare Station
-;	Mesh_Station[1]=AssetManager_GetAsset(EAssetType_Model, "Content\GFX\3D\Station\Station_Essential.3ds", SceneDataRoot)
-;	Mesh_Station[2]=AssetManager_GetAsset(EAssetType_Model, "Content\GFX\3D\Station\Station_Ring.3ds", SceneDataRoot)
-;	Mesh_Station[3]=AssetManager_GetAsset(EAssetType_Model, "Content\GFX\3D\Station\Station_Factory.3ds", SceneDataRoot)
-;	Mesh_Station[4]=AssetManager_GetAsset(EAssetType_Model, "Content\GFX\3D\Station\Station_Power.3ds", SceneDataRoot)
-;	
-;	Text_Station[1]= AssetManager_GetAsset(EAssetType_Texture, "Content\GFX\3D\Station\Station_Body_clr.jpg")
-;	Text_Station[2]= AssetManager_GetAsset(EAssetType_Texture, "Content\GFX\3D\Station\Station_Body_glow.jpg")
-;	
-;	TextureBlend Text_Station[2],3
-;	
-;	EntityTexture Mesh_Station[1], Text_Station[1],0,0
-;	EntityTexture Mesh_Station[1], Text_Station[2],0,1
-;	EntityTexture Mesh_Station[3], Text_Station[1],0,0
-;	EntityTexture Mesh_Station[3], Text_Station[2],0,1
-;	EntityTexture Mesh_Station[4], Text_Station[1],0,0
-;	EntityTexture Mesh_Station[4], Text_Station[2],0,1
-;	EntityTexture Mesh_Station[2], Text_Station[1],0,0
-;	EntityTexture Mesh_Station[2], Text_Station[2],0,1
-;	
-;	HideEntity Mesh_Station[1]
-;	HideEntity Mesh_Station[3]
-;	HideEntity Mesh_Station[4]
-;	HideEntity Mesh_Station[2]
-;	;[End Block]
+	;[Block] Preload Stations
+	LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
+	LoadCounter = 1
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
+		Mesh_Station[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS", SceneDataRoot)
+		Text_Station[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+		Text_Station_FX[LoadCounter]	=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+		TextureBlend Text_Station_FX[LoadCounter],3
+		EntityTexture Mesh_Station[LoadCounter],Text_Station[LoadCounter],0,0
+		EntityTexture Mesh_Station[LoadCounter],Text_Station_FX[LoadCounter],0,1
+		HideEntity Mesh_Station[LoadCounter]
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	;[End Block]
 	
 	;[Block] Skybox Cleanup down to Regional Space
 	LoadOrder = OpenFile("Assets\Manifest\LoadSkybox.lof")
@@ -120,5 +111,5 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#0#C
+;~F#C
 ;~C#Blitz3D

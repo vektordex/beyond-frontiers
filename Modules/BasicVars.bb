@@ -110,7 +110,7 @@ Global Text_Ship_FX[11]
 Global Text_Roid[20]
 Global Text_Roid_Illumination[20]
 Global Text_Station[4]
-Global Text_Station_Illumination[4]
+Global Text_Station_FX[4]
 Global Text_Gate[4]
 
 Global Text_SkyBK[30]
