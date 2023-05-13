@@ -34,7 +34,6 @@ End Function
 Function DST_Create_Dustzone(dst_dust_handle,dst_clamp=0)
 	dst_zone.DST_Dustzone = New DST_Dustzone
 	dst_zone\pivot=CreatePivot()
-;	VirtualScene_Register(Scene, dst_zone\pivot)
 	If dst_clamp>0 Then EntityParent dst_zone\pivot,dst_dust_handle
 	dst_zone\brush=CreateBrush()
 	For dst_dust.DST_Dustobject = Each DST_Dustobject
@@ -59,29 +58,24 @@ Function DST_Free_Dust(dst_dust)
 			For dst_part.DST_Particle = Each DST_Particle
 				If dst_part\dust_handle=Handle (dst_dust2.DST_Dustobject)
 					FreeEntity dst_part\partpivot : Delete dst_part
-;					VirtualScene_Unregister(Scene, dst_part\partpivot)
 				EndIf
 			Next
 			For dst_zone.DST_Dustzone = Each DST_Dustzone
 				If dst_zone\dust_handle=Handle (dst_dust2.DST_Dustobject)
 					FreeEntity dst_zone\pivot : FreeTexture dst_zone\texture : FreeBrush dst_zone\brush
-;					VirtualScene_Unregister(Scene, dst_zone\pivot)
 					Delete dst_zone
 				EndIf
 			Next
 			FreeEntity dst_dust2\pivot : Delete dst_dust2
-;			VirtualScene_Unregister(Scene, dst_dust2\pivot)
 			Exit
 		EndIf
 	Next
 	If First DST_Dustobject=Null And DST_TempPivot<>0 Then FreeEntity DST_TempPivot : DST_TempPivot=0 
-;	VirtualScene_Unregister(Scene, DST_TempPivot)
 End Function
 
 Function DST_Free_DustZone(dst_zone)
 	For dst_zone2.DST_Dustzone = Each DST_Dustzone
 		If dst_zone2\pivot=dst_zone
-;			VirtualScene_Unregister(Scene, dst_zone2\pivot)
 			FreeEntity dst_zone2\pivot : FreeTexture dst_zone2\texture : FreeBrush dst_zone2\brush
 			Delete dst_zone2 : Exit
 		EndIf
@@ -167,7 +161,7 @@ End Function
 Function DST_Set_texture(dst_zone,dst_file$,dst_flag)
 	For dst_zone2.DST_Dustzone = Each DST_Dustzone
 		If dst_zone2\pivot=dst_zone
-;			dst_zone2\texture=Text_Effects[9]
+			dst_zone2\texture=Text_Effects[0]
 			BrushTexture dst_zone2\brush,dst_zone2\texture
 		EndIf
 	Next
@@ -503,7 +497,7 @@ Function CreateNewDust(ID,DustX,DustY,DustZ,DustRad, DustScale1, DustScale2, DA1
 	Zone_Dust_External[ID]=DST_Create_Dustzone(Zone_Dust_Handle,1)
 	PositionEntity Zone_Dust_External[ID],DustX,DustY,DustZ
 	DST_Set_ZoneRadius(Zone_Dust_External[ID],DustRad)
-;	DST_Set_texture(Zone_Dust_External[ID],Text_Effects[9],2)
+	DST_Set_texture(Zone_Dust_External[ID],Text_Effects[0],2)
 	DST_Set_FadingFar(Zone_Dust_External[ID],250,350)
 	DST_Set_FadingNear(Zone_Dust_External[ID],30,60)
 	DST_Set_ScaleRange(Zone_Dust_External[ID],150,200)
@@ -518,7 +512,6 @@ Function PCL_NewCloud(pcl_mesh,pcl_anz,pcl_groups=1)
 	Local pcl_dummy2=CreatePivot()
 	PCL_NewCloud.pcl_cloud=New PCL_Cloud
 	PCL_NewCloud\pivot=CreatePivot():
-;	VirtualScene_Register(Scene, PCL_NewCloud\pivot)
 	For a=1 To pcl_anz
 		SeedRnd Rand(10,999999)
 		PCL_NewCloud\part1[a]=PCL_Createflat(PCL_NewCloud\pivot)

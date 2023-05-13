@@ -37,34 +37,34 @@ Function HandleInput()
 			
 			If KeyDown(17) Then							; MOVE FORWARD
 				Player_Value_Movement_State=1
-				Player_Value_Speed_Target#=Player_Value_Speed_Target#+(0.5*Player_Value_Inertia_Positive)
+				Player_Value_Speed_Target#=Player_Value_Speed_Target#+0.5;(0.5*Player_Value_Inertia_Positive)
 			EndIf
 			
 			If KeyDown(31) Then							; BRAKE SHIP
 				Player_Value_Movement_State=-1
-				Player_Value_Speed_Target#= Player_Value_Speed_Target# -(.5*Player_Value_Inertia_Negative)
+				Player_Value_Speed_Target#= Player_Value_Speed_Target# -0.5;(.5*Player_Value_Inertia_Negative)
 			EndIf
 			
 			If KeyDown(16) And ShipRollZ#<5 Then		; ROLL SHIP
-				ShipRollZ#=ShipRollZ#+(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#+.1;(.1*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(18) And ShipRollZ#>-5 Then
-				ShipRollZ#=ShipRollZ#-(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#-.1;(.1*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipRollZ#=ShipRollZ#*0.9
 			EndIf
 			
 			If KeyDown(32) And ShipStrafeX#<7.5 Then	; MOVE LEFT/RIGHT
-				ShipStrafeX#=ShipStrafeX#+(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#+.2;(.2*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(30) And ShipStrafeX#>-7.5 Then
-				ShipStrafeX#=ShipStrafeX#-(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#-.2;(.2*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipStrafeX#=ShipStrafeX#*0.9
 			EndIf
 			
 			If KeyDown(19) And ShipStrafeY#<7.5 Then	; MOVE UP/DOWN
-				ShipStrafeY#=ShipStrafeY#+(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#+.2;(.2*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(33) And ShipStrafeY#>-7.5 Then
-				ShipStrafeY#=ShipStrafeY#-(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#-.2;(.2*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipStrafeY#=ShipStrafeY#*0.9
 			EndIf
@@ -92,20 +92,9 @@ Function HandleInput()
 		
 		If KeyDown(42)=False And KeyDown(54)=False		; NON-SHIFT ACTIONS ---
 			
-			If KeyHit(2)
-				Character_Value_Weapon=1
-				GetWeaponValues(1)
-			ElseIf KeyHit(3)
-				Character_Value_Weapon=2
-				GetWeaponValues(2)
-			ElseIf KeyHit(4)
-				Character_Value_Weapon=3
-				GetWeaponValues(3)
-			EndIf
-			
 			If KeyHit(50) Then 				; MAP RESCALING --- M
 				Trigger_Map_Scaling = Trigger_Map_Scaling + 1
-				UpdateMapScale()
+;				UpdateMapScale()
 			EndIf
 			
 			If KeyDown(15) And eCameraMode<>MODE_CAMERA Then 
@@ -121,14 +110,14 @@ Function HandleInput()
 	
 	If Player_Value_Movement_State = -1 Then
 		If Player_Value_Speed_Current#>Player_Value_Speed_Target# Then
-			Player_Value_Speed_Current#=Player_Value_Speed_Current#*Player_Value_Inertia_Negative
+			Player_Value_Speed_Current#=Player_Value_Speed_Current#*.90
 		EndIf
 	EndIf
 	
 	If Player_Value_Movement_State = 1 Then
 		If Player_Value_Speed_Current < .1 Then Player_Value_Speed_Current = .1
 		If Player_Value_Speed_Current#<Player_Value_Speed_Target# Then
-			Player_Value_Speed_Current#=Player_Value_Speed_Current#*Player_Value_Inertia_Positive
+			Player_Value_Speed_Current#=Player_Value_Speed_Current#*1.05
 		EndIf
 		If Player_Value_Boost_State = 0 Then
 			If Player_Value_Speed_Current#>Player_Value_Speed_Target# Then

@@ -17,6 +17,12 @@ Global Mode_Demo = 0
 
 ;2,6,7,11,17,18,22,23,24,27,28,30,31,33,38,39,40,42,49,51,52,56,60,61,63,72,79,81,84,85,87,88,89,91,92,95,96,97,103,104,107,108,109,110,120
 
+;[Block] Basics
+Global Player_Effect_Drift_X, Player_Effect_Drift_Y, PlayerX, PlayerY, PlayerZ
+Global Player_Value_Speed_Target#, Player_Value_Speed_Main#, SpeedY#, SpeedX#
+Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boost_State, Player_Value_Speed_Maximum#=80
+;[End Block]
+
 ;[Block] Weapon/Module/Item Names and Descriptions --- ToDo: Move this in a moddable file, and add translation efforts, at least DE/EN
 Global Weapon_Type$[20]
 Global Weapon_Desc$[20]
@@ -91,11 +97,13 @@ Global Performance_Wait
 ;[End Block]
 
 ;[Block] Meshes
-Global Mesh_Roid[8]
-Global Mesh_Ship[11]
+Global Mesh_Roid[5]
+Global Mesh_Ship[20]
 Global Mesh_Gate[4]
 Global Mesh_Station[4]
+Global Mesh_Asteroid[4]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
+Global Text_Effects[5]
 ;[End Block]
 
 ;[Block] Objects
@@ -107,11 +115,12 @@ Global Object_Zero
 ;[Block] Textures
 Global Text_Ship[11]
 Global Text_Ship_FX[11]
-Global Text_Roid[20]
-Global Text_Roid_Illumination[20]
 Global Text_Station[4]
 Global Text_Station_FX[4]
-Global Text_Gate[4]
+Global Text_Gate[2]
+Global Text_Gate_FX[2]
+Global Text_Asteroid[4]
+Global Text_Asteroid_FX[4]
 
 Global Text_SkyBK[30]
 Global Text_SkyDN[30]
@@ -859,9 +868,7 @@ Global GwBy2#, GhBy2#
 Global GwBy3#,  GhBy3#
 Global GwBy4#, GhBy4#
 
-Global CameraScene, CameraUI
-
-Global Scene.VirtualScene
+Global CameraScene
 
 Const pcl_count=200			; change here to get more than 200 Particles per Cloud
 
@@ -908,5 +915,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#13#4A#A7#AD#B2#B6#BC#C3#C8#CE#DF#190#214#222#2A5
+;~F#19#50#B0#B6#BB#BF#C5#CC#D1#D7#E8#199#21D#22B#2AE
 ;~C#Blitz3D

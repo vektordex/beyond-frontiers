@@ -19,7 +19,6 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 	
 	Planet_Surface_Exist = 0
 	
-	AI_ID=1
 	Existing_POI = 0
 	
 	Universe_Seed = 282103*SystemID
@@ -31,41 +30,37 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 	;Modify_Fog(0,0,0,0,0,0)
 	SystemID_Global = SystemID
 	
-	If String_SystemDiscovered[SystemID] = 0
-		Character_Value_XP = Character_Value_XP + 75
-	EndIf
-	
 	String_SystemDiscovered[SystemID]=1
 	
-	Object_Environment[2] = LoadSkyBox(String_SystemRegion[SystemID])
+;	Object_Environment[2] = LoadSkyBox(1)
 	
 	Select SystemID
 		Case 2,6,7,11,17,18,22,23,24,27,28,30,31,33,38,39,40,42,49,51,52,56,60,61,63,72,79,81,84,85,87,88,89,91,92,95,96,97,103,104,107,108,109,110,120
 			;[Block] Procedural Random Sectors
 			
-			Switch_System_init = 0
-			System_TextID = 2
-			
-			System_Name$ = String_SystemName[SystemID]
-			CurrentZone = String_SystemFaction[SystemID]
-			Security_Level=0
-			
+;			Switch_System_init = 0
+;			System_TextID = 2
+;			
+;			System_Name$ = String_SystemName[SystemID]
+;			CurrentZone = String_SystemFaction[SystemID]
+;			Security_Level=0
+;			
 			
 			;Randomizing for Procedural Creation
 			Local OldSeed = RndSeed()
 			SeedRnd MilliSecs()
 			
-			Modify_Light(-45,50,19000)
-			Modify_Ambient(228,222,200)
+;			Modify_Light(-45,50,19000)
+;			Modify_Ambient(228,222,200)
 			
 			;Random Sectors Random ores
-			MaxBelts = Rand(0,4)
-			MaxYield = Rand(5,50)
-			If MaxBelts > 0 Then
-				For A = 1 To Maxbelts
-					Asteroid_Belt_Create(Rand(5,20),Rand(1,4),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(8000,25000),Rand(Maxyield/2,maxyield))
-				Next
-			EndIf
+;			MaxBelts = Rand(0,4)
+;			MaxYield = Rand(5,50)
+;			If MaxBelts > 0 Then
+;				For A = 1 To Maxbelts
+;					Asteroid_Belt_Create(Rand(5,20),Rand(1,4),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(-String_SystemScale[SystemID],String_SystemScale[SystemID]),Rand(8000,25000),Rand(Maxyield/2,maxyield))
+;				Next
+;			EndIf
 			
 			SeedRnd OldSeed
 			
@@ -92,12 +87,12 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 			
 			
 			
-			Asteroid_Belt_Create(12,2,25000,800,-14000,12000,8)
+;			Asteroid_Belt_Create(12,2,25000,800,-14000,12000,8)
 			
 			;To Do - can I do this mathematically
 			
 			
-			Planet_Create(90000,60000,8,8,-45,0,15,0)
+;			Planet_Create(90000,60000,8,8,-45,0,15,0)
 			
 ;			Minefield_Create(-23000,0,0,1600,250)
 			
@@ -124,7 +119,7 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 			
 			; Station And Worldbuilding
 			
-			Asteroid_Belt_Create(15,4,10000,800,0,14000,55)
+;			Asteroid_Belt_Create(15,4,10000,800,0,14000,55)
 			
 			;[End Block]
 			
@@ -2066,140 +2061,140 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 	
 	;[Block] Gate Creation By Index
 	;Filter Goes Here, no need to calculate next north sector for a system that has no north gate
-	Local NextGate_N=0
-	Local NextGate_E=0
-	Local NextGate_S=0
-	Local NextGate_W=0
-	Local GateFinder
-	
-	If SystemID > 15 ;[Block] Filter North
-		For GateFinder = 1 To 3
-			If SystemID-(GateFinder*16) < 0 Then Exit
-			If String_SystemName[SystemID-(GateFinder*16)]<>"Unmapped Sector" Then
-				NextGate_N=SystemID-(GateFinder*16)
-				Exit
-			EndIf
-		Next
-	EndIf ;[End Block]
-	If SystemID > 0
-		For GateFinder = 1 To 4
-			If String_SystemName[SystemID+GateFinder]<>"Unmapped Sector" Then
-				NextGate_E=SystemID+(GateFinder)
-				Exit
-			EndIf
-		Next
-	EndIf
-	If SystemID < 111
-		For GateFinder = 1 To 3
-			If SystemID+(GateFinder*16)>127 Then Exit
-			If String_SystemName[SystemID+(GateFinder*16)]<>"Unmapped Sector" Then
-				NextGate_S=SystemID+(GateFinder*16)
-				Exit
-			EndIf
-		Next
-	EndIf
-	If SystemID < 127
-		For GateFinder = 1 To 4
-			If String_SystemName[SystemID-GateFinder]<>"Unmapped Sector" Then
-				NextGate_W=SystemID-(GateFinder)
-				Exit
-			EndIf
-		Next
-	EndIf
-	
-	If NextGate_N < 0 Then NextGate_N = 0
-	If NextGate_N > 127 Then NextGate_N = 127
-	
-	If NextGate_E < 0 Then NextGate_E = 0
-	If NextGate_E > 127 Then NextGate_E = 127
-	
-	If NextGate_S < 0 Then NextGate_S = 0
-	If NextGate_S > 127 Then NextGate_S = 127
-	
-	If NextGate_W < 0 Then NextGate_W = 0
-	If NextGate_W > 127 Then NextGate_W = 127
-	String_SystemScale[SystemID] = String_SystemScale[SystemID]
-	Select String_SystemGate[SystemID]
-		Case 1 ;North
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-		Case 2 ;East
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-		Case 3 ;North + East
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-		Case 4 ;South
-			CreateGate((NextGate_E),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-		Case 5 ;South + North
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-		Case 6 ;South + East
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-		Case 7 ;South + East + North
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-		Case 8 ;West
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 9 ;North + West
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 10 ;West + East
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 11 ; North + East + West
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 12 ;West + South
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 13 ; West + South + North
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 14 ;West + East + South
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-		Case 15 ;All gates
-			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
-			
-			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
-			
-			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
-			
-			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
-			
-	End Select
+;	Local NextGate_N=0
+;	Local NextGate_E=0
+;	Local NextGate_S=0
+;	Local NextGate_W=0
+;	Local GateFinder
+;	
+;	If SystemID > 15 ;[Block] Filter North
+;		For GateFinder = 1 To 3
+;			If SystemID-(GateFinder*16) < 0 Then Exit
+;			If String_SystemName[SystemID-(GateFinder*16)]<>"Unmapped Sector" Then
+;				NextGate_N=SystemID-(GateFinder*16)
+;				Exit
+;			EndIf
+;		Next
+;	EndIf ;[End Block]
+;	If SystemID > 0
+;		For GateFinder = 1 To 4
+;			If String_SystemName[SystemID+GateFinder]<>"Unmapped Sector" Then
+;				NextGate_E=SystemID+(GateFinder)
+;				Exit
+;			EndIf
+;		Next
+;	EndIf
+;	If SystemID < 111
+;		For GateFinder = 1 To 3
+;			If SystemID+(GateFinder*16)>127 Then Exit
+;			If String_SystemName[SystemID+(GateFinder*16)]<>"Unmapped Sector" Then
+;				NextGate_S=SystemID+(GateFinder*16)
+;				Exit
+;			EndIf
+;		Next
+;	EndIf
+;	If SystemID < 127
+;		For GateFinder = 1 To 4
+;			If String_SystemName[SystemID-GateFinder]<>"Unmapped Sector" Then
+;				NextGate_W=SystemID-(GateFinder)
+;				Exit
+;			EndIf
+;		Next
+;	EndIf
+;	
+;	If NextGate_N < 0 Then NextGate_N = 0
+;	If NextGate_N > 127 Then NextGate_N = 127
+;	
+;	If NextGate_E < 0 Then NextGate_E = 0
+;	If NextGate_E > 127 Then NextGate_E = 127
+;	
+;	If NextGate_S < 0 Then NextGate_S = 0
+;	If NextGate_S > 127 Then NextGate_S = 127
+;	
+;	If NextGate_W < 0 Then NextGate_W = 0
+;	If NextGate_W > 127 Then NextGate_W = 127
+;	String_SystemScale[SystemID] = String_SystemScale[SystemID]
+;	Select String_SystemGate[SystemID]
+;		Case 1 ;North
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;		Case 2 ;East
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;		Case 3 ;North + East
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;		Case 4 ;South
+;			CreateGate((NextGate_E),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;		Case 5 ;South + North
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;		Case 6 ;South + East
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;		Case 7 ;South + East + North
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;		Case 8 ;West
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 9 ;North + West
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 10 ;West + East
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 11 ; North + East + West
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 12 ;West + South
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 13 ; West + South + North
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 14 ;West + East + South
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;		Case 15 ;All gates
+;			CreateGate((NextGate_N),0,0,String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_N]) ;North
+;			
+;			CreateGate((NextGate_E),String_SystemScale[SystemID],0,0,-String_SystemScale[NextGate_E],0,0) ;East
+;			
+;			CreateGate((NextGate_S),0,0,-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_S]) ;South
+;			
+;			CreateGate((NextGate_W),-String_SystemScale[SystemID],0,0,String_SystemScale[NextGate_W],0,0) ;West
+;			
+;	End Select
 	;[End Block]
 	
 	AmbientLight 60, 55, 50
@@ -2291,11 +2286,6 @@ Function World_Clear()
 		Delete TP
 	Next
 	
-	For GFlag.Flag = Each Flag
-		FreeEntity GFlag\Mesh: 
-;		VirtualScene_Unregister(Scene, GFlag\Mesh)
-		Delete GFlag
-	Next
 	
 End Function
 
@@ -2388,11 +2378,11 @@ End Function
 
 Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, BeltRange, AvgYield=15)
 ;	TraderPOI_Create(BeltX, BeltY, BeltZ, 0)
-	For i = 1 To NumberOfRoids*80
+	For i = 1 To NumberOfRoids
 		Roid.Belt=New Belt
 		Roid\x#=Rand(-90+Angle,90+Angle)		
 		Roid\y#=Rand(-180,180)
-		Roid\z#=Rand(BeltRange/10,BeltRange*5)
+		Roid\z#=Rand(BeltRange/10,BeltRange)
 		
 		Roid\Chance=Rand(ChanceofYield-5,ChanceofYield+5)
 		Roid\maxyield=Roid\chance
@@ -2402,84 +2392,15 @@ Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, B
 		
 		BaseCollisionSize = 2
 		
-		Local RoidCopy
-		Select TypeOfYield
-			Case 1
-				SpreadOrRes = Rand (1,5)
-				If SpreadOrRes>3 Then
-					TypeOfYield_Fixed=4
-				Else
-					TypeOfYield_Fixed = TypeOfYield
-				EndIf
-			Case 2
-				SpreadOrRes = Rand (1,5)
-				If SpreadOrRes>2 Then
-					TypeOfYield_Fixed=4
-				Else
-					TypeOfYield_Fixed = TypeOfYield
-				EndIf
-			Case 3
-				SpreadOrRes = Rand (1,5)
-				If SpreadOrRes>1 Then
-					TypeOfYield_Fixed=4
-				Else
-					TypeOfYield_Fixed = TypeOfYield
-				EndIf
-			Case 4
-				TypeOfYield_Fixed = 5
-		End Select
+		Local RoidCopy = Rand(1,4)
+		Roid\mesh = CopyEntity(Mesh_Asteroid[RoidCopy])
 		
-		Roid\siz#=Rnd(.8,3)
-		
-		Select TypeOfYield_Fixed
-			Case 1
-				
-				roid\Mesh=CopyEntity(Mesh_Roid[1], PVTxNORMAL)
-				EntityTexture Roid\Mesh,Text_Roid[1],0,0
-;				EntityTexture Roid\Mesh,Text_Roid_Illumination[1],0,1
-				roid\YAmount#=AvgYield+Rand(-5,5)
-				NameEntity Roid\Mesh, "Iron Asteroid ("+Roid\YAmount#+" m³ left)"
-				ScaleEntity Roid\Mesh,Roid\siz#,Roid\siz#,Roid\siz#
-			Case 2
-				
-				roid\Mesh=CopyEntity(Mesh_Roid[1], PVTxNORMAL)
-				EntityTexture Roid\Mesh,Text_Roid[2],0,0
-				roid\YAmount#=AvgYield+Rand(-5,5)
-				NameEntity Roid\Mesh, "Copper Asteroid ("+Roid\YAmount#+" m³ left)"
-				ScaleEntity Roid\Mesh,Roid\siz#,Roid\siz#,Roid\siz#
-			Case 3
-				
-				roid\Mesh=CopyEntity(Mesh_Roid[1], PVTxNORMAL)
-				EntityTexture Roid\Mesh,Text_Roid[3],0,0
-				EntityTexture Roid\Mesh,Text_Roid_Illumination[3],0,1
-				roid\YAmount#=AvgYield+Rand(-5,5)
-				NameEntity Roid\Mesh, "Gold Asteroid ("+Roid\YAmount#+" m³ left)"
-				ScaleEntity Roid\Mesh,Roid\siz#,Roid\siz#,Roid\siz#
-			Case 5
-				
-				roid\Mesh=CopyEntity(Mesh_Roid[2], PVTxNORMAL)
-				EntityTexture Roid\Mesh,Text_Roid[4],0,0
-;				EntityAlpha Roid\mesh,0.8
-				roid\YAmount#=AvgYield+Rand(-5,5)
-				NameEntity Roid\Mesh, "Ice Asteroid ("+Roid\YAmount#+" m³ left)"
-				EntityAlpha roid\mesh,0.9
-				EntityFX roid\mesh,32
-				ScaleEntity Roid\Mesh,Roid\siz#*Rnd(1,2),Roid\siz#*Rnd(1,2),Roid\siz#*Rnd(1,2)
-			Case 4
-				roid\Mesh=CopyEntity(Mesh_Roid[3], PVTxNORMAL)
-				EntityTexture Roid\Mesh,Text_Roid[1],0,0
-				NameEntity Roid\Mesh, "Asteroid Remnants"
-				ScaleEntity Roid\Mesh,Roid\siz#,Roid\siz#,Roid\siz#
-			Case 6 ;Icy Debris
-				
-				
-		End Select
-		
-;		VirtualScene_Register(Scene, Roid\Mesh)
+		Roid\siz#=Rnd(.8,9)
 		
 		PositionEntity roid\mesh, BeltX, BeltY, BeltZ
 		Roid\tur#=Rnd(0.1,359)
 		RotateEntity Roid\Mesh, Roid\y#, Roid\x#, roid\z#
+		ScaleEntity Roid\mesh, Roid\siz#, Roid\siz#, Roid\siz#
 		
 		
 		
@@ -2489,12 +2410,12 @@ Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, B
 		
 		MoveEntity Roid\Mesh,0,0, Roid\z
 		TurnEntity roid\mesh,Rand(0,360),Rand(0,360),Rand(0,360)
-		EntityAutoFade Roid\Mesh, 160000,161000
-		If TypeOfYield_Fixed = 5 Then
-			PointEntity Roid\mesh,Object_Light[0]
-		EndIf
+		EntityAutoFade Roid\Mesh, 90000,100000
+;		If TypeOfYield_Fixed = 5 Then
+;			PointEntity Roid\mesh,Object_Light[0]
+;		EndIf
 		
-		If TypeOfYield_Fixed = 5 Then TurnEntity roid\mesh,0,0,Rnd(0.0,359.0)
+;		If TypeOfYield_Fixed = 5 Then TurnEntity roid\mesh,0,0,Rnd(0.0,359.0)
 	Next
 	
 	CreateMapPoint(BeltX, BeltY, BeltZ, 1)
@@ -2502,45 +2423,18 @@ End Function
 
 Function UpdateBelt()
 	For Roid.Belt = Each Belt
-		Roid\x#=EntityX(Roid\Mesh)
-		Roid\y#=EntityY(Roid\Mesh)
-		Roid\z#=EntityZ(Roid\Mesh)
-		Local NameYield
-		CameraProject(WorldCamera,Roid\X#, Roid\Y#, Roid\Z#)
+;		Roid\x#=EntityX(Roid\Mesh)
+;		Roid\y#=EntityY(Roid\Mesh)
+;		Roid\z#=EntityZ(Roid\Mesh)
+;		Local NameYield
+;		CameraProject(WorldCamera,Roid\X#, Roid\Y#, Roid\Z#)
+		If EntityInView(Roid\mesh,WorldCamera) = True Then
+			ShowEntity Roid\mesh
+		Else
+			HideEntity roid\mesh
+		EndIf
 		
 		MoveEntity Roid\mesh,0,Sin((MilliSecs()/50)),0
-		
-		If Ship_Function_Scanner= 1 Then
-			Local NameRoid$=EntityName(Roid\Mesh)
-			If Instr(NameRoid,"Iron")
-				NameYield = 1
-			ElseIf Instr(NameRoid,"Copper")
-				NameYield = 2
-			ElseIf Instr(NameRoid,"Gold")
-				NameYield = 3
-			ElseIf Instr(NameRoid,"Ice")
-				NameYield = 4
-			EndIf
-			
-			Select NameYield
-				Case NameYield = 1
-					EntityColor roid\mesh,255,100,100
-				Case NameYield = 2
-					EntityColor roid\mesh,255,150,100
-				Case NameYield = 3
-					EntityColor roid\mesh,255,255,255
-				Case NameYield = 4
-					EntityColor roid\mesh,128,128,255
-			End Select
-			EntityFX roid\mesh,1
-		Else
-			EntityColor roid\mesh,128,128,128
-			EntityFX roid\mesh,0
-		EndIf
-		
-		If EntityDistance(eShipBody,roid\mesh)<9000 And EntityInView(roid\mesh,WorldCamera) = True And Ship_Function_Scanner = 1 And HUD = 1
-			Text3D(Text_Font[6],D3DOL-(ProjectedX#()*-1), D3DOU-ProjectedY#(),EntityName(Roid\Mesh))
-		EndIf
 	Next
 End Function
 
@@ -2649,203 +2543,6 @@ End Function
 
 Function Battlefield_Update()
 	
-	If CurrentZone = Faction_Police Then
-		
-		Local Amount_FactionA, Amount_FactionB
-		
-		Existing_Total = Existing_Sirian + Existing_Terran
-		
-		Existing_Ratio_Total = Existing_Total
-		
-		If Existing_Ratio_Total > 0 Then
-			Existing_Ratio_Sirian = Existing_Sirian * 100 / Existing_Ratio_Total
-			Existing_Ratio_Terran = Existing_Terran * 100 / Existing_Ratio_Total
-		EndIf
-		
-		If Respawn_Timer < 1 Then
-			RespawnA=Rand(3,7)
-			If Existing_Sirian > 0 And Existing_Sirian < 8
-				
-				For A = 1 To RespawnA
-;					AI_Spawn(Rand(-40000,40000),Rand(-400,400),Rand(-40000,40000),Faction_Sirian, )
-				Next
-			EndIf
-			
-			RespawnA=Rand(3,7)
-			If Existing_Terran > 0 And Existing_Terran < 8
-				For A = 1 To RespawnA
-;					AI_Spawn(Rand(-40000,40000),Rand(-400,400),Rand(-40000,40000),Faction_Terran, )
-				Next
-			EndIf
-			Respawn_Timer=50
-			Capital_Respawn = Rand(4,6)
-			If Capital_Respawn = 6 Then
-;				PlaySound Sound_Explosion[4]
-;				AI_Spawn(Rand(-40000,40000),Rand(-400,400),Rand(-40000,40000),Rand(Faction_Terran,Faction_Sirian),Job_Capital,1)
-			EndIf
-			
-		EndIf
-		
-		If State_System_Ownership = 0 Then
-			If Existing_Terran < 5 And Existing_Terran < Existing_Sirian Then
-;				PlaySound Sound_Battlefield[5]
-				State_System_Ownership=-1
-			ElseIf Existing_Sirian < 5 And Existing_Sirian < Existing_Terran Then
-;				PlaySound Sound_Battlefield[7]
-				State_System_Ownership=1
-			EndIf
-		EndIf
-		
-		If Existing_Terran > 4 And Existing_Sirian > 4
-			State_System_Ownership = 0
-		EndIf
-		
-		If Existing_Terran = 0 And Switch_System_init > 2 Then 
-;			PlaySound Sound_Battlefield[6]
-			If Character_Value_Faction = Faction_Sirian Then 
-				Character_Value_XP = Character_Value_XP + (12500 * Upgrade_XP_Modifier)
-;				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
-			EndIf
-			CurrentZone = Faction_Sirian
-		ElseIf Existing_Sirian = 0 And Switch_System_init > 2 Then
-;			PlaySound Sound_Battlefield[8]
-			If Character_Value_Faction = Faction_Terran Then 
-				Character_Value_XP = Character_Value_XP + (12500 * Upgrade_XP_Modifier)
-;				AddChat("Gained "+(12500*Upgrade_XP_Modifier)+"XP for claiming a System!","Reward")
-			EndIf
-			CurrentZone = Faction_Terran
-		EndIf
-		
-		
-	EndIf
-	
-	If HUD = 1 
-		Select CurrentZone
-			Case Faction_Police
-				If Existing_Ratio_Total > 0 Then
-					Text3D(Text_Font[31],0,D3DOU-40,"Time for reinforcements: "+Respawn_Timer+"s",1)
-					DrawImage3D(GUI_Windows[14],0,D3DOU-100)
-					Local StartA = -99
-					Local StartB =  99
-					Select Character_Value_Faction
-						Case Faction_Sirian
-;							DrawImage3D(GUI_MainMenu_SImages[4],-128,D3DOU-100,0,0,0.2)
-;							DrawImage3D(GUI_MainMenu_SImages[5], 128,D3DOU-100,0,0,0.2)
-							
-							Amount_FactionA = Existing_Ratio_Sirian*2
-							Amount_FactionB = Existing_Ratio_Terran*2
-							
-							For	PaintX = 1 To Amount_FactionA
-;								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
-								StartA=StartA+1
-							Next
-							
-							For PaintX = 1 To Amount_FactionB
-;								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
-								StartB=StartB-1
-							Next
-							
-							Text3D(Text_Font[31], 128,D3DOU-140,Existing_Sirian+" Ships",1)
-							Text3D(Text_Font[31],-128,D3DOU-140,Existing_Terran+" Ships",1)
-							
-						Case Faction_Terran
-;							DrawImage3D(GUI_MainMenu_SImages[5],-128,D3DOU-100,0,0,0.2)
-;							DrawImage3D(GUI_MainMenu_SImages[4], 128,D3DOU-100,0,0,0.2)
-							
-							Amount_FactionB = Existing_Ratio_Sirian*2
-							Amount_FactionA = Existing_Ratio_Terran*2
-							
-							For PaintX = 1 To Amount_FactionA
-;								DrawImage3D(GUI_Buttons[7],StartA,D3DOU-100)
-								StartA=StartA+1
-							Next
-							
-							For PaintX = 1 To Amount_FactionB
-;								DrawImage3D(GUI_Buttons[8],StartB,D3DOU-100)
-								StartB=StartB-1
-							Next
-							
-							Text3D(Text_Font[31], 128,D3DOU-140,Existing_Sirian+" Ships",1)
-							Text3D(Text_Font[31],-128,D3DOU-140,Existing_Terran+" Ships",1)
-							
-					End Select
-				EndIf
-				
-;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
-				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
-				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
-				
-				Text3D(Text_Font[14],0, D3DOU - 170,System_Name$,1)
-				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
-			Case Faction_Sirian
-				
-				If Character_Value_Faction = Faction_Terran	Then
-					If Respawn_Timer < 1 Then
-						RespawnA=Rand(3,7)
-						If Existing_Terran > 0 And Existing_Terran < 8
-							For A = 1 To RespawnA
-;								AI_Spawn(EntityX(pvShip)+Rand(-10000,10000),EntityY(pvShip)+Rand(-10000,10000),EntityZ(pvShip)+Rand(-10000,10000),Faction_Sirian, )
-							Next
-						EndIf
-						Respawn_Timer=45
-					EndIf
-					Text3D(Text_Font[31],0,D3DOU-40,"Time for reinforcements: "+Respawn_Timer+"s",1)
-					
-					Text3D(Text_Font[31],0,D3DOU-260,"--> HOSTILE SPACE <--",1)
-				EndIf
-				
-;				DrawImage3D(GUI_MainMenu_SImages[4],0,D3DOU-100,0,0,0.5)
-				
-;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
-				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
-				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
-				
-				Text3D(Text_Font[14],0, D3DOU - 170,System_Name$,1)
-				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
-			Case Faction_Terran
-				
-				If Character_Value_Faction = Faction_Sirian	Then
-					If Respawn_Timer < 1 Then
-						RespawnA=Rand(3,7)
-						If Existing_Terran > 0 And Existing_Terran < 8
-							For A = 1 To RespawnA
-;								AI_Spawn(EntityX(pvShip)+Rand(-10000,10000),EntityY(pvShip)+Rand(-10000,10000),EntityZ(pvShip)+Rand(-10000,10000),Faction_Terran, )
-							Next
-						EndIf
-						Respawn_Timer=45
-					EndIf
-					Text3D(Text_Font[31],0,D3DOU-40,"Time for reinforcements: "+Respawn_Timer+"s",1)
-					
-					Text3D(Text_Font[31],0,D3DOU-260,"--> HOSTILE SPACE <--",1)
-				EndIf
-				
-;				DrawImage3D(GUI_MainMenu_SImages[5],0,D3DOU-100,0,0,0.5)
-;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
-				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
-				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
-				
-				Text3D(Text_Font[14],0, D3DOU - 170,System_Name$,1)
-				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
-				
-			Case Faction_Neutral
-;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
-				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
-				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
-				
-				Text3D(Text_Font[14],0, D3DOU - 170,System_Name$,1)
-				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
-				
-			Default
-				
-;				DrawImage3D(GUI_Rank[Character_Value_Level],D3DOL+70,D3DOU-70)
-				Text3D(Text_Font[14],D3DOL+70,D3DOU-112,String_Rank[Character_Value_Level],1)
-				Text3D(Text_Font[11],D3DOL+70,D3DOU-132,Level_Progress+"%",1)
-				
-				Text3D(Text_Font[14],0, D3DOU - 170,System_Name$,1)
-				Text3D(Text_Font[11],0, D3DOU - 190,CurrentZoneText$,1)
-				
-		End Select
-	EndIf
 	
 End Function
 
@@ -2865,24 +2562,6 @@ Function WorldTimers_Update()
 ;		If Mine\Timer > 0 Then Mine\Timer = Mine\Timer - 1
 ;	Next
 	
-End Function
-
-Type Flag
-	Field Mesh, TLevel
-End Type
-
-Function Gateflag_Create(x,y,z,texture,subtype=1)
-	GFlag.Flag = New Flag
-	GFlag\Mesh = CreateSprite()
-	SpriteViewMode GFlag\mesh, 2
-	PositionEntity GFlag\Mesh,x,y,z
-	PointEntity GFlag\mesh,Object_Zero
-	ScaleSprite GFLag\Mesh,1500,1500
-;	EntityTexture GFlag\Mesh,Text_Flag[texture]
-	EntityFX GFLag\Mesh,1+16+32
-	If subtype = 1 Then MoveEntity GFlag\Mesh,12000,0,0
-	If subtype = 2 Then MoveEntity GFlag\Mesh,-12000,0,0
-;	VirtualScene_Register(Scene,GFlag\mesh)
 End Function
 
 Function Worldmap_Display()
@@ -2973,61 +2652,6 @@ Function Worldmap_Display()
 	EndIf
 End Function
 
-Type RaceTrack
-	Field Mesh, ID
-End Type
-
-Function RaceTrack_Create(StartX, StartY, StartZ, Segments)
-    Local PitchRange# = 60.0    ; Min/Max Pitch Änderung
-    Local YawRange# = 60.0        ; Min/Max Yaw Änderung
-    Local CurveStrength# = 0.4    ; Stärke der Änderung relativ zu vorher (1.0 = Voll, 2.0 = Doppelt, 0.5 = Hälfte). Niedrigere Werte führen zu besseren Ergebnissen
-    Local GateDistance# = 4500.0; Distanz einzelner Tore
-    Local LastGateEntity = 0
-	Racetrack_Max=Segments
-	
-    For Idx = 1 To Segments
-        Local TrackSegment.RaceTrack = New RaceTrack
-        TrackSegment\Mesh = CopyEntity(Mesh_Gate[4])
-;        VirtualScene_Register(Scene, TrackSegment\Mesh)
-        RaceTrack_BaseID = RaceTrack_BaseID + 1
-        TrackSegment\ID = RaceTrack_BaseID
-		
-        If LastGateEntity <> 0
-            PositionEntity TrackSegment\Mesh, EntityX(LastGateEntity,1), EntityY(LastGateEntity,1), EntityZ(LastGateEntity,1), 1
-            RotateEntity TrackSegment\Mesh, EntityPitch(LastGateEntity,1), EntityYaw(LastGateEntity,1), EntityRoll(LastGateEntity,1), 1
-			
-            Local RndPitch# = Rnd(-PitchRange, +PitchRange) * CurveStrength
-            Local RndYaw# = Rnd(-YawRange, +YawRange) * CurveStrength
-            TurnEntity TrackSegment\Mesh, RndPitch, RndYaw, 0
-			
-            MoveEntity TrackSegment\Mesh, 0, 0, GateDistance
-			
-            PointEntity LastGateEntity, TrackSegment\Mesh
-        Else
-            PositionEntity TrackSegment\Mesh, StartX, StartY, StartZ
-            RotateEntity TrackSegment\Mesh, Rnd(-360, 360), Rnd(-360, 360), Rnd(-360, 360)
-        EndIf
-        LastGateEntity = TrackSegment\Mesh
-    Next
-End Function
-
-Function RaceTrack_Update()
-	For TrackSegment.Racetrack = Each RaceTrack
-		MoveEntity TrackSegment\Mesh,0,(Sin(MilliSecs()+TrackSegment\ID)/10),0
-		If RaceTrack_Active = TrackSegment\ID Then
-			EntityColor TrackSegment\Mesh,0,255,0
-			If EntityDistance(TrackSegment\Mesh,eShipBody)<850 Then
-				RaceTrack_Active = RaceTrack_Active + 1
-			EndIf
-		Else
-			EntityColor TrackSegment\Mesh,255,0,0
-		EndIf
-		
-	Next
-	If RaceTrack_Active>Racetrack_Max Then RaceTrack_Active=1
-	
-End Function
-
 Function LoadSkyBox(TxID, Parent%=0)
 	Local texFlags=1+512;+16+32+512
 	
@@ -3103,25 +2727,25 @@ Function Lighting_Initialize()
 ;	VirtualScene_Register(Scene, Object_Light[0])
 	
 ;	LightRange Object_Light[0],200000000000
-	
-    Object_Environment[1] = LoadSprite("Content\GFX\Environment\sun\Sun_Sprite_Body.png", 2, Object_Light[0]) ;!ToDo: AssetManager
-	SpriteViewMode Object_Environment[1], 2
-	ScaleSprite Object_Environment[1], SunScale, SunScale
-	
-	EntityFX Object_Environment[1],1 + 4 + 8 + 16
-	Light_Pivot=CreatePivot(Object_Environment[1])
-	
-	Object_Environment[2] = LoadTexture("Content\GFX\Environment\Sun\sun_sprite_effect.png",1+2)
-	TextureBlend Object_Environment[2],2
-	ScaleTexture Object_Environment[2],0.8,0.8
-	EntityTexture Object_Environment[1],Object_Environment[2],0,2
-	
-	LightX=EntityX(Object_Environment[1])
-	LightY=EntityY(Object_Environment[1])
-	LightZ=EntityZ(Object_Environment[1])
-	
-	System_Flashlight = CreateLight(3,WorldCamera)
-	
+;	
+;    Object_Environment[1] = LoadSprite("Content\GFX\Environment\sun\Sun_Sprite_Body.png", 2, Object_Light[0]) ;!ToDo: AssetManager
+;	SpriteViewMode Object_Environment[1], 2
+;	ScaleSprite Object_Environment[1], SunScale, SunScale
+;	
+;	EntityFX Object_Environment[1],1 + 4 + 8 + 16
+;	Light_Pivot=CreatePivot(Object_Environment[1])
+;	
+;	Object_Environment[2] = LoadTexture("Content\GFX\Environment\Sun\sun_sprite_effect.png",1+2)
+;	TextureBlend Object_Environment[2],2
+;	ScaleTexture Object_Environment[2],0.8,0.8
+;	EntityTexture Object_Environment[1],Object_Environment[2],0,2
+;	
+;	LightX=EntityX(Object_Environment[1])
+;	LightY=EntityY(Object_Environment[1])
+;	LightZ=EntityZ(Object_Environment[1])
+;	
+;	System_Flashlight = CreateLight(3,WorldCamera)
+;	
 	
 ;	EntityOrder Object_Environment[1],1
 End Function
@@ -3162,11 +2786,11 @@ Function CreateMainDust()
 	Zone_Dust_Handle=DST_Create_Dust(WorldCamera,100,1)
 	Zone_Dust_Base=DST_Create_Dustzone(Zone_Dust_Handle)
 	DST_Set_ZoneRadius(Zone_Dust_Base,300)
-;	DST_Set_texture(Zone_Dust_Base,Text_Effects[9],1+2+4)
+	DST_Set_texture(Zone_Dust_Base,Text_Effects[0],1+2+4)
 	DST_Set_FadingFar(Zone_Dust_Base,200,150)
 	DST_Set_AlphaRange(Zone_Dust_Base,0.4,0.7)
 	DST_Set_Dense(Zone_Dust_Base,1)
-	DST_Set_ScaleRange(Zone_Dust_Base,.125,.25)
+	DST_Set_ScaleRange(Zone_Dust_Base,.25,.5)
 	DST_Set_FX(Zone_Dust_Base,1)
 	DST_Set_Blend(Zone_Dust_Base,3)
 	DST_Set_SpeedBlur(Zone_Dust_Base,15)
@@ -3774,5 +3398,10 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#2B#6B#82#9B#B3#CB#E5D
+;~F#44#66#7D#96#AE#C6#DF#F8#110#128#13F#158#170#187#19F#1B6#1CD#1E4#1FB#212
+;~F#229#240#257#26E#285#29C#2B3#2CA#2E1#2F8#30F#326#33D#354#36B#382#399#3B0#3C7#3DE
+;~F#3F5#40C#423#43A#451#468#47F#496#4AD#4C4#4DB#4F2#509#520#537#54E#565#57C#593#5AA
+;~F#5C1#5D8#5EF#606#61D#634#64B#662#679#690#6A7#6BE#6D5#6EC#703#71A#731#748#75F#776
+;~F#78D#7A4#7BB#7D2#7EB#8A5#8F3#92D#988#98E#9A3#9CC#9D5#9EF#9F4#A06#A5E#A9A#AC0#AD0
+;~F#ADA#AF0#B1A#B20#B25#B94#BAD#BCA#C01#C06#C0C#C4A#C6B#C76#CAA#CBF#CD2#CE5
 ;~C#Blitz3D

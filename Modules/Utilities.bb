@@ -852,19 +852,9 @@ Function PlayerSwitchShip(sid)
 ;	VirtualScene_Unregister(Scene, eShipBody)
 	
 	FreeEntity eShipBody
-	Character_Value_Ship = sid
-	Select sid
-		Case 1
-			eShipBody = CopyEntity (Mesh_Ship[1],eShip)
-		Case 2
-			eShipBody = CopyEntity (Mesh_Ship[2],eShip)
-		Case 3
-			eShipBody = CopyEntity (Mesh_Ship[6],eShip)
-		Case 4
-			eShipBody = CopyEntity (Mesh_Ship[7],eShip)
-		Case 5
-			eShipBody = CopyEntity (Mesh_Ship[5],eShip)
-	End Select
+;	Character_Value_Ship = sid
+	
+	eShipBody = CopyEntity (Mesh_Ship[sid],eShip)
 	GetPlayerShipValues(sid)
 	
 	
