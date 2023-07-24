@@ -38,10 +38,20 @@ Function PreloadUI()
 	Local LoadCounter = 1
 	Repeat
 		Local LoadData$ = ReadLine(LoadOrder)
-		GUI_Windows[LoadCounter]=LoadImage3D("Assets\2D\Menu\"+LoadData$,2,2,0,-99);("Assets\2D\Menu\"+LoadData$, 2)
+		GUI_Windows[LoadCounter]=LoadImage3D("Assets\2D\Menu\"+LoadData$,2,2,0,-99)
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
+	
+	LoadCounter = 1
+	LoadOrder = OpenFile("Assets\Manifest\LoadUI.lof")
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
+		GUI_Game[LoadCounter]=LoadImage3D("Assets\2D\GUI\"+LoadData$+".png",2,2,0,-99)
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	
 	
 End Function
 
@@ -84,29 +94,21 @@ Function PreloadMesh()
 		Text_Station[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
 		Text_Station_FX[LoadCounter]	=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
 		TextureBlend Text_Station_FX[LoadCounter],3
-		EntityTexture Mesh_Station[LoadCounter],Text_Station[LoadCounter],0,0
-		EntityTexture Mesh_Station[LoadCounter],Text_Station_FX[LoadCounter],0,1
+		EntityTexture Mesh_Station[LoadCounter],Text_Station[LoadCounter],0,1
+		EntityTexture Mesh_Station[LoadCounter],Text_Station_FX[LoadCounter],0,2
+		RotateMesh Mesh_Station[LoadCounter],0,180,180
 		HideEntity Mesh_Station[LoadCounter]
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
 	;[End Block]
 	
-	;[Block] Asteroids
-	LoadOrder = OpenFile("Assets\Manifest\LoadStations.lof")
-	LoadCounter = 1
-	Repeat
-		LoadData$ = ReadLine(LoadOrder)
-		Mesh_Station[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Mesh.3DS")
-		Text_Station[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
-		Text_Station_FX[LoadCounter]	=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
-		TextureBlend Text_Station_FX[LoadCounter],3
-		EntityTexture Mesh_Station[LoadCounter],Text_Station[LoadCounter],0,0
-		EntityTexture Mesh_Station[LoadCounter],Text_Station_FX[LoadCounter],0,1
-		HideEntity Mesh_Station[LoadCounter]
-		LoadCounter = LoadCounter + 1
-	Until Eof(LoadOrder)
-	CloseFile LoadOrder
+	;[Block] Environment
+	Mesh_Environment[0] = CreateSprite()
+	Text_Environment[0] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Sun.png",1+2)
+	EntityTexture Mesh_Environment[0], Text_Environment[0]
+	EntityFX Mesh_Environment[0],0
+	
 	;[End Block]
 	
 	;[Block] Gate
@@ -130,10 +132,7 @@ Function PreloadMesh()
 	For A = 1 To 4
 		Mesh_Asteroid[a]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Asteroids\Asteroid"+a+"_Mesh.3DS")
 		Text_Asteroid[a]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Asteroids\Asteroid"+a+"_Color.jpg")
-		Text_Asteroid_FX[a]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Asteroids\Asteroid"+a+"_Normal.jpg")
-		TextureBlend Text_Asteroid_FX[a],4
 		EntityTexture Mesh_Asteroid[a],Text_Asteroid[a],0,1
-		EntityTexture Mesh_Asteroid[a],Text_Asteroid_FX[a],0,0
 		HideEntity Mesh_Asteroid[a]
 	Next
 	;[End Block]
@@ -152,6 +151,7 @@ Function PreloadMesh()
 	
 		Text_SkyCM[LoadCounter] = MakeCubeFromXYZTex(LoadCounter)
 		SetCubeMode Text_SkyCM[LoadCounter], 3
+		LoadCounter= LoadCounter + 1
 	Until Eof(LoadOrder)
 	;[End Block]
 	

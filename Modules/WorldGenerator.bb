@@ -2045,7 +2045,6 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 			Asteroid_Belt_Create(Rand(8,10),3,-50000,0,-50000,15000)
 			Asteroid_Belt_Create(Rand(28,50),4,50000,0,-50000,15000)
 			
-			CreateGate(999,1000,0,10000,0,0,0)
 			
 ;			Override_Spawns = 1
 			; Station
@@ -2197,8 +2196,6 @@ Function World_Generate(SystemID, TX#, TY#, TZ#)
 ;	End Select
 	;[End Block]
 	
-	AmbientLight 60, 55, 50
-	
 	SeedRnd MilliSecs()
 	
 	;HidingLostSHips
@@ -2289,118 +2286,100 @@ Function World_Clear()
 	
 End Function
 
-Function CreateGate(Target_System, PosX, PosY, PosZ, TX, TY, TZ)
+Function CreateGate(Target_System, PosX, PosY, PosZ, Pitch, Yaw, Roll, TX, TY, TZ)
 	
 	Portal.Stargate = New Stargate
 	Portal\Mesh = CopyEntity(Mesh_Gate[1])
-	Portal\Mesh_Effect = CopyEntity(Mesh_Gate[2])
-	Portal\Mesh_Effect_Horizon = CopyEntity(Mesh_Gate[3])
-	Portal\JumpOBB = CreateOBB(PosX, PosY, PosZ, 0, 0, 0, 4500, 2000, 60)
-	Portal\Target_Sky=TSky
+	Portal\Mesh_Effect = CopyEntity(Mesh_Gate[2],Portal\Mesh)
 	
-;	Gateflag_Create(PosX,PosY,PosZ,String_SystemFaction[Target_System],1)
-;	Gateflag_Create(PosX,PosY,PosZ,String_SystemFaction[Target_System],2)
+	ScaleEntity Portal\Mesh,40,40,40
 	
-	ScaleEntity Portal\Mesh,10,10,10
-	ScaleEntity Portal\Mesh_Effect_Horizon,10,10,10
-	ScaleEntity Portal\Mesh_effect,9.99,9.99,9.99
-	
-	
+	RotateEntity Portal\Mesh, Pitch,Yaw, Roll	
 	PositionEntity Portal\Mesh,PosX,PosY,PosZ
-	PositionEntity Portal\Mesh_Effect,PosX,PosY,PosZ
-	PositionEntity Portal\Mesh_Effect_Horizon,PosX,PosY,PosZ
 	
 	EntityFX Portal\Mesh_Effect,1+16
-	EntityFX Portal\Mesh_Effect_Horizon,1
 	
-	Portal\Target_System = Target_System
-	Portal\TX = TX
-	Portal\TY = TY
-	Portal\TZ = TZ
-	Portal\Target_Sky = String_SystemRegion[Target_System]
-	
-	EntityTexture Portal\Mesh_effect, Text_SkyCM[Portal\Target_Sky],0
-	EntityTexture Portal\Mesh_effect_Horizon, Text_Gate[0],0
-	
-	EntityAlpha Portal\Mesh_effect,0.92
-	EntityAlpha Portal\Mesh_effect_Horizon,0.4
-	
-;	VirtualScene_Register(Scene,Portal\Mesh)
-;	VirtualScene_Register(Scene,Portal\Mesh_Effect)
-;	VirtualScene_Register(Scene,Portal\Mesh_Effect_HOrizon)
-	
-	EntityAutoFade portal\mesh_effect, 20000,21000
-	
-	PointEntity Portal\mesh,Object_Zero
-	PointEntity Portal\mesh_effect,Object_Zero
-	PointEntity Portal\mesh_effect_horizon,Object_Zero
-	PointEntity Portal\JumpOBB,Object_Zero
-	
-	MoveEntity portal\mesh_effect,0,0,-20
-	
-	EntityAutoFade portal\mesh_effect_horizon, 35000,37000
+	EntityAutoFade Portal\mesh,100000,150000
+	EntityAutoFade Portal\mesh_Effect,500000,550000
 	
 	
-	CreateMapPoint(PosX, PosY, PosZ,4)
+;	Portal\Target_System = Target_System
+;	Portal\TX = TX
+;	Portal\TY = TY
+;	Portal\TZ = TZ
+;	Portal\Target_Sky = String_SystemRegion[Target_System]
+;	
+;	EntityAlpha Portal\Mesh_effect,0.92
 	
-;	TraderPOI_Create(PosX, PosY, PosZ, 1)
-	
+	CreateMapPoint(PosX, PosY, PosZ, 2)
 End Function
 
 Function UpdateGates()
 	Local Gate_Jump = 0
-	For Portal.Stargate = Each Stargate
+;	For Portal.Stargate = Each Stargate
 		
-		If EntityDistance(pvShip, portal\mesh)<10000 And EntityInView(Portal\Mesh,WorldCamera)=True And HUD=1 Then
-			Text3D(Text_Font[31],0,D3DOU-440,"Gate: "+String_SystemName[Portal\Target_System],1)
-		EndIf
-		
-		MoveEntity Portal\mesh_effect,0,0,Sin(MilliSecs())
-		
-		If EntityInOBB(Portal\JumpOBB, eShip) Then
-			Local Future_System = Portal\Target_System
-			Local TX = Portal\TX
-			Local TY = Portal\TY
-			Local TZ = Portal\TZ
-;			If GUI_Cooldown[0] < 1 Then
-;				Gate_Jump = 1
-;				GUI_Cooldown[0] = 60
-;			EndIf
-			Exit
-		EndIf
-	Next
-	If Gate_Jump = 1 Then
-		World_Clear()
-		Character_Value_System=Future_System
-		World_Generate(Future_System, TX, TY, TZ)
-	EndIf
+;		If EntityDistance(pvShip, portal\mesh)<10000 And EntityInView(Portal\Mesh,WorldCamera)=True And HUD=1 Then
+;			Text3D(Text_Font[31],0,D3DOU-440,"Gate: "+String_SystemName[Portal\Target_System],1)
+;		EndIf
+;		
+;		MoveEntity Portal\mesh_effect,0,0,Sin(MilliSecs())
+;		
+;		If EntityInOBB(Portal\JumpOBB, eShip) Then
+;			Local Future_System = Portal\Target_System
+;			Local TX = Portal\TX
+;			Local TY = Portal\TY
+;			Local TZ = Portal\TZ
+;;			If GUI_Cooldown[0] < 1 Then
+;;				Gate_Jump = 1
+;;				GUI_Cooldown[0] = 60
+;;			EndIf
+;			Exit
+;		EndIf
+;	Next
+;	If Gate_Jump = 1 Then
+;		World_Clear()
+;		Character_Value_System=Future_System
+;		World_Generate(Future_System, TX, TY, TZ)
+;	EndIf
 End Function
 
-Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, BeltRange, AvgYield=15)
-;	TraderPOI_Create(BeltX, BeltY, BeltZ, 0)
+Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, BeltRange, AvgYield=15, spawnangle=90)
 	For i = 1 To NumberOfRoids
 		Roid.Belt=New Belt
-		Roid\x#=Rand(-90+Angle,90+Angle)		
+		Roid\x#=Rand(-spawnangle,spawnangle)		
 		Roid\y#=Rand(-180,180)
 		Roid\z#=Rand(BeltRange/10,BeltRange)
 		
 		Roid\Chance=Rand(ChanceofYield-5,ChanceofYield+5)
 		Roid\maxyield=Roid\chance
 		
-		Roid\Toy=TypeOfYield
-		
-		
+		Roid\ToY=TypeOfYield
 		BaseCollisionSize = 2
 		
 		Local RoidCopy = Rand(1,4)
 		Roid\mesh = CopyEntity(Mesh_Asteroid[RoidCopy])
 		
-		Roid\siz#=Rnd(.8,9)
+		Roid\siz#=Rnd(.8,7)
 		
 		PositionEntity roid\mesh, BeltX, BeltY, BeltZ
 		Roid\tur#=Rnd(0.1,359)
 		RotateEntity Roid\Mesh, Roid\y#, Roid\x#, roid\z#
 		ScaleEntity Roid\mesh, Roid\siz#, Roid\siz#, Roid\siz#
+		
+		Select Roid\ToY
+			Case 0 ;Astralite Cheap
+				EntityColor roid\mesh,155,155,155
+			Case 1 ;Ferronite Fe
+				EntityColor roid\mesh,170,155,155
+			Case 2 ;Silichrone Si/Mn
+				EntityColor roid\mesh,155,155,170
+			Case 3 ;Cryospar H2/O2
+				EntityColor roid\mesh,140,155,170
+			Case 4 ;Voltium Ag/Au
+				EntityColor roid\mesh,170,170,140
+			Case 5 ;Valorisite MONEY
+				EntityColor roid\mesh,155,140,170
+		End Select
 		
 		
 		
@@ -2410,15 +2389,15 @@ Function Asteroid_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, B
 		
 		MoveEntity Roid\Mesh,0,0, Roid\z
 		TurnEntity roid\mesh,Rand(0,360),Rand(0,360),Rand(0,360)
-		EntityAutoFade Roid\Mesh, 90000,100000
-;		If TypeOfYield_Fixed = 5 Then
-;			PointEntity Roid\mesh,Object_Light[0]
-;		EndIf
 		
-;		If TypeOfYield_Fixed = 5 Then TurnEntity roid\mesh,0,0,Rnd(0.0,359.0)
+		CreateMapPoint(EntityX(Roid\Mesh), EntityY(Roid\mesh), EntityZ(roid\Mesh), 1)
+		
+		EntityAutoFade roid\mesh,90000,115000
+		EntityType roid\mesh,Collision_Object,True
+		
 	Next
 	
-	CreateMapPoint(BeltX, BeltY, BeltZ, 1)
+	
 End Function
 
 Function UpdateBelt()
@@ -2714,54 +2693,33 @@ End Function
 
 Function Lighting_Initialize()
 	
-	Local SunScale# = 9000
+	Local SunScale# = 90000
 	Local SunColorR = 200
 	Local SunColorG = 210
 	Local SunColorB = 255
 	
     ; Sun
 	
-	Object_Environment[0] = CreatePivot()
+	Object_Environment[0] = CopyEntity(Mesh_Environment[0])
 	
-	Object_Light[0] = CreateLight(1, Object_Environment[0]):
-;	VirtualScene_Register(Scene, Object_Light[0])
-	
-;	LightRange Object_Light[0],200000000000
-;	
-;    Object_Environment[1] = LoadSprite("Content\GFX\Environment\sun\Sun_Sprite_Body.png", 2, Object_Light[0]) ;!ToDo: AssetManager
-;	SpriteViewMode Object_Environment[1], 2
-;	ScaleSprite Object_Environment[1], SunScale, SunScale
-;	
-;	EntityFX Object_Environment[1],1 + 4 + 8 + 16
-;	Light_Pivot=CreatePivot(Object_Environment[1])
-;	
-;	Object_Environment[2] = LoadTexture("Content\GFX\Environment\Sun\sun_sprite_effect.png",1+2)
-;	TextureBlend Object_Environment[2],2
-;	ScaleTexture Object_Environment[2],0.8,0.8
-;	EntityTexture Object_Environment[1],Object_Environment[2],0,2
-;	
-;	LightX=EntityX(Object_Environment[1])
-;	LightY=EntityY(Object_Environment[1])
-;	LightZ=EntityZ(Object_Environment[1])
-;	
-;	System_Flashlight = CreateLight(3,WorldCamera)
-;	
-	
-;	EntityOrder Object_Environment[1],1
+	Object_Light[0] = CreateLight(1, Object_Environment[0])
+	Object_Light[1] = CreateLight(1, Object_Environment[0]):RotateEntity Object_Light[1],0,180,0
+	LightColor Object_Light[1],250,250,250
+;	LightColor Object_Light[1],50,50,50
 End Function
 
 Function Modify_Light(RotX,RotY,Scale)
 	
 	
 	RotateEntity Object_Environment[0], RotX, RotY, 0, True
-	ScaleSprite Object_Environment[1], Scale, Scale
+	ScaleSprite Object_Environment[0], Scale, Scale
 	
 	PositionEntity Object_Light[0], 0,0,0
 	MoveEntity Object_Light[0],0,0,150000
 	PointEntity Object_Light[0], WorldCamera
-	PointEntity Object_Environment[1], WorldCamera
+	PointEntity Object_Environment[0], WorldCamera
 	
-	EntityColor Object_Environment[1],255,255,255
+	EntityColor Object_Environment[0],255,255,255
 ;	EntityFX Object_Environment[1],1
 	
 End Function
@@ -2798,51 +2756,60 @@ Function CreateMainDust()
 End Function
 
 
-Function Asset_Station_Create(x,y,z,Rotation=0, Station_Subtype=1, Station_Faction=1)
+Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, Station_Faction=1)
+	
 	da.Station = New Station
-	da\Mesh_Essential=CopyEntity(Mesh_Station[1])
-	da\Mesh_Factory=CopyEntity(Mesh_Station[3])
-	da\Mesh_Power=CopyEntity(Mesh_Station[4])
-	da\Mesh_RIng=CopyEntity(Mesh_Station[2])
+	da\Mesh = CopyEntity(Mesh_Station[Station_Subtype])
+	da\StaSub = Station_Subtype
+	Select Station_Subtype
+		Case 3
+			da\tables = CopyEntity(Mesh_Station[4],da\mesh)
+			ScaleEntity da\tables,2,2,2
+			MoveEntity da\tables,0,-17.5,1
+			da\effect = CopyEntity(Mesh_Asteroid[1], da\mesh)
+			da\Utility = CopyEntity(Mesh_Asteroid[2], da\mesh)
+		Case 2
+			da\Tables = CreatePivot()
+			da\Utility = CopyEntity(Mesh_Station[5],da\mesh) 
+			da\effect = CreatePivot()
+		Default 
+			da\Tables = CreatePivot()
+			da\Utility = CreatePivot()
+			da\effect = CreatePivot()
+	End Select
 	
-	Respawn_Create(x,y,z)
-;	TraderPOI_Create(x, y, z, 0)
 	
-;	AI_Turret_Create(da\Mesh_Ring,9999,Faction_Neutral,-1000,0,-1000)
-;	AI_Turret_Create(da\Mesh_Ring,9999,Faction_Neutral,+1000,0,-1000)
+	Select Station_Subtype
+		Case 3
+			ScaleEntity da\mesh,35,35,35
+			ScaleEntity da\utility, 0.75,0.75,0.75
+			ScaleEntity da\effect, 0.3,0.3,0.3
+			MoveEntity da\effect, 330,30,415
+		Case 2
+			ScaleEntity da\mesh,25,25,25
+;			ScaleEntity da\utility,2,2,1
+		Default 
+			ScaleEntity da\mesh,35,35,35
+	End Select
 	
-	PositionEntity da\Mesh_Essential,x,y,z
-	PositionEntity da\Mesh_Factory,x,y,z
-	PositionEntity da\Mesh_Power,x,y,z
-	PositionEntity da\Mesh_Ring,x,y,z
-	
-	EntityAutoFade da\Mesh_Essential,160000,181500
-	EntityAutoFade da\Mesh_Factory,160000,181500
-	EntityAutoFade da\Mesh_Power,120000,141500
-	EntityAutoFade da\Mesh_Ring,100000,111500
-	
-	ScaleEntity da\Mesh_Essential,120,120,120
-	ScaleEntity da\Mesh_Factory,120,120,120
-	ScaleEntity da\Mesh_Power,120,120,120
-	ScaleEntity da\Mesh_Ring,120,120,120
-	
-	RotateEntity da\Mesh_Essential,0,Rotation,0
-	RotateEntity da\Mesh_Factory,0,Rotation,0
-	RotateEntity da\Mesh_Ring,0,Rotation,0
-	RotateEntity da\Mesh_Power,0,Rotation,0
-	
-;	VirtualScene_Register(Scene, da\Mesh_Essential)
-;	VirtualScene_Register(Scene, da\Mesh_Factory)
-;	VirtualScene_Register(Scene, da\Mesh_Power)
-;	VirtualScene_Register(Scene, da\Mesh_Ring)
+	PositionEntity da\mesh,x,y,z
+	RotateEntity da\mesh,0,Rotation,0
 	
 	CreateMapPoint(x,y,z,2)
+	
+	EntityType da\mesh,Collision_Object,True
 	
 End Function
 
 Function UpdateStation()
 	For da.station= Each Station
-		TurnEntity da\Mesh_Ring,0,0,0.04
+		Select da\StaSub
+			Case 3
+				TurnEntity da\utility,0,-0.025,0.025
+				TurnEntity da\effect,0,0.025,-0.025
+			Case 2
+				TurnEntity da\utility,0,0,0.15
+		End Select
 	Next
 End Function
 
@@ -2969,11 +2936,7 @@ Function Special_Update()
 				TurnEntity Disc\Mesh,Disc\Rot/30,disc\rot/20,Disc\Rot#/10
 				Disc\Rot#=1
 			Case 2
-				da.Station = First Station
-				PointEntity Disc\Secmesh,da\mesh_power
-				Local EDist = EntityDistance(DIsc\Mesh,da\mesh_Power)/6
-				ScaleEntity Disc\BeamMesh,50,50,EDist
-				PointEntity Disc\Beammesh,da\mesh_Power
+				
 			Case 3
 				TurnEntity DIsc\Secmesh,0,.1,0
 				TurnEntity DIsc\Framemesh,0,.1,0
@@ -3398,10 +3361,10 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#44#66#7D#96#AE#C6#DF#F8#110#128#13F#158#170#187#19F#1B6#1CD#1E4#1FB#212
-;~F#229#240#257#26E#285#29C#2B3#2CA#2E1#2F8#30F#326#33D#354#36B#382#399#3B0#3C7#3DE
-;~F#3F5#40C#423#43A#451#468#47F#496#4AD#4C4#4DB#4F2#509#520#537#54E#565#57C#593#5AA
-;~F#5C1#5D8#5EF#606#61D#634#64B#662#679#690#6A7#6BE#6D5#6EC#703#71A#731#748#75F#776
-;~F#78D#7A4#7BB#7D2#7EB#8A5#8F3#92D#988#98E#9A3#9CC#9D5#9EF#9F4#A06#A5E#A9A#AC0#AD0
-;~F#ADA#AF0#B1A#B20#B25#B94#BAD#BCA#C01#C06#C0C#C4A#C6B#C76#CAA#CBF#CD2#CE5
+;~F#66#7D#96#AE#C6#DF#F8#110#128#13F#158#170#187#19F#1B6#1CD#1E4#1FB#212#229
+;~F#240#257#26E#285#29C#2B3#2CA#2E1#2F8#30F#326#33D#354#36B#382#399#3B0#3C7#3DE#3F5
+;~F#40C#423#43A#451#468#47F#496#4AD#4C4#4DB#4F2#509#520#537#54E#565#57C#593#5AA#5C1
+;~F#5D8#5EF#606#61D#634#64B#662#679#690#6A7#6BE#6D5#6EC#703#71A#731#748#75F#776#78D
+;~F#7A4#7BB#7D2#8A2#973#979#98E#9B7#9C0#9DA#9DF#9F1#A49#AA6#AB0#AB6#AFF#B04#B88#BA5
+;~F#BDC#BE1#BE7#C25#C46#C51#C85#C9A#CAD#CC0#D06
 ;~C#Blitz3D

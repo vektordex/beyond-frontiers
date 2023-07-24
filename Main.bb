@@ -106,7 +106,6 @@ CameraZoom CameraScene, 1.0 / Tan(90 / 2.0)
 DrawInit3D(CameraScene)
 
 ; Collisions
-Collisions_Initialize()
 
 ;----------------------------------------------------------------
 ;! Game - Loading Screen
@@ -188,7 +187,6 @@ Repeat
 				For A = 1 To 4
 					LoadMeshAsset("Assets\3D\Asteroids\Asteroid"+a+"_Mesh.3DS")
 					LoadTextureAsset("Assets\3D\Asteroids\Asteroid"+a+"_Color.jpg")
-					LoadTextureAsset("Assets\3D\Asteroids\Asteroid"+a+"_Normal.jpg")
 				Next
 				;[End Block]
 				
@@ -204,6 +202,8 @@ Repeat
 					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"UP.png",561)
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
+				
+				LoadTextureAsset("Assets\3D\Environment\sun.png",1+2)
 				;[End Block]
 				;[End Block]
 				
@@ -232,6 +232,15 @@ Repeat
 				Repeat
 					LoadData$ = ReadLine(LoadOrder)
 					LoadTextureAsset("Assets\2D\Menu\"+LoadData$, 2)
+				Until Eof(LoadOrder)
+				CloseFile LoadOrder
+				;[End Block]
+				
+				;[Block] Game GUI
+				LoadOrder = OpenFile("Assets\Manifest\LoadUI.lof")
+				Repeat
+					LoadData$ = ReadLine(LoadOrder)
+					LoadTextureAsset("Assets\2D\GUI\"+LoadData$+".png", 2)
 				Until Eof(LoadOrder)
 				CloseFile LoadOrder
 				;[End Block]
@@ -1072,6 +1081,7 @@ Music_Volume#=.2
 Music_Update()
 
 Lighting_Initialize()
+Modify_Light(15,0,90000)
 
 CreateListener(WorldCamera, 0.0025, 8, 20000)
 
@@ -1089,11 +1099,11 @@ Global nearestdist#,nearestscale#,nearestname%,nearestglowscale#
 
 
 
-PlayerSwitchShip(9)
+PlayerSwitchShip(11)
 GetPlayerShipValues(1)
-
+;
 ;CameraFogMode WorldCamera,True
-;CameraFogRange WorldCamera,4300,9200
+;CameraFogRange WorldCamera,18000,22000
 ;CameraFogColor WorldCamera,200,255,255
 
 
@@ -1116,56 +1126,35 @@ Global DebugInfo_Enabled
 ;[End Block]
 
 ;World_Generate(2, 0,0,0)
-Object_Environment[2] = LoadSkyBox(1)
-Cube = CreateCube()
-ScaleEntity Cube,10,10,15
+Object_Environment[2] = LoadSkyBox(6)
 
 ;Testing all Ships
-Local Testmesh[18], Teststation[4], TestGate[8]
-For A = 1 To 12
+Local Testmesh[11], Teststation[4], TestGate[8]
+For A = 1 To 11
 	Testmesh[a] = CopyEntity(Mesh_Ship[a])
-	PositionEntity Testmesh[a],300*a,0,200
+	PositionEntity Testmesh[a],1300*a,0,200
 Next
 
-
-For B = 1 To 3
-	Teststation[b] = CopyEntity(Mesh_Station[b])
-	ScaleEntity Teststation[b],24,24,24
-	RotateEntity Teststation[b],0,180,180
-	PositionEntity Teststation[b],-30000+15000*b,0,20000
-Next
-
-Teststation[4] = CopyEntity(Mesh_Station[4])
-ScaleEntity Teststation[4],24,24,24
-RotateEntity Teststation[4],180,0,0
-PositionEntity Teststation[4],-30000+15000*3,0,20000
-
-TestGate[1] = CopyEntity(Mesh_Gate[1])
-TestGate[2] = CopyEntity(Mesh_Gate[2], TestGate[1])
-ScaleEntity TestGate[1],25,25,25
-MoveEntity TestGate[1],0,0,-200000
+Asset_Station_Create(-250000,0,250000,1)
+Asset_Station_Create( 100000,0,-250000,2,45)
+Asset_Station_Create( 145000,0,140000,3,-80)
 
 
-TestGate[3] = CopyEntity(Mesh_Gate[1])
-TestGate[4] = CopyEntity(Mesh_Gate[2], TestGate[3])
-ScaleEntity TestGate[3],25,25,25
-MoveEntity TestGate[3],0,0,200000
-RotateEntity TestGate[3],0,180,0
+CreateGate(1,0,0,-500000,0,0,0,0,0,0)
+CreateGate(1,0,0, 500000,0,180,0,0,0,0)
+CreateGate(1, 500000,0,0,0,90,0,0,0,0)
+CreateGate(1,-500000,0,0,0,-90,0,0,0,0)
 
-TestGate[5] = CopyEntity(Mesh_Gate[1])
-TestGate[6] = CopyEntity(Mesh_Gate[2], TestGate[5])
-ScaleEntity TestGate[5],25,25,25
-MoveEntity TestGate[5],200000,0,0
-RotateEntity TestGate[5],0,90,0
+Asteroid_Belt_Create(4000,0,2500,0,0,500000)
+;Asteroid_Belt_Create(200,1,-2500,0,0,100000)
+Asteroid_Belt_Create(200,2,2500,0,0,500000)
+;Asteroid_Belt_Create(200,3,-2500,0,0,100000)
+;Asteroid_Belt_Create(200,4,2500,0,0,100000)
+Asteroid_Belt_Create(50,5,-2500,0,0,500000)
 
-TestGate[7] = CopyEntity(Mesh_Gate[1])
-TestGate[8] = CopyEntity(Mesh_Gate[2], TestGate[7])
-ScaleEntity TestGate[7],25,25,25
-MoveEntity TestGate[7],200000,0,0
-RotateEntity TestGate[7],0,-90,0
-
-Asteroid_Belt_Create(2000,1,0,0,0,200000)
-
+AmbientLight 100,100,100
+TurnEntity Object_Environment[0],0,45,25 
+;AmbientLight 15,15,15
 
 ;!ToDo: Temporary
 Local multiplier#
@@ -1177,11 +1166,11 @@ Yoffset=55
 
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
 
+UpdateMapScale(4)
+
 HUD = 1
 
 Repeat
-	
-	TurnEntity Object_Light[0],0,1,0 
 	
 	Local ms_Performance = MilliSecs()
 	
@@ -1199,25 +1188,12 @@ Repeat
 	Performance_Update_Network = MilliSecs() - ms_Performance_Update_Network
 	;[End Block]
 	
-	
-	
 	;[Block] Players
 	Local ms_Performance_Update_Players = MilliSecs()
-	
-	; Update own Gunarray
-;	PositionEntity Player_Weapon_Array, EntityX(pvShip),EntityY(pvShip), EntityZ(pvShip)
-;	PointEntity Player_Weapon_Array, Weapon_Target_Cube
-;	RotateEntity Player_Weapon_Array, EntityPitch(Player_Weapon_Array),EntityYaw(Player_Weapon_Array), EntityRoll(pvShip)
 	
 	; Movement: Strafing
 	MoveEntity pvShip,ShipStrafeX#,ShipStrafeY#,Player_Value_Speed_Current#
 	TurnEntity pvShip,0,0,ShipRollZ#
-	
-;	Text3D(Text_Font[1],0,0,Player_Value_Speed_Current#)
-;	; Targeting
-;	PositionEntity Weapon_Target_Cube,EntityX(pvShip),EntityY(pvShip),EntityZ(pvShip)
-;	RotateEntity Weapon_Target_Cube,EntityPitch(pvShip),EntityYaw(pvShip),EntityRoll(pvShip)	
-;	MoveEntity Weapon_Target_Cube,(MouseX()-GraphicsWidth()/2)*1*2,(MouseY()-GraphicsHeight()/2)*-1*2,Weapon_Maxdistance
 	
 	; Measure Time
 	Performance_Update_Players = MilliSecs() - ms_Performance_Update_Players
@@ -1392,15 +1368,24 @@ Repeat
 	;[Block] Player Health Checkup
 	Select Player_State_Alive
 		Case 0			; Player Alive and well
-;			EntityAlpha eShipBody,1
 		Case 1			; Player Just died. Disable all Controls, Display Gameover and allow selection
-		Case 2			; 
+		Case 2			; Display Insurance Screen, reinitialize location
 	End Select
 	
 	;[End Block]
 	
 	;[Block] Scanning Extension
 	;[End Block]
+	
+	
+	;[Block] Map and System information
+	Local MapOX =GraphicsWidth()/2-(16+128)
+	Local MapOZ =GraphicsHeight()/2-(16+128)
+	DrawImage3D(GUI_Game[1],MapOX,MapOZ)
+	
+	Text3D(Text_Font[9],D3DOL+45, D3DOU-45,"New Haven Developments Sector")
+	Text3D(Text_Font[6],D3DOL+45, D3DOU-65,"Neutral Territory")
+	Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
 	
 ;	If HUD=1 And MAPHUD = 0 Then
 		
@@ -1419,143 +1404,45 @@ Repeat
 ;		czonez=Floor(EntityZ(pvShip)/2000)
 ;		
 ;		;map
-;		Local MapOX =GraphicsWidth()/2-(16+128)
-;		Local MapOZ =GraphicsHeight()/2-(16+128)
+	
 ;		
 ;		Color 220,220,220
 ;		Text3D(Text_Font[10],0, D3DOD+70 , ConvertNumbers(Truspeed)+" m/s", True)
-		
-		;[Block] Chat
-;		ChatBase=14
-;		
-;		For Add.ChatMSGS = Each ChatMSGS
-;			ChatBase=ChatBase-1
-;			Local TchatX=D3DOL+3
-;			Local TchatY=((GraphicsHeight()/2)*-1)+(ChatBase*20)
-;			;Check Chat for Stuff
-;			Local Postname$=Left(add\msg$,10)
-;			Local PostSRV$=Left(add\msg$,3)
-;			Local NameFilter=Len(Character_Value_Name$)
-;			Local NameMSG$=Mid(add\MSG$,NameFilter)
-;			Text3D(Text_Font[1],TchatX,TchatY,add\Msg$)
-;			If ChatBase=1 Then Exit
-;		Next
-;		
-		;[End Block]
-		
-		;[Block] Map
-		
-;		DrawImage3D(GUI_Windows[4],GraphicsWidth()/2-16-128,GraphicsHeight()/2-(16+128))
-		
-		;[End Block]
-		
-		;Information: Environment
-		
-;		If eCameraMode=MODE_SHIP Then
-;;			DrawImage3D(GUI_Interface[1],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
-;			CameraProject WorldCamera,EntityX(Weapon_Target_Cube),EntityY(Weapon_Target_Cube),EntityZ(Weapon_Target_Cube)
-;;			DrawImage3D(GUI_Interface[2],ProjectedX()-(GraphicsWidth()/2),-ProjectedY()+(GraphicsHeight()/2))
-;			If Timer_HitRegister>0 Then
-;				For Hit_Amount= 1 To Timer_HitRegister
-;;					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)+Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,180)
-;;					DrawImage3D(GUI_Interface[15],ProjectedX()-(GraphicsWidth()/2)-Hit_Amount,-ProjectedY()+(GraphicsHeight()/2),0,0)
-;				Next
-;			EndIf
-;		Else
-;;			DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
-;		EndIf
-		
-;		gatelimiter=gatelimiter+1
-		
-		;[Block] ARC Hud ;NEW HUD IN THE WORKS
-;		Text3D(Text_Font[1],0,GraphicsHeight()/2-160,currloc$,True)
-		
-;		AddChat(Player_Value_Speed_Percentage+"(  "+(Player_Value_Speed_Maximum/100)+" 1%, "+Player_Value_Speed_Current+" current speed",255,255,255,"")
-		
-;		Text3D(Text_Font[19], -256, -140,Player_Value_Armor_Percentage+"%",0)
-;		Text3D(Text_Font[18], 256, -140,Player_Value_Shield_Percentage+"%",2)
-;		Text3D(Text_Font[18], 0, -140,Player_Value_Energy_Percentage+"%",2)
-;		
-;		Text3D(Text_Font[9], 0, -400,Floor(Player_Value_Speed_Current*5)+"m/sec",1,0)
-		
-		
-		;[End Block]
-		
-;	EndIf
 	
-	;[Block] Debug Information
-;	If DebugInfo_Enabled=1 Then
-;		Local Screenmode$
-;		Select TGxMODE
-;			Case 1
-;				Screenmode$="Fullscreen"
-;			Case 2
-;				Screenmode$="Adapted Window Mode"
-;		End Select
-;		
-;		Cores = GetEnv("NUMBER_OF_PROCESSORS")
-;		Local CoreDesc$
-;		Select Cores
-;			Case 1
-;				CoreDesc$="Single-Core Machine"
-;			Case 2
-;				CoreDesc$="Dual-Core Machine"
-;			Case 3
-;				CoreDesc$="Defective Phenom. Unlock it, thank me later."
-;			Case 4
-;				CoreDesc$="Quadcore or Dual+HT Machine"
-;			Case 6,5 ; Turbo Mode on FX
-;				CoreDesc$="Hexacore Machine"
-;			Case 8,7 ; Turbo Mode on FX
-;				CoreDesc$="Octacore or i7 Quadcore+HT Machine"
-;			Default
-;				CoreDesc$="THIS IS A NASA COMPUTER. I BOW TO THEE!"
-;		End Select
-;		
-;		Text3D(Text_Font[24],D3DOL+10,D3DOU-10,"DEBUG INFORMATION")
-;		Text3D(Text_Font[24],D3DOL+10,D3DOU-22,"Resolution: "):Text3D(Text_Font[24],D3DOL+120,D3DOU-22,SelectedWidth+"x"+SelectedHeight+"x16 ("+Screenmode$+")")
-;		Text3D(Text_Font[24],D3DOL+10,D3DOU-34,"Frame Time: "):Text3D(Text_Font[24],D3DOL+120,D3DOU-34,TDFMS+" ms (min/max: "+MinMS+" ms/ "+MaxMS+" ms)")
-;		Text3D(Text_Font[24],D3DOL+10,D3DOU-46,"Drawlayers: "):Text3D(Text_Font[24],D3DOL+120,D3DOU-46,TrisRendered()+" (Godray Renderpass strength: "+GODRAY_LAYERS%+"x)")
-;		Text3D(Text_Font[24],D3DOL+10,D3DOU-58,"System Info: "):Text3D(Text_Font[24],D3DOL+120,D3DOU-58,GetEnv("PROCESSOR_Identifier")+" ("+GetEnv("PROCESSOR_ARCHITECTURE")+")")
-;		Text3D(Text_Font[24],D3DOL+120,D3DOU-70,CoreDesc$)
-;		
-;		Text3D(Text_Font[24], D3DOL+10,  D3DOU-100-(12*-1), "Frame")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*-1), Performance)
-;		
-;		Text3D(Text_Font[24], D3DOL+10,  D3DOU-100-(12*00), "Update")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*00), Performance_Update)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*01), "Player")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*01), Performance_Update_Players)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*02), "Projectiles")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*02), Performance_Update_Projectiles)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*03), "Input")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*03), Performance_Update_Input)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*04), "User Interface")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*04), Performance_Update_UI)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*05), "Unknown")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*05), Performance_RestUpdate)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*06), "Physics")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*06), Performance_Physics)
-;		
-;		
-;		Text3D(Text_Font[24], D3DOL+10,  D3DOU-100-(12*10), "Render")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*10), Performance_Render)
-;		Text3D(Text_Font[24], D3DOL+30,  D3DOU-100-(12*11), "3D")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*11), Performance_Render_3D + "(Tris: "+Performance_Render_3D_Tris+")")
-;		Text3D(Text_Font[24], D3DOL+30,  D3DOU-100-(12*12), "PostProcess")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*12), Performance_Render_PostProcess + "(" + Effect_Performance_Ms + "/" + Effect_Performance_WorldMs + "/" + Effect_Performance_GodrayMs + "/" + Effect_Performance_BloomMs + "/" + Effect_Performance_FinalMs + ")")
-;		Text3D(Text_Font[24], D3DOL+30,  D3DOU-100-(12*13), "User Interface")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*13), Performance_Render_UI + "(Tris: "+Performance_Render_UI_Tris+")")
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*14), "Flip")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*14), Performance_Flip)
-;		
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*20), "Wait")
-;		Text3D(Text_Font[24], D3DOL+100, D3DOU-100-(12*20), Performance_Wait)
-;		
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*22), "MX "+MX)
-;		Text3D(Text_Font[24], D3DOL+20,  D3DOU-100-(12*23), "MY "+MY)
-;		
-;	EndIf
+	
+;	;[Block] Debug Information
+;	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*-1), "Frame")
+;	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*-1), Performance)
+;	
+;	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*00), "Update")
+;	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*00), Performance_Update)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*01), "Player")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*01), Performance_Update_Players)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*02), "Projectiles")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*02), Performance_Update_Projectiles)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*03), "Input")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*03), Performance_Update_Input)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*04), "User Interface")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*04), Performance_Update_UI)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*05), "Unknown")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*05), Performance_RestUpdate)
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*06), "Physics")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*06), Performance_Physics)
+;	
+;	
+;	Text3D(Text_Font[1], D3DOL+10,  D3DOU-100-(16*10), "Render")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*10), Performance_Render)
+;	Text3D(Text_Font[1], D3DOL+30,  D3DOU-100-(16*11), "3D")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*11), Performance_Render_3D + "(Tris: "+Performance_Render_3D_Tris+")")
+;	Text3D(Text_Font[1], D3DOL+30,  D3DOU-100-(16*13), "User Interface")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*13), Performance_Render_UI + "(Tris: "+Performance_Render_UI_Tris+")")
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*14), "Flip")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*14), Performance_Flip)
+;	
+;	Text3D(Text_Font[1], D3DOL+20,  D3DOU-100-(16*20), "Wait")
+;	Text3D(Text_Font[1], D3DOL+100, D3DOU-100-(16*20), Performance_Wait)
+;	
+	;	EndIf
 	;[End Block]
 	
 	Performance_Update_UI = MilliSecs() - ms_Performance_Update_UI
@@ -1679,18 +1566,12 @@ Repeat
 ;	UpdateFastTravel()
 ;	Planet_Update(WorldCamera, 0, 0, 0)
 ;	Special_Update()
-;	UpdateMapPoint()
+	UpdateMapPoint()
 	DST_Update()
 ;	UpdateShot()
 ;	UpdateShockwave()
-;	UpdateStation
+	UpdateStation()
 	UpdateGraphics()
-;	Scrapfield_Update
-;	Respawn_Update()
-;	FactionZone_Update()
-;	UpdateGates()
-;	Battlefield_Update()
-;	RaceTrack_Update()
 	
 	RenderWorld
 	
@@ -1731,5 +1612,5 @@ Until Game_End=1
 ClearWorld()
 End
 ;~IDEal Editor Parameters:
-;~F#18A#243#24C#255#26F#27C#396#401#44D
+;~F#15F#193#226#24C#255#25E#278#285#39F#40A#457
 ;~C#Blitz3D

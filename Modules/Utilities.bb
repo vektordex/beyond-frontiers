@@ -141,59 +141,7 @@ Function WordWrap(content$, maxWidth, StartX, StartY)
 	
 End Function
 
-;------------------------------------------------------------------------------
-;! Virtual Scene Management
-;------------------------------------------------------------------------------
 
-Global VirtualSceneEntity_Empty.VirtualSceneEntity = New VirtualSceneEntity
-
-;Function VirtualScene_Create.VirtualScene()
-;	Local VS.VirtualScene = New VirtualScene
-;	Return VS
-;End Function
-;
-;Function VirtualScene_Destroy(VS.VirtualScene)
-;	Local VSE.VirtualSceneEntity
-;	For VSE.VirtualSceneEntity = Each VirtualSceneEntity
-;		If VSE\VS = VS Then Delete VSE
-;	Next
-;	Delete VS
-;End Function
-;
-;Function VirtualScene_Register(VS.VirtualScene, Entity%)
-;	Local VSE.VirtualSceneEntity = New VirtualSceneEntity
-;	VSE\VS = VS
-;	VSE\Entity = Entity
-;	VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
-;End Function
-;
-;Function VirtualScene_Unregister(VS.VirtualScene, Entity%)
-;	Local VSE.VirtualSceneEntity
-;	For VSE = Each VirtualSceneEntity
-;		If (VSE\VS = VS) And (VSE\Entity = Entity) Then
-;			Delete VSE:Exit
-;		EndIf
-;	Next
-;End Function
-;
-;Function VirtualScene_Hide(VS.VirtualScene)
-;	Local VSE.VirtualSceneEntity
-;	For VSE = Each VirtualSceneEntity
-;		If (VSE\VS = VS) Then
-;			VSE\State = BS_Memory_PeekByte(VSE\Entity, 24)
-;			HideEntity VSE\Entity
-;		EndIf
-;	Next
-;End Function
-;
-;Function VirtualScene_Show(Vs.VirtualScene)
-;	Local VSE.VirtualSceneEntity
-;	For VSE = Each VirtualSceneEntity
-;		If (VSE\VS = Vs) And (VSE\State = 1) Then
-;			ShowEntity VSE\Entity
-;		EndIf
-;	Next
-;End Function
 
 ;------------------------------------------------------------------------------
 ;! Utility Functions
@@ -791,182 +739,28 @@ End Function
 
 
 Function CreateMyShipGun(ShipVersion, WID)
-	Select ShipVersion
-		Case 1
-			
-			
-			NewShot(2,pvShip,15,18,-3,-7)
-			
-		Case 2
-			
-			NewShot(WID,pvShip,0,0, 0, 45)
-			NewShot(WID,pvShip,0,0, 0, 43)
-			NewShot(WID,pvShip,0,0, 0, 41)
-			
-			
-		Case 3
-			
-			NewShot(WID,pvShip,15,  0, 6,57)
-			NewShot(WID,pvShip,15, 28,-6,37)
-			NewShot(WID,pvShip,15, 28,-6,37)
-			NewShot(WID,pvShip,15,-28,-6,37)
-			NewShot(WID,pvShip,15,-28,-6,37)
-			
-		Case 4
-			
-			NewShot(1,pvShip,15, 35,-6,37)
-			NewShot(2,pvShip,15, 37, 3,37)
-			NewShot(3,pvShip,15, 39,-6,37)
-			NewShot(3,pvShip,15,-35,-6,37)
-			NewShot(2,pvShip,15,-37, 3,37)
-			NewShot(1,pvShip,15,-39,-6,37)
-			
-		Case 5
-			
-		Default
-			
-			NewShot(WID,pvShip,15,-50,13,0)
-			NewShot(WID,pvShip,15,50,13,0)
-			
-	End Select
 	
 End Function
 
 Function GetWeaponvalue(WeaponID)
 	
-	Select WeaponID
-		Case 1
-			Return 27
-		Case 2
-			Return 12
-		Case 3
-			Return 18
-		Case 4
-			Return 29
-	End Select
-	
 End Function
 
 Function PlayerSwitchShip(sid)
-;	p.pdata = First pdata
-;	VirtualScene_Unregister(Scene, eShipBody)
-	
 	FreeEntity eShipBody
-;	Character_Value_Ship = sid
 	
 	eShipBody = CopyEntity (Mesh_Ship[sid],eShip)
 	GetPlayerShipValues(sid)
 	
-	
-	
+	EntityType pvShip,Collision_Player
+	EntityRadius pvShip,500
+	EntityType WorldCamera,0
 	Yoffset=55
 	Zoffset=-150
-	
-;	VirtualScene_Register(Scene,eShipBody)
-	
 End Function
 
 Function GetPlayerShipValues(ShipID)
-;	
-;	
-;	SHIxREL=Player_Value_Shield_Maximum/100
-;	SHIxTIC=80
-;	
-;	Select ShipID
-;			;CombatShips
-;			
-;		Case 1
-;			Player_Value_Shield_Maximum=25000 
-;			Player_Value_Armor_Maximum=12500 
-;			Player_Value_Energy_Maximum=25000
-;			Ship_Shield_Reload_Tick = 25
-;			Ship_Shield_Reload_Amount = 190
-;			
-;			Player_Value_Miner_Strength#=.1
-;			Player_Value_Inertia_Modifier#=1
-;			
-;			Ship_Value_ScanningStrength = 18000
-;			
-;			Player_Value_Inertia_Negative# = 0.94
-;			Player_Value_Inertia_Positive# = 1.08
-;			Player_Value_Inertia_Base# = 3
-;			Player_Value_Speed_Maximum=15
-;			
-;			Ship_Gun_Hardpoints = 2
-;;			Ship_Gun_Slot[1] = 1
-;;			Ship_Gun_Slot[2] = 3
-;;			Ship_Gun_Timer[1] = 26
-;;			Ship_Gun_Timer[2] = 0
-;			
-;;			Ship_Gun_HPX[1]=-18
-;;			Ship_Gun_HPY[1]=-3
-;;			Ship_Gun_HPZ[1]=7
-;			
-;;			Ship_Gun_HPX[2]=18
-;;			Ship_Gun_HPY[2]=-3
-;;			Ship_Gun_HPZ[2]=7
-;			
-;			Ship_Rad_Resistance#=1
-;		Case 2
-;			Player_Value_Shield_Maximum=50000
-;			Player_Value_Armor_Maximum=2500 
-;			Player_Value_Energy_Maximum=2500
-;			
-;			Ship_Shield_Reload_Tick = 25
-;			Ship_Shield_Reload_Amount = 190
-;			
-;			Player_Value_Miner_Strength#=.1
-;			Player_Value_Inertia_Modifier#=1
-;			
-;			Ship_Value_ScanningStrength = 18000
-;			
-;			Player_Value_Inertia_Negative# = 0.99
-;			Player_Value_Inertia_Positive# = 1.1
-;			Player_Value_Inertia_Base# = 3
-;			Player_Value_Speed_Maximum=18
-;			
-;			Ship_Rad_Resistance#=.75
-;		Case 3
-;			Player_Value_Shield_Maximum=45000
-;			Player_Value_Armor_Maximum=16000 
-;			Player_Value_Energy_Maximum=2000
-;			
-;			Ship_Shield_Reload_Tick = 25
-;			Ship_Shield_Reload_Amount = 190
-;			
-;			Player_Value_Miner_Strength#=.1
-;			Player_Value_Inertia_Modifier#=1
-;			
-;			Ship_Value_ScanningStrength = 18000
-;			
-;			Player_Value_Inertia_Negative# = 0.94
-;			Player_Value_Inertia_Positive# = 1.04
-;			Player_Value_Inertia_Base# = 3
-;			Player_Value_Speed_Maximum=10
-;			
-;			Ship_Rad_Resistance#=.5
-;		Case 4
-;			Player_Value_Shield_Maximum=52500
-;			Player_Value_Armor_Maximum=25000 
-;			Player_Value_Energy_Maximum=2000
-;			
-;			Ship_Shield_Reload_Tick = 25
-;			Ship_Shield_Reload_Amount = 190
-;			
-;			
-;			
-;			Player_Value_Miner_Strength#=.1
-;			Player_Value_Inertia_Negative# = 0.99
-;			Player_Value_Inertia_Positive# = 1.3
-;			Player_Value_Inertia_Modifier#=1
-;			
-;			Ship_Value_ScanningStrength = 18000
-;			
-;			Player_Value_Inertia_Base# = 2.7
-;			Player_Value_Speed_Maximum=8
-;			Ship_Rad_Resistance#=.25
-;			
-;		Default
+	
 ;			Player_Value_Shield_Maximum=25000: Player_Value_Armor_Maximum=12500 :Player_Value_Energy_Maximum=2500
 ;			Ship_Shield_Reload_Tick = 25: Ship_Shield_Reload_Amount = 190
 ;			
@@ -976,97 +770,13 @@ Function GetPlayerShipValues(ShipID)
 ;			Ship_Value_ScanningStrength = 18000
 ;			
 ;			Player_Value_Inertia_Base# = 3.5: Player_Value_Speed_Maximum=15: Ship_Rad_Resistance#=1
-;	End Select
-;	
-;	GetMiningBonusValues(ShipID)
-;	
-;	Player_Value_Shield_Current=Player_Value_Shield_Maximum 
-;	Player_Value_Armor_Current=Player_Value_Armor_Maximum
-;	Player_Value_Energy_Current=Player_Value_Energy_Maximum
-;	
-;	Zoffset=140
-;	Yoffset=22
-	
-End Function
-
-Function GetMiningBonusValues(ShipID)
-	
-	Select ShipID
-		Case 1
-			
-			Player_Value_Miner_Bonus#=1
-			
-		Case 2
-			
-			Player_Value_Miner_Bonus#=0
-			
-		Case 3
-			
-			Player_Value_Miner_Bonus#=0
-			
-		Case 4
-			
-			Player_Value_Miner_Bonus#=0
-			
-		Case 5
-			
-			Player_Value_Miner_Bonus#=0
-			
-		Case 6
-			
-			Player_Value_Miner_Bonus#=0
-			
-		Case 7
-			
-			Player_Value_Miner_Bonus#=2
-			
-		Case 8
-			
-			Player_Value_Miner_Bonus#=2
-			
-		Case 9
-			
-			Player_Value_Miner_Bonus#=3
-			
-		Default 
-			
-			Player_Value_Miner_Bonus#=3
-			
-	End Select
-	
-End Function
-
-Function GetWeaponValues(WID)
-	
-	Select WID
-		Case 1
-			ActiveGun=1
-			Weapon_Maxtimer=20
-			Weapon_Maxdistance=6000
-		Case 2
-			ActiveGun=2
-			Weapon_Maxtimer=27
-			Weapon_Maxdistance=9000
-		Case 3
-			ActiveGun=3
-			Weapon_Maxtimer=34
-			Weapon_Maxdistance=6000
-		Case 4
-			ActiveGun=4
-			Weapon_Maxtimer=41
-			Weapon_Maxdistance=3000
-		Case 5
-			ActiveGun=5
-			Weapon_Maxtimer=48
-	End Select
-	
 End Function
 
 Type MapWaypoints
 	Field X, Y, Z, PT, MPX, MPY, MPZ
 End Type
 
-Global MP_SCALE=100
+Global MP_SCALE=1000
 Global MP_TOGGL=3
 
 Function CreateMapPoint(x,y,z, styp)
@@ -1074,136 +784,59 @@ Function CreateMapPoint(x,y,z, styp)
 	XY\MPX=x
 	XY\MPY=y
 	XY\MPZ=z
-	XY\X=(x/MP_SCALE)
-	XY\Y=(y/MP_SCALE)
-	XY\Z=(z/MP_SCALE)
+	XY\X = 0
+	XY\Y = 0
+	XY\Z = 0
 	XY\PT=styp
 End Function
 
-Function UpdateMapScale()
+Function UpdateMapScale(Scale)
+	
+	If Scale > 4  Or Scale < 1 Then
+		Scale = 1
+	EndIf
+	
+    If Scale > 0 And Scale < 5
+        MP_SCALE = 1000 / Scale
+    EndIf
+	
 	For XY.MapWaypoints = Each MapWaypoints
-		XY\X=(XY\MPX/MP_SCALE)
-		XY\Y=(XY\MPY/MP_SCALE)
-		XY\Z=(XY\MPZ/MP_SCALE)
+		XY\X = XY\MPX / MP_SCALE
+		XY\Y = XY\MPY / MP_SCALE
+		XY\Z = XY\MPZ / MP_SCALE
 	Next
 End Function
 
 Function UpdateMapPoint()
-	If Trigger_Map_Scaling > 4 Then
-		Trigger_Map_Scaling = 1
-	EndIf
+	Local CPosX#=EntityX(pvShip)/MP_SCALE
+	Local CPosY#=EntityY(pvShip)/MP_SCALE
+	Local CPosZ#=EntityZ(pvShip)/MP_SCALE
 	
-	Select Trigger_Map_Scaling
-		Case 1
-			MP_SCALE=1000
-		Case 2
-			MP_SCALE=600
-		Case 3
-			MP_SCALE=300
-		Case 4
-			MP_SCALE=100
-	End Select
-	
-	Local CposX=EntityX(pvShip)/MP_SCALE
-	Local CposY=EntityY(pvShip)/300
-	Local CposZ=EntityZ(pvShip)/MP_SCALE
-	
-	MapOriginX =GraphicsWidth()/2-(16+128)
+	MapOriginX=GraphicsWidth()/2-(16+128)
 	MapOriginZ=GraphicsHeight()/2-(16+128)
 	
-	Local MapScale#=MP_SCALE/500
-	Local MapString$=Left(MapScale#,4)
+	DrawImage3D(GUI_Game[9],MapOriginX,MapOriginZ,0,-EntityYaw(eShipBody, True),2)
 	
-	If HUD=1 And MAPHUD = 0 Then 
-;		DrawImage3D(GUI_MapIcon[0],MapOriginX, MapOriginZ,False,EntityYaw(pvShip)*-1,2)
-	EndIf
-	
-	For Portal.Stargate = Each Stargate
-		Local AIX=EntityX(Portal\Mesh)/MP_SCALE
-		Local AIY=EntityY(Portal\Mesh)/MP_SCALE
-		Local AIZ=EntityZ(Portal\Mesh)/MP_SCALE
+	For XY.MapWaypoints = Each MapWaypoints
+		Local WaypointX# = XY\X
+        Local WaypointY# = XY\Y
+        Local WaypointZ# = XY\Z
 		
-		If AIX<CposX+128 And AIX>CposX-128 And AIY<CposY+128 And AIY>CposY-128 And AIZ<CposZ+128 And AIZ>CposZ-128 And HUD=1
-			MapYPoint = ( AIY - EntityY(pvShip,True) ) / 500
-			
-;			DrawImage3D(GUI_Interface[19],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ,0,0,1)
-			
-			If MapYPoint > -128 And MapYPoint< 128 Then
-				If MapYPoint>0 Then
-					For MapLine = 1 To MapYPoint
-;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+mapline,0,0,1)
-					Next
-				Else
-					For MapLine = 1 To -MapYPoint
-;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ-+mapline,0,0,1)
-					Next
-				EndIf
-			EndIf
-			
-			MapIconPosX=AIX-CposX
-			MapIconPosZ=AIZ-CposZ
-			
-;			DrawImage3D(GUI_MapIcon[7],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ + MapYPoint,0,0,1)
-			
-		EndIf
+        If WaypointX# > CPosX# - 113 And WaypointX# < CPosX# + 113 And WaypointZ# > CPosZ# - 113 And WaypointZ# < CPosZ# + 113 And WaypointY# > CPosY# - 113 And WaypointY# < CPosY# + 113
+            Local DrawPosX# = WaypointX# - CPosX#
+            Local DrawPosY# = WaypointY# - CPosY#
+            Local DrawPosZ# = WaypointZ# - CPosZ#
+            
+            Select XY\PT
+                Case 1 ;Asteroid
+                    DrawImage3D(GUI_Game[7], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)))
+					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MaporiginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+                Case 2 ;Gate
+                    DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
+                ;Add other cases as needed
+            End Select        
+        EndIf
 	Next
-	
-	;[Block] Ship Map Points
-;	For Ship.AI = Each AI
-;		AIX=EntityX(Ship\Shipmesh)/MP_SCALE
-;		AIY=EntityY(Ship\Shipmesh)/MP_SCALE
-;		AIZ=EntityZ(Ship\Shipmesh)/MP_SCALE
-;		
-;		If AIX<CposX+128 And AIX>CposX-128 And AIY<CposY+128 And AIY>CposY-128 And AIZ<CposZ+128 And AIZ>CposZ-128 And HUD=1
-;			
-;			MapYPoint = ( AIY - EntityY(pvShip,True) ) / 500
-;			
-;			DrawImage3D(GUI_Interface[19],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ,0,0,1)
-;			
-;			If MapYPoint > -128 And MapYPoint< 128 Then
-;				If MapYPoint>0 Then
-;					For MapLine = 1 To MapYPoint
-;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+mapline,0,0,1)
-;					Next
-;				Else
-;					For MapLine = 1 To -MapYPoint
-;						DrawImage3D(GUI_Interface[20],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ-+mapline,0,0,1)
-;					Next
-;				EndIf
-;			EndIf
-;			
-;			MapIconPosX=AIX-CposX
-;			MapIconPosZ=AIZ-CposZ
-;			Select Ship\Faction
-;				Case Faction_Crimson
-;					DrawImage3D(GUI_MapIcon[4],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh)*-1,1)
-;				Case Faction_Neutral
-;					DrawImage3D(GUI_MapIcon[6],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;				Case Faction_Pirate
-;					DrawImage3D(GUI_MapIcon[4],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;				Case Faction_Police
-;					DrawImage3D(GUI_MapIcon[6],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;				Case Faction_Sirian
-;					If Character_Value_Faction = Faction_Sirian Then
-;						DrawImage3D(GUI_MapIcon[5],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;					ElseIf Character_Value_Faction = Faction_Terran Then
-;						DrawImage3D(GUI_MapIcon[4],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;					EndIf
-;				Case Faction_Terran
-;					If Character_Value_Faction = Faction_Terran Then
-;						DrawImage3D(GUI_MapIcon[5],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;					ElseIf Character_Value_Faction = Faction_Sirian Then
-;						DrawImage3D(GUI_MapIcon[4],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;					EndIf
-;				Case Faction_Unknown
-;					DrawImage3D(GUI_MapIcon[6],MapOriginX+MapIconPosX, MapOriginZ+MapIconPosZ+MapYPoint,0,EntityYaw(Ship\Shipmesh),1)
-;			End Select
-;			
-;		EndIf
-;		
-;	Next
-;	;[End Block]
-	
 End Function
 
 Function AlignEntity(x_objekt1, x_objekt2, Abstufungen = 0) 
@@ -1226,97 +859,6 @@ Function AlignEntity(x_objekt1, x_objekt2, Abstufungen = 0)
 	RotateEntity (x_objekt1, NeuPitch#, NeuYaw#, EntityRoll(x_objekt1)) 
 	
 End Function 
-
-Global NOTE_ACTIVE=0, NOTE_HEADER$, NOTE_LINE1$, NOTE_LINE2$, NOTE_LINE3$, NOTE_LINE4$, NOTE_LINE5$, NOTE_DURATION
-
-Function download_file(source$,target$)
-	
-	
-	Local max_download_bytes = 1024, host$, file$ ; 16777216 , host$, file$; 1024 , host$, file$
-	
-	host$=splitt_fqdn(source$,1)
-	file$=splitt_fqdn(source$,2)
-	
-	tcp=OpenTCPStream(host$,80) ;seite öffnen
-	
-	If Not tcp Then Return -1
-	
-	
-	crlf$=Chr(13)+Chr(10)
-	WriteLine tcp,"GET "+file$+" HTTP/1.1"+crlf$+"Host: "+host$+crlf$+"Connection: close"+crlf$+"User-Agent: bb-dwnldr"+crlf$+"Cache-Control: no-cache"+crlf$
-	
-	If Eof(tcp) Then Return -2
-	
-	
-	Repeat
-		response$=ReadLine(tcp)
-	Until response$=""
-	
-	
-	Delay(2)
-	
-	
-	file=WriteFile(target$)
-	If file=0 Then Return -3
-	
-	buffer = CreateBank(max_download_bytes)
-	
-	While Not Eof(tcp)
-		Size = ReadBytes(buffer, tcp, 0, max_download_bytes)
-		WriteBytes(buffer, file, 0, Size)
-	Wend 
-	
-	CloseFile(file)
-	
-	FreeBank buffer
-	
-	Return 1
-	
-End Function 
-
-Function splitt_fqdn$(url$,part)
-	Local pos=0
-	;url$=Lower(url$)
-	
-	If Left(url$,7)="http://" Then pos=7
-	If Left(url$,8)="https://"  Then pos=8
-	
-	slash_pos=Instr(url$,"/",pos+1)
-	If part=1
-		Return Mid(url$,pos+1,slash_pos-pos-1)
-	ElseIf part=2
-		Return Mid(url$,slash_pos)
-	Else
-		Return "Invalid part parameter!"
-	EndIf 
-End Function 
-
-Type Zone
-	Field range, pivot, faction
-End Type
-
-Global CurrentZoneText$, System_Name$
-
-Function FactionZone_Update()
-	
-	Select CurrentZone
-		Case 0
-			CurrentZoneText$="Unknown"
-		Case Faction_Terran
-			CurrentZoneText$="Terran Empire"
-		Case Faction_Sirian
-			CurrentZoneText$="Sirius Colonies"
-		Case Faction_Police
-			CurrentZoneText$="Contested Battleground"
-		Case Faction_Neutral
-			CurrentZoneText$="Neutral Zone"
-		Case Faction_Crimson
-			CurrentZoneText$="Refuge of the Crimson Dawn"
-		Default
-			CurrentZoneText$="Development Sector"
-	End Select
-	
-End Function
 
 Function Randomsong(number)
 	Select number
@@ -1390,5 +932,5 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#C8#D0#E0#119#12A#13A#14D#203#229#25E#311
+;~F#5#46#94#9C#AC#E5#F6#106#119#1CF#1F5#22A#2DD
 ;~C#Blitz3D

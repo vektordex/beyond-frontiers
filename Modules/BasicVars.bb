@@ -94,16 +94,18 @@ Global Performance_Render_PostProcess
 Global Performance_Render_UI, Performance_Render_UI_Tris
 Global Performance_Flip
 Global Performance_Wait
+Global Settings_Scaling
 ;[End Block]
 
 ;[Block] Meshes
 Global Mesh_Roid[5]
 Global Mesh_Ship[20]
 Global Mesh_Gate[4]
-Global Mesh_Station[4]
+Global Mesh_Station[10]
 Global Mesh_Asteroid[4]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 Global Text_Effects[5]
+Global Mesh_Environment[5]
 ;[End Block]
 
 ;[Block] Objects
@@ -115,8 +117,9 @@ Global Object_Zero
 ;[Block] Textures
 Global Text_Ship[11]
 Global Text_Ship_FX[11]
-Global Text_Station[4]
-Global Text_Station_FX[4]
+Global Text_Station[10]
+Global Text_Station_FX[10]
+
 Global Text_Gate[2]
 Global Text_Gate_FX[2]
 Global Text_Asteroid[4]
@@ -130,6 +133,8 @@ Global Text_SkyRT[30]
 Global Text_SkyUP[30]
 Global Text_SkyCM[30]
 Global Text_Font[35]
+
+Global Text_Environment[5]
 ;[End Block]
 
 ;[Block] Sounds
@@ -154,6 +159,7 @@ Global Music_ID[11], Music_Enabled=1, Desired_MVolume# = 0.5
 
 ;[Block] Interface
 Global GUI_Windows[50]
+Global GUI_Game[50]
 
 Const DrawLayer_Game_Low = -90
 Const DrawLayer_Game_Mid = -89
@@ -915,5 +921,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#19#50#B0#B6#BB#BF#C5#CC#D1#D7#E8#199#21D#22B#2AE
+;~F#19#B6#BC#C1#C5#CB#D2#D7#DD#EE#19F#223#231#2B4
 ;~C#Blitz3D

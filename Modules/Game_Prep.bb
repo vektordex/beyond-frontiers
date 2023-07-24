@@ -3,7 +3,9 @@ Function Prepare_Graphics()
 	Settings_Graphics_Size[0]=1920
 	Settings_Graphics_Size[1]=1080
 	;EndIf
-
+	
+	Settings_Scaling = (Settings_Graphics_Size[1]/(1080/100))/100
+	
 	Settings_Graphics_Mode=GRAPHICS_MODE_WINDOWED
 
 	; Parse Command Line

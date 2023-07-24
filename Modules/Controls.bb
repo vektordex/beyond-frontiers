@@ -94,7 +94,9 @@ Function HandleInput()
 			
 			If KeyHit(50) Then 				; MAP RESCALING --- M
 				Trigger_Map_Scaling = Trigger_Map_Scaling + 1
-;				UpdateMapScale()
+				If Trigger_Map_Scaling > 4 Then Trigger_Map_Scaling = 1
+				UpdateMapScale(Trigger_Map_Scaling)
+				
 			EndIf
 			
 			If KeyDown(15) And eCameraMode<>MODE_CAMERA Then 

@@ -114,9 +114,8 @@ Type SBubble
 End Type
 
 Type Station
-	Field Mesh_Essential, Mesh_Power, Mesh_Factory, Mesh_Ring, stt, x, y, z
-	Field enablehull, hullx, hully, hullz, hrange
-	Field enableshield, shieldx, shieldy,shieldz, srange
+	Field Mesh, Tables, Utility, stt, x, y, z
+	Field StaSub, Effect
 End Type
 
 Type Shockwave
