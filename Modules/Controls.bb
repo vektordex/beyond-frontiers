@@ -85,8 +85,8 @@ Function HandleInput()
 				Upgrade_GlobalMap = 1 - Upgrade_GlobalMap ;WORLD MAP
 				MAPHUD = 1 - MAPHUD
 			ElseIf KeyHit(24) Then
-				World_Clear
-				World_Generate(Rand(0,127),0,0,0)
+				
+;				World_Generate(Rand(0,127),0,0,0)
 			EndIf
 		EndIf
 		

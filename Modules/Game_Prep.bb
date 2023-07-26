@@ -42,7 +42,7 @@ Function Prepare_Graphics()
 			;[End Block]
 	End Select
 	SetBuffer BackBuffer()
-	AppTitle "Beyond Frontiers | Early Alpha Playtest"
+	AppTitle "Beyond Frontiers | Early Alpha Playtest v0.02"
 	RenderTimer = CreateTimer(60) ; Graphics: Render Timer
 
 	Gw# = GraphicsWidth()

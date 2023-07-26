@@ -30,11 +30,6 @@ Type Belt
 	Field yamount, homepiv, momentum#, spin#, touchedtrg, touchedcnt, retrievecnt, retrievetrg
 End Type
 
-Type beltorigin
-	Field x,y,z
-	Field mesh
-End Type
-
 Type SpcObj
 	Field mesh
 	Field fxmesh
@@ -69,8 +64,7 @@ Type hardpoint
 End Type
 
 Type Planet
-	Field X,Y,Z
-	Field Scale, ProPiv, SphereA, SphereB, SpriteA
+	Field Pivot, SubType, Sprite, Distance, Scale, RotX, RotY, RotZ
 End Type
 
 Type MainZone
@@ -295,12 +289,6 @@ End Type
 
 Type Location ; Coordinates.bb
 	Field X,Y,Z
-End Type
-
-Type TPlanet ; WorldGenerator.bb
-	Field Pivot, Mesh, Ring
-	Field Size#, tilt
-	Field z_Entity%, Ring_Exist
 End Type
 
 Type PRing

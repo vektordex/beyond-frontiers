@@ -21,6 +21,11 @@ Global Mode_Demo = 0
 Global Player_Effect_Drift_X, Player_Effect_Drift_Y, PlayerX, PlayerY, PlayerZ
 Global Player_Value_Speed_Target#, Player_Value_Speed_Main#, SpeedY#, SpeedX#
 Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boost_State, Player_Value_Speed_Maximum#=80
+
+Global System_Name$, System_Owner$, System_Security
+
+Global FastTravelSpot, Travel_To_LastSave
+
 ;[End Block]
 
 ;[Block] Weapon/Module/Item Names and Descriptions --- ToDo: Move this in a moddable file, and add translation efforts, at least DE/EN
@@ -103,6 +108,7 @@ Global Mesh_Ship[20]
 Global Mesh_Gate[4]
 Global Mesh_Station[10]
 Global Mesh_Asteroid[4]
+Global Mesh_Planets[25]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 Global Text_Effects[5]
 Global Mesh_Environment[5]
@@ -178,6 +184,10 @@ Global HUD
 
 ;[Block] AI Voices
 
+;[End Block]
+
+;[Block] Timer
+Global Timer_Gatejump
 ;[End Block]
 
 ;[Block] Ship Movement Identifiers
@@ -921,5 +931,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#19#B6#BC#C1#C5#CB#D2#D7#DD#EE#19F#223#231#2B4
+;~F#1E#C0#C6#CB#CF#D5#DC#E1#E7#F8#1A9#22D#23B#2BE
 ;~C#Blitz3D

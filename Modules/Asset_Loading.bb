@@ -103,6 +103,17 @@ Function PreloadMesh()
 	CloseFile LoadOrder
 	;[End Block]
 	
+	;[Block] Preload Planets
+	LoadOrder = OpenFile("Assets\Manifest\LoadPlanets.lof")
+	LoadCounter = 1
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
+		Mesh_Planets[LoadCounter]		=	AssetManager_GetAsset(EAssetType_Texture, "Assets\3D\Planets\"+LoadData$+".png",1+2)
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	;[End Block]
+	
 	;[Block] Environment
 	Mesh_Environment[0] = CreateSprite()
 	Text_Environment[0] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Sun.png",1+2)

@@ -244,6 +244,7 @@ Function CreateOBB( x#, y#, z#, pitch#, yaw#, roll#, width#, height#, depth#, pa
 	ScaleEntity obb_pivot, width#, height#, depth#, True
 	Return obb_pivot
 End Function
+
 Function PointInOBB( obb_pivot, x#, y#, z# )
 ; Tests if the specified x, y, z, point is inside the space of the specified OBB pivot entity.
 ; If so, a true result is returned. If not, a false result is returned.
@@ -779,7 +780,7 @@ End Type
 Global MP_SCALE=1000
 Global MP_TOGGL=3
 
-Function CreateMapPoint(x,y,z, styp)
+Function Environment_NavMesh_Create(x,y,z, styp)
 	XY.MapWaypoints = New MapWaypoints
 	XY\MPX=x
 	XY\MPY=y
@@ -807,7 +808,7 @@ Function UpdateMapScale(Scale)
 	Next
 End Function
 
-Function UpdateMapPoint()
+Function Environment_NavMesh_Update()
 	Local CPosX#=EntityX(pvShip)/MP_SCALE
 	Local CPosY#=EntityY(pvShip)/MP_SCALE
 	Local CPosZ#=EntityZ(pvShip)/MP_SCALE
@@ -823,14 +824,18 @@ Function UpdateMapPoint()
         Local WaypointZ# = XY\Z
 		
         If WaypointX# > CPosX# - 113 And WaypointX# < CPosX# + 113 And WaypointZ# > CPosZ# - 113 And WaypointZ# < CPosZ# + 113 And WaypointY# > CPosY# - 113 And WaypointY# < CPosY# + 113
-            Local DrawPosX# = WaypointX# - CPosX#
+			Local DrawPosX# = WaypointX# - CPosX#
             Local DrawPosY# = WaypointY# - CPosY#
             Local DrawPosZ# = WaypointZ# - CPosZ#
             
+;			If (DrawPosZ# + DrawPosY#)*-1 < MapOriginZ+113 Then DrawPosZ = MapOriginZ+113
+			
+			DrawImage3D(GUI_Game[12], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)))
+			
             Select XY\PT
                 Case 1 ;Asteroid
                     DrawImage3D(GUI_Game[7], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)))
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MaporiginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
                 Case 2 ;Gate
                     DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
                 ;Add other cases as needed
@@ -932,5 +937,5 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#94#9C#AC#E5#F6#106#119#1CF#1F5#22A#2DD
+;~F#5#46#94#9C#AC#11A#1D0#1F6#22B#2DE
 ;~C#Blitz3D

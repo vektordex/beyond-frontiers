@@ -493,7 +493,7 @@ Function dst_flipstring$(dst_f$)
 	Return dst_f2$
 End Function
 
-Function CreateNewDust(ID,DustX,DustY,DustZ,DustRad, DustScale1, DustScale2, DA1#, DA2#, DR1, DG1, DB1, DR2, DG2, DB2)
+Function Environment_Dust_Add(ID,DustX,DustY,DustZ,DustRad, DustScale1, DustScale2, DA1#, DA2#, DR1, DG1, DB1, DR2, DG2, DB2)
 	Zone_Dust_External[ID]=DST_Create_Dustzone(Zone_Dust_Handle,1)
 	PositionEntity Zone_Dust_External[ID],DustX,DustY,DustZ
 	DST_Set_ZoneRadius(Zone_Dust_External[ID],DustRad)
