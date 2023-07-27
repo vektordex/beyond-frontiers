@@ -837,16 +837,16 @@ Function Environment_NavMesh_Update()
                     DrawImage3D(GUI_Game[7], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)))
 					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
                 Case 2 ;Gate
-                    DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
+                    DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
 					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
 				Case 3 ;Border Post
-                    DrawImage3D(GUI_Game[15], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
+                    DrawImage3D(GUI_Game[15], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
 					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
 				Case 4 ;Trade Station
-                    DrawImage3D(GUI_Game[13], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
+                    DrawImage3D(GUI_Game[13], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
 					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
 				Case 5 ;Mining Dock
-                    DrawImage3D(GUI_Game[14], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 2)
+                    DrawImage3D(GUI_Game[14], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
 					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
 					
                 ;Add other cases as needed

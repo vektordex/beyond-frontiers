@@ -4,6 +4,8 @@ Function UpdateGraphics()
 	Local MapOZ =GraphicsHeight()/2-(16+128)
 	DrawImage3D(GUI_Game[1],MapOX,MapOZ)
 	
+	DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
+	
 	Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
 	Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
 	Select System_Security

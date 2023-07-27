@@ -15,7 +15,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 	
 	;Read System File and Parse Content
 	Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
-	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$
+	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
 	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
 	
 	Repeat
@@ -71,6 +71,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		EndIf
 		;-> Stations
 		If Instr(SystemRead$,"StationSetup") Then 
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationName=",""): SName$ = SystemReadSub$
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosX=",""): PosX = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosY=",""): PosY = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosZ=",""): PosZ = Int(SystemReadSub$)
@@ -79,10 +80,15 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationBuy=",""): InventoryIn = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationSell=",""): InventoryOut = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationService=",""): InventoryService = Int(SystemReadSub$)
-			Asset_Station_Create(PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
+			Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
 		EndIf
 		;-> RandomBelt
-		
+		If Instr(SystemRead$,"RandomBelt") Then
+			SeedRnd MilliSecs()
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
+			Asset_Belt_Create(Rand(1000,15000),Resource,Rand(-500000,500000),Rand(-1000,1000),Rand(-500000,500000),Rand(15000,500000))
+			SeedRnd SystemSeed
+		EndIf
 		
 		
 	Until Eof(SystemFile)
@@ -161,7 +167,7 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	
 	EntityType Portal\Mesh,Collision_Object
 	
-	EntityAutoFade Portal\mesh,100000,150000
+	EntityAutoFade Portal\mesh,200000,250000
 	EntityAutoFade Portal\mesh_Effect,500000,550000
 	
 	Local TSystemName = OpenFile("Assets/Universe/x"+Target_SystemX+"y"+Target_SystemY+".bfs")
@@ -247,11 +253,7 @@ Function Asset_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, Belt
 				EntityColor roid\mesh,155,140,170
 		End Select
 		
-		
-		
 		Roid\rot#=Rnd(-.021,.021)
-		
-		
 		
 		MoveEntity Roid\Mesh,0,0, Roid\z
 		TurnEntity roid\mesh,Rand(0,360),Rand(0,360),Rand(0,360)
@@ -618,7 +620,7 @@ Function Environment_Dust_Create()
 End Function
 
 
-Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0)
+Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0)
 	
 	da.Station = New Station
 	da\Mesh = CopyEntity(Mesh_Station[Station_Subtype])
@@ -647,11 +649,11 @@ Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1,
 			ScaleEntity da\utility, 0.75,0.75,0.75
 			ScaleEntity da\effect, 0.3,0.3,0.3
 			MoveEntity da\effect, 330,30,415
-;			Environment_NavMesh_Create(x,y,z,5)
+			Environment_NavMesh_Create(x,y,z,5)
 		Case 2
 			ScaleEntity da\mesh,25,25,25
 ;			ScaleEntity da\utility,2,2,1
-;			Environment_NavMesh_Create(x,y,z,4)
+			Environment_NavMesh_Create(x,y,z,4)
 			
 			
 		Case 1
@@ -659,11 +661,11 @@ Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1,
 			ScaleEntity da\mesh,35,35,35
 			
 			
-;			Environment_NavMesh_Create(x,y,z,3)
+			Environment_NavMesh_Create(x,y,z,3)
 		Default 
 			ScaleEntity da\mesh,35,35,35
 			
-;			Environment_NavMesh_Create(x,y,z,3)
+			Environment_NavMesh_Create(x,y,z,3)
 			
 	End Select
 	
@@ -671,12 +673,20 @@ Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1,
 	RotateEntity da\mesh,0,Rotation,0
 	
 	EntityType da\mesh,Collision_Object,True
-	EntityAutoFade da\mesh,100000,250000
+	EntityAutoFade da\mesh,200000,250000
+	
+	NameEntity da\Mesh,Name$
 	
 End Function
 
 Function Asset_Station_Update()
 	For da.station= Each Station
+		
+		If EntityDistance(pvShip, da\Mesh)<25000 And EntityInView(da\Mesh,WorldCamera)=True Then
+			Text3D(Text_Font[6],0,275,"- Location entered -",1)
+			Text3D(Text_Font[9],0,256,"Station: "+EntityName(da\mesh),1)
+		EndIf
+		
 		Select da\StaSub
 			Case 3
 				TurnEntity da\utility,0,-0.025,0.025
@@ -865,6 +875,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#60#92#B6#D3#10C#11D#123#138#161#16A#184#189#193#1EB#227#243#252#25D#2A6#2B2
-;~F#2BF#2C6#2DB#2EE#301#347
+;~F#66#BC#10E#11F#125#13A#163#16C#186#18B#195#1ED#229#245#254#25F#2BC#2C9#2D0#2E5
+;~F#2F8#30B#351
 ;~C#Blitz3D
