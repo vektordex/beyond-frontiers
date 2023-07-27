@@ -15,9 +15,10 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 	
 	;Read System File and Parse Content
 	Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
+	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$
+	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
+	
 	Repeat
-		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$
-		Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn
 		Local SystemRead$ = ReadLine(SystemFile)
 		;System Seed
 		If Instr(SystemRead$,"SystemSeed=") Then SystemRead$ = Replace$(SystemRead$,"SystemSeed=",""): Local SystemSeed=Int SystemRead$: SeedRnd SystemSeed
@@ -77,7 +78,8 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationRotation=",""): Rotation = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationBuy=",""): InventoryIn = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationSell=",""): InventoryOut = Int(SystemReadSub$)
-			Asset_Station_Create(PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut)
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationService=",""): InventoryService = Int(SystemReadSub$)
+			Asset_Station_Create(PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
 		EndIf
 		;-> RandomBelt
 		
@@ -107,10 +109,10 @@ Function Asset_Clear_All()
 	Next
 	
 	For da.station = Each Station
-		FreeEntity da\mesh
 		FreeEntity da\tables
 		FreeEntity da\utility
 		FreeEntity da\effect
+		FreeEntity da\mesh
 		Delete da
 	Next
 	
@@ -120,14 +122,14 @@ Function Asset_Clear_All()
 	Next
 	
 	For Portal.Stargate = Each Stargate
+;		FreeEntity Portal\Mesh_Effect
 		FreeEntity Portal\Mesh
-		FreeEntity Portal\Mesh_Effect
 		FreeEntity Portal\JumpOBB
 		Delete Portal
 	Next
 	
 	For Orbit.Planet = Each Planet
-		FreeEntity Orbit\Pivot
+;		FreeEntity Orbit\Pivot
 		FreeEntity Orbit\Sprite
 		Delete Orbit
 	Next
@@ -153,7 +155,7 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	RotateEntity Portal\Mesh, 0,Rotation,0	
 	PositionEntity Portal\Mesh,PosX,PosY,PosZ
 	
-	Portal\JumpOBB = CreateOBB(PosX, PosY, PosZ, 0, Rotation, 0, 20000, 20000, 100)
+	Portal\JumpOBB = CreateOBB(PosX, PosY, PosZ, 0, Rotation, 0, 20000, 20000, 1000)
 	
 	EntityFX Portal\Mesh_Effect,1+16
 	
@@ -174,9 +176,8 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	Portal\TY = TY
 	Portal\TZ = TZ
 	
-	
-	
 	Environment_NavMesh_Create(PosX, PosY, PosZ, 2)
+	
 End Function
 
 Function Asset_Gate_Update()
@@ -197,7 +198,7 @@ Function Asset_Gate_Update()
 			Local TZ = Portal\TZ
 			If Timer_Gatejump < 1 Then
 				Gate_Jump = 1
-				Timer_Gatejump = 60
+				Timer_Gatejump = 3
 			EndIf
 			Exit
 		EndIf
@@ -580,7 +581,7 @@ Function Modify_Light(RotX,RotY,Scale, SunR, SunG, SunB)
 	
 	
 	RotateEntity Object_Environment[0], RotX, RotY, 0, True
-	ScaleSprite Object_Environment[0], Scale, Scale
+	ScaleSprite Object_Environment[1], Scale, Scale
 	
 	PointEntity Object_Environment[1], WorldCamera
 	
@@ -617,7 +618,7 @@ Function Environment_Dust_Create()
 End Function
 
 
-Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1)
+Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0)
 	
 	da.Station = New Station
 	da\Mesh = CopyEntity(Mesh_Station[Station_Subtype])
@@ -646,17 +647,28 @@ Function Asset_Station_Create(x,y,z, Station_Subtype, Rotation=0, InventoryIn=1,
 			ScaleEntity da\utility, 0.75,0.75,0.75
 			ScaleEntity da\effect, 0.3,0.3,0.3
 			MoveEntity da\effect, 330,30,415
+;			Environment_NavMesh_Create(x,y,z,5)
 		Case 2
 			ScaleEntity da\mesh,25,25,25
 ;			ScaleEntity da\utility,2,2,1
+;			Environment_NavMesh_Create(x,y,z,4)
+			
+			
+		Case 1
+			
+			ScaleEntity da\mesh,35,35,35
+			
+			
+;			Environment_NavMesh_Create(x,y,z,3)
 		Default 
 			ScaleEntity da\mesh,35,35,35
+			
+;			Environment_NavMesh_Create(x,y,z,3)
+			
 	End Select
 	
 	PositionEntity da\mesh,x,y,z
 	RotateEntity da\mesh,0,Rotation,0
-	
-	Environment_NavMesh_Create(x,y,z,2)
 	
 	EntityType da\mesh,Collision_Object,True
 	EntityAutoFade da\mesh,100000,250000
@@ -853,6 +865,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#D2#10B#11C#122#137#160#169#183#192#1EA#226#242#251#25C#26C#29A#2A6#2B3#2BA#2CF
-;~F#2E2#2F5#33B
+;~F#60#92#B6#D3#10C#11D#123#138#161#16A#184#189#193#1EB#227#243#252#25D#2A6#2B2
+;~F#2BF#2C6#2DB#2EE#301#347
 ;~C#Blitz3D

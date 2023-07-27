@@ -24,7 +24,7 @@ Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boo
 
 Global System_Name$, System_Owner$, System_Security
 
-Global FastTravelSpot, Travel_To_LastSave
+Global FastTravelSpot, Travel_To_LastSave, Savecounter
 
 ;[End Block]
 

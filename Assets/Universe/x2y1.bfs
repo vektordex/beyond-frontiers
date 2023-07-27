@@ -21,7 +21,7 @@ BeltPosY=0
 BeltPosZ=0
 BeltResource=0
 BeltRange=500000
-BeltAmount=10000
+BeltAmount=2000
 GateSetup
 SystemX=1
 SystemY=1

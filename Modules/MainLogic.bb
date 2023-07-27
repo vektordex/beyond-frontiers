@@ -45,13 +45,15 @@ End Function
 Function FastTravel(FTX, FTY, FTZ)
 ;	PositionEntity FastTravelSpot, FTX, FTX, FTZ, True
 	PositionEntity pvShip,FTX,FTY,FTZ
+	
 	Travel_To_LastSave=1
+	Savecounter = Savecounter + 1
 End Function
 
 Function Environment_FastTravel_Update()
 	
 	If Travel_To_LastSave=1 Then
-;		
+;		If Savecounter = 2 Then RuntimeError EntityX(FastTravelSpot) + " / " + EntityY(FastTravelSpot) + " / " + EntityZ(FastTravelSpot)
 		Travel_To_LastSave=0
 ;		UserDataSave(1)
 	EndIf
