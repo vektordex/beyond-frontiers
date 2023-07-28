@@ -18,6 +18,9 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
 	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
 	
+	Modify_Fog(0,0,0,0,0,0)
+	AmbientLight 30,30,30
+	
 	Repeat
 		Local SystemRead$ = ReadLine(SystemFile)
 		;System Seed
@@ -37,6 +40,15 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorG=",""): ColorG = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorB=",""): ColorB = Int(SystemReadSub$)
 			Modify_Light(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
+		EndIf
+		;-> System Foggyness
+		If Instr(SystemRead$,"FogSector") Then 
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogRange=",""): Scale = Int(SystemReadSub$)
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorR=",""): ColorR = Int(SystemReadSub$)
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorG=",""): ColorG = Int(SystemReadSub$)
+			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorB=",""): ColorB = Int(SystemReadSub$)
+			Modify_Fog(1,Scale*0.8,Scale,ColorR,ColorG,ColorB)
+			AmbientLight ColorR/2,ColorG/2,ColorB/2
 		EndIf
 		;-> Planets
 		If Instr(SystemRead$,"PlanetSetup") Then 
@@ -102,7 +114,7 @@ End Function
 
 Function Asset_Clear_All()
 	
-	FreeEntity Object_Zero
+;	FreeEntity Object_Zero
 	
 	For Effect.Explosion = Each Explosion
 		FreeEntity Effect\Sprite
@@ -128,14 +140,14 @@ Function Asset_Clear_All()
 	Next
 	
 	For Portal.Stargate = Each Stargate
-;		FreeEntity Portal\Mesh_Effect
+		FreeEntity Portal\Mesh_Effect
 		FreeEntity Portal\Mesh
 		FreeEntity Portal\JumpOBB
 		Delete Portal
 	Next
 	
 	For Orbit.Planet = Each Planet
-;		FreeEntity Orbit\Pivot
+		FreeEntity Orbit\Pivot
 		FreeEntity Orbit\Sprite
 		Delete Orbit
 	Next
@@ -542,7 +554,7 @@ Function LoadSkyBox(TxID, Parent%=0)
 	AddTriangle Surface, 0, 2, 1:AddTriangle Surface, 2, 3, 1
 	
 	; Stuff
-	ScaleMesh Mesh, 30000, 30000, 30000
+	ScaleMesh Mesh, 300000, 300000, 300000
 	EntityOrder Mesh, 1
 	EntityFX Mesh, 1
 	Return Mesh
@@ -875,6 +887,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#66#BC#10E#11F#125#13A#163#16C#186#18B#195#1ED#229#245#254#25F#2BC#2C9#2D0#2E5
-;~F#2F8#30B#351
+;~F#11A#12B#131#146#16F#178#192#197#1A1#1F9#235#251#260#26B#2C8#2D5#2DC#2F1#304#317
+;~F#35D
 ;~C#Blitz3D

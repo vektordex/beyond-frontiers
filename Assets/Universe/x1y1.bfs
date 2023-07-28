@@ -10,6 +10,11 @@ SunScale=180000
 SunColorR=255
 SunColorG=255
 SunColorB=255
+FogSector
+FogRange=150000
+FogColorR=150
+FogColorG=220
+FogColorB=255
 PlanetSetup
 PlanetTiltX=-15
 PlanetTiltY=150

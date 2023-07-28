@@ -1503,7 +1503,7 @@ Until Game_End=1
 
 State_Menu_Subcontext = 1
 ShowPointer
-Asset_Clear_All()
+;Asset_Clear_All()
 
 Goto MainMenu
 ;~IDEal Editor Parameters:
