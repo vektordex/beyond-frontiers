@@ -1,12 +1,12 @@
 SystemSeed=37589162
-SystemName=Test System
+SystemName=Main Sector
 SystemSecurity=5
 OwnerRace=Developers
 BackgroundIndex=6
 SunSetup
 SunTiltX=15
-SunTiltY=195
-SunScale=180000
+SunTiltY=20
+SunScale=100000
 SunColorR=255
 SunColorG=255
 SunColorB=255

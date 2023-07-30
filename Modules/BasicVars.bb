@@ -17,11 +17,15 @@ Global Player_Effect_Drift_X, Player_Effect_Drift_Y, PlayerX, PlayerY, PlayerZ
 Global Player_Value_Speed_Target#, Player_Value_Speed_Main#, SpeedY#, SpeedX#
 Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boost_State, Player_Value_Speed_Maximum#=80
 
+Global Effect_Camera_Zoom# = 1
+
 Global System_Name$, System_Owner$, System_Security
 
 Global FastTravelSpot, Travel_To_LastSave, Savecounter
 
 Global ShipMake
+
+Global Game_Menu_Open=0, Game_End=0
 
 ;[End Block]
 
@@ -928,5 +932,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#1B#BD#C3#C8#CC#D2#D9#DE#E4#F5#1A6#22A#238#2BB
+;~F#1F#C1#C7#CC#D0#D6#DD#E2#E8#F9#1AA#22E#23C#2BF
 ;~C#Blitz3D

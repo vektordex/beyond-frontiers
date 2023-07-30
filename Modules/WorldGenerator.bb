@@ -1,9 +1,3 @@
-Global DiscoveryID
-DiscoveryID=DiscoveryID+1
-Global MyDiscoveredBelts
-Global Security_Level
-Global SystemID_Global
-
 Type Stargate
 	Field Mesh, Mesh_Effect, Mesh_Effect_Horizon
 	Field JumpOBB
@@ -599,20 +593,6 @@ Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
 	AmbientLight 10,10,10
 End Function
 
-;Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
-;	
-;	
-;	RotateEntity Object_Environment[0], RotX, RotY, 0, True
-;	ScaleSprite Object_Environment[1], Scale, Scale
-;	
-;	PointEntity Object_Environment[1], WorldCamera
-;	
-;	LightColor Object_Light[0], SunR, SunG, SunB
-;	LightColor Object_Light[1], SunR/7, SunG/7, SunB/7;	
-;	EntityColor Object_Environment[1],SunR, SunG, SunB
-;	
-;End Function
-
 Function Modify_Fog(Enable, RangeNear, RangeFar, R, G, B)
 	If Enable = 1 Then
 		CameraFogMode WorldCamera,1
@@ -622,7 +602,6 @@ Function Modify_Fog(Enable, RangeNear, RangeFar, R, G, B)
 		CameraFogMode WorldCamera,0
 	EndIf
 End Function
-
 
 Function Environment_Dust_Create()
 	Zone_Dust_Handle=DST_Create_Dust(WorldCamera,100,1)
@@ -638,7 +617,6 @@ Function Environment_Dust_Create()
 	DST_Set_SpeedBlur(Zone_Dust_Base,15)
 	DST_Set_ColorRange(Zone_Dust_Base,55,55,55,255,255,255)
 End Function
-
 
 Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0)
 	
@@ -895,6 +873,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#AC#D0#EC#121#132#138#14D#176#17F#199#19E#1A8#200#268#273#2D0#2DD#2E4#2F9#30C
-;~F#31F#365
+;~F#A6#E6#11B#12C#132#147#170#179#193#198#1A2#1FA#253#25D#2B9#2C6#2CD#2E2#2F5#308
+;~F#34E
 ;~C#Blitz3D

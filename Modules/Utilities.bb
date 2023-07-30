@@ -877,6 +877,7 @@ Function AlignEntity(x_objekt1, x_objekt2, Abstufungen = 0)
 End Function 
 
 Function Randomsong(number)
+	StopChannel Channel_Music
 	Select number
 		Case 1
 			Channel_Music = PlaySound(Music_ID[1])
@@ -901,7 +902,7 @@ Function Randomsong(number)
 End Function
 
 Function Music_Update()
-	
+	ChannelVolume Channel_Music,Music_Volume
 	Select Music_Theme
 		Case 0
 			

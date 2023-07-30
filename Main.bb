@@ -226,6 +226,7 @@ Select Loading_State
 			Repeat
 				LoadData$ = ReadLine(LoadOrder)
 				LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".png", 2)
+				LoadData$ = ReadLine(LoadOrder)
 			Until Eof(LoadOrder)
 			CloseFile LoadOrder
 			;[End Block]
@@ -241,6 +242,7 @@ Select Loading_State
 			Repeat
 				LoadData$ = ReadLine(LoadOrder)
 				LoadTextureAsset("Assets\2D\Menu\"+LoadData$, 2)
+				LoadData$ = ReadLine(LoadOrder)
 			Until Eof(LoadOrder)
 			CloseFile LoadOrder
 			;[End Block]
@@ -250,6 +252,7 @@ Select Loading_State
 			Repeat
 				LoadData$ = ReadLine(LoadOrder)
 				LoadTextureAsset("Assets\2D\GUI\"+LoadData$+".png", 2)
+				LoadData$ = ReadLine(LoadOrder)
 			Until Eof(LoadOrder)
 			CloseFile LoadOrder
 			;[End Block]
@@ -575,7 +578,7 @@ Repeat
 	EndIf
 	If MouseHit(1) = False And MouseHit(2) = False Then FlushMouse()
 	
-	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/20)*15,Sin(MilliSecs()/18)*15)
+	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/20)*15,Sin(MilliSecs()/18)*15,0,0,4)
 	
 	DrawImage3D	(GUI_Windows[9],D3DOR-64,D3DOU-64)
 	
@@ -872,7 +875,7 @@ Repeat
 						DrawImage3D(GUI_Windows[32],-432,0,0,0,1.25)
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
-							DrawImage3D(GUI_Windows[16],-432,-350,0,0,2)
+							DrawImage3D(GUI_Windows[16],-428,-350,0,0,2)
 							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Terran Conglomerate": NewChar_Money=12000:NewChar_System$="Luna":State_Menu_Subcontext_Character=2
 						EndIf
 						
@@ -1089,7 +1092,7 @@ Music_Volume#=.2
 
 ;UserDataLoad(State_Character_To_Load)
 
-Music_Update()
+
 
 CreateListener(WorldCamera, 0.0025, 8, 20000)
 
@@ -1152,7 +1155,11 @@ Repeat
 	;[Block] Networking
 	Local ms_Performance_Update_Network = MilliSecs()
 	
-	If KeyHit(1) Then Game_end=1
+	If KeyHit(1) Then 
+		Game_Menu_Open=1-Game_Menu_Open
+	EndIf
+		
+	If Game_Menu_Open = 1 Then FlushMouse(): eCameraMode = MODE_DOCKED
 	
 	; Measure Time
 	Performance_Update_Network = MilliSecs() - ms_Performance_Update_Network
@@ -1319,6 +1326,28 @@ Repeat
 			EndIf
 			
 			;[End Block]
+		Case MODE_DOCKED
+			RotateEntity eShipBody,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
+			RotateEntity tShip,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
+			
+			tmSpeedX#=0
+			tmSpeedy#=0
+			
+			If SpeedX#<tmSpeedX# Then
+				SpeedX#=SpeedX+1
+			ElseIf SpeedX#>tmSpeedX#
+				SpeedX#=SpeedX#-1
+			ElseIf SpeedX#<0.99 And SpeedX#>-0.99
+				SpeedX#=0
+			EndIf
+			
+			If SpeedY#<tmSpeedy# Then
+				SpeedY#=SpeedY#+1
+			ElseIf SpeedY#>tmSpeedy#
+				SpeedY#=SpeedY#-1
+			ElseIf SpeedY#<0.99 And SpeedY#>-0.99
+				SpeedY#=0
+			EndIf
 	End Select
 
 	HandleInput()
@@ -1449,6 +1478,8 @@ Repeat
 		WorldClock$=CurrentTime()
 	EndIf
 	
+	Music_Update()
+	
 	Asset_Belt_Update()
 	Asset_Station_Update()
 	Asset_Planet_Update()
@@ -1456,6 +1487,7 @@ Repeat
 	
 	Environment_FastTravel_Update()
 	Environment_NavMesh_Update()
+	If Game_Menu_Open = 1 Then UI_Draw_Options()
 	
 	DST_Update()
 	
@@ -1497,13 +1529,22 @@ Repeat
 	
 	Clear3D()
 	
-Until Game_End=1
-
+Until Game_End>0
+Select Game_End	
+	Case 1
+		ShowPointer
+		Goto MainMenu
+	Case 2
+		Asset_Clear_All()
+		Clear3D()
+		ClearWorld()
+		End
+End Select
 State_Menu_Subcontext = 1
 ShowPointer
-Asset_Clear_All()
+
 
 End
 ;~IDEal Editor Parameters:
-;~F#231#260#269#283#290#3AA#415#456#594#599
+;~F#263#26C#286#293#31C#3AD#418#5B1#5B6
 ;~C#Blitz3D

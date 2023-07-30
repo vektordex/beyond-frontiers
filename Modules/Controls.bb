@@ -35,6 +35,7 @@ Function HandleInput()
 			EndIf
 			MoveMouse GraphicsWidth()/2, GraphicsHeight()/2
 			eCameraMode = 1 - eCameraMode
+			If eCameraMode < 0 Then eCameraMode = 0
 		EndIf
 		
 		If KeyDown(42)=False And KeyMode=0 Then				; GENERAL SHIP CONTROLS

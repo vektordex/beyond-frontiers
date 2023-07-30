@@ -38,7 +38,8 @@ Function PreloadUI()
 	Local LoadCounter = 1
 	Repeat
 		Local LoadData$ = ReadLine(LoadOrder)
-		GUI_Windows[LoadCounter]=LoadImage3D("Assets\2D\Menu\"+LoadData$,2,2,0,-99)
+		Local LoadLayer=ReadLine(LoadOrder)
+		GUI_Windows[LoadCounter]=LoadImage3D("Assets\2D\Menu\"+LoadData$,2,2,0,LoadLayer)
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -47,7 +48,8 @@ Function PreloadUI()
 	LoadOrder = OpenFile("Assets\Manifest\LoadUI.lof")
 	Repeat
 		LoadData$ = ReadLine(LoadOrder)
-		GUI_Game[LoadCounter]=LoadImage3D("Assets\2D\GUI\"+LoadData$+".png",2,2,0,-99)
+		LoadLayer=ReadLine(LoadOrder)
+		GUI_Game[LoadCounter]=LoadImage3D("Assets\2D\GUI\"+LoadData$+".png",2,2,0,LoadLayer)
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -60,7 +62,8 @@ Function Preload3DFont()
 	Local TextID = 1
 	Repeat
 		Local LoadData$=ReadLine(LoadOrder)
-		Text_Font[TextID]=FontRange3D(LoadImage3D("Assets\2D\Fonts\"+LoadData$+".png",2,1,0,-120))
+		Local LoadLayer=ReadLine(LoadOrder)
+		Text_Font[TextID]=FontRange3D(LoadImage3D("Assets\2D\Fonts\"+LoadData$+".png",2,1,0,LoadLayer))
 		TextID = TextID+1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -170,7 +173,7 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#C
 ;~C#Blitz3D
 ;~IDEal Editor Parameters:
+;~F#C
 ;~C#Blitz3D
