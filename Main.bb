@@ -1501,9 +1501,9 @@ Until Game_End=1
 
 State_Menu_Subcontext = 1
 ShowPointer
-;Asset_Clear_All()
+Asset_Clear_All()
 
-Goto MainMenu
+End
 ;~IDEal Editor Parameters:
-;~F#231#257#260#269#283#290#3AA#415#456#594#599
+;~F#231#260#269#283#290#3AA#415#456#594#599
 ;~C#Blitz3D
