@@ -140,195 +140,195 @@ For A = 1 To GFXCards
 Next
 
 Repeat
-	ShowPointer
-	
-	;[Block] Logical Update
+ShowPointer
+
+;[Block] Logical Update
 	; Update State
-	Select Loading_State
-		Case LOADING_STATE_LOADING ;[Block]
-			If Loading_State_JustSwitched Then
-				AssetManager_Suspend()
-				
-				;[Block] Meshes and Textures ------------------------------------
+Select Loading_State
+	Case LOADING_STATE_LOADING ;[Block]
+		If Loading_State_JustSwitched Then
+			AssetManager_Suspend()
+			
+			;[Block] Meshes and Textures ------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Meshes
 				;----------------------------------------------------------------
-				;[Block] Ships
-				Local LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
-				Repeat
-					Local LoadData$ = ReadLine(LoadOrder)
-					LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS")
-					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
-					LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Stations
-				LoadOrder = OpenFile("Assets\Manifest\LoadStations.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadMeshAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Mesh.3DS")
-					LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
-					LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Planets
-				LoadOrder = OpenFile("Assets\Manifest\LoadPlanets.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\3D\Planets\"+LoadData$+".png",1+2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Gate and Horizon
-				LoadMeshAsset("Assets\3D\Gate\Gate_Mesh.3DS")
-				LoadTextureAsset("Assets\3D\Gate\Gate_Color.jpg",1+2)
-				LoadTextureAsset("Assets\3D\Gate\Gate_Glow.jpg",1+2)
-				LoadMeshAsset("Assets\3D\Gate\Gate_Beam.3DS")
-				LoadTextureAsset("Assets\3D\Gate\Gate_Beam.png",1+2)
-				;[End Block]
-				
-				;[Block] Asteroids
-				For A = 1 To 4
-					LoadMeshAsset("Assets\3D\Asteroids\Asteroid"+a+"_Mesh.3DS")
-					LoadTextureAsset("Assets\3D\Asteroids\Asteroid"+a+"_Color.jpg")
-				Next
-				;[End Block]
-				
-				;[Block] Skybox
-				LoadOrder = OpenFile("Assets\Manifest\LoadSkybox.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"BK.png",561)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"DN.png",561)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"FT.png",561)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"LF.png",561)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"RT.png",561)
-					LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"UP.png",561)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				
-				LoadTextureAsset("Assets\3D\Environment\sun.png",1+2)
-				;[End Block]
-				;[End Block]
-				
-				;[Block] Interface and Menus ------------------------------------
+			;[Block] Ships
+			Local LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
+			Repeat
+				Local LoadData$ = ReadLine(LoadOrder)
+				LoadMeshAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Mesh.3DS")
+				LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+				LoadTextureAsset("Assets\3D\Ships\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Stations
+			LoadOrder = OpenFile("Assets\Manifest\LoadStations.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadMeshAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Mesh.3DS")
+				LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Color.jpg",1+2)
+				LoadTextureAsset("Assets\3D\Stations\"+LoadData$+"\"+LoadData$+"_Glow.jpg",1+2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Planets
+			LoadOrder = OpenFile("Assets\Manifest\LoadPlanets.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\3D\Planets\"+LoadData$+".png",1+2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Gate and Horizon
+			LoadMeshAsset("Assets\3D\Gate\Gate_Mesh.3DS")
+			LoadTextureAsset("Assets\3D\Gate\Gate_Color.jpg",1+2)
+			LoadTextureAsset("Assets\3D\Gate\Gate_Glow.jpg",1+2)
+			LoadMeshAsset("Assets\3D\Gate\Gate_Beam.3DS")
+			LoadTextureAsset("Assets\3D\Gate\Gate_Beam.png",1+2)
+			;[End Block]
+			
+			;[Block] Asteroids
+			For A = 1 To 4
+				LoadMeshAsset("Assets\3D\Asteroids\Asteroid"+a+"_Mesh.3DS")
+				LoadTextureAsset("Assets\3D\Asteroids\Asteroid"+a+"_Color.jpg")
+			Next
+			;[End Block]
+			
+			;[Block] Skybox
+			LoadOrder = OpenFile("Assets\Manifest\LoadSkybox.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"BK.png",561)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"DN.png",561)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"FT.png",561)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"LF.png",561)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"RT.png",561)
+				LoadTextureAsset("Assets\3D\SkyBox\"+LoadData$+"UP.png",561)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			
+			LoadTextureAsset("Assets\3D\Environment\sun.png",1+2)
+			;[End Block]
+			;[End Block]
+			
+			;[Block] Interface and Menus ------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Interface
 				;----------------------------------------------------------------
-				
-				;[Block] Fonts
-				LoadOrder = OpenFile("Assets\Manifest\LoadFonts.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".png", 2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Standard Windows Font
-				LoadFontAsset("Arial", 14)
-				LoadFontAsset("Arial", 20)
-				LoadFontAsset("Arial", 24)
-				;[End Block]
-				
-				;[Block] Main Menu Graphics
-				LoadOrder = OpenFile("Assets\Manifest\LoadMenu.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\2D\Menu\"+LoadData$, 2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Game GUI
-				LoadOrder = OpenFile("Assets\Manifest\LoadUI.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadTextureAsset("Assets\2D\GUI\"+LoadData$+".png", 2)
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				;[End Block]
-				
-				;[Block] Sounds -------------------------------------------------
+			
+			;[Block] Fonts
+			LoadOrder = OpenFile("Assets\Manifest\LoadFonts.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".png", 2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Standard Windows Font
+			LoadFontAsset("Arial", 14)
+			LoadFontAsset("Arial", 20)
+			LoadFontAsset("Arial", 24)
+			;[End Block]
+			
+			;[Block] Main Menu Graphics
+			LoadOrder = OpenFile("Assets\Manifest\LoadMenu.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\2D\Menu\"+LoadData$, 2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Game GUI
+			LoadOrder = OpenFile("Assets\Manifest\LoadUI.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\2D\GUI\"+LoadData$+".png", 2)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			;[End Block]
+			
+			;[Block] Sounds -------------------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Sounds
 				;----------------------------------------------------------------
-				
-				LoadOrder = OpenFile("Assets\Manifest\LoadSounds.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadSoundAsset("Assets\Sounds\"+LoadData$+".ogg")
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Music --------------------------------------------------
+			
+			LoadOrder = OpenFile("Assets\Manifest\LoadSounds.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadSoundAsset("Assets\Sounds\"+LoadData$+".ogg")
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Music --------------------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Music
 				;----------------------------------------------------------------
-				
-				LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
-				Repeat
-					LoadData$ = ReadLine(LoadOrder)
-					LoadSoundAsset("Assets\Music\"+LoadData$+".ogg")
-				Until Eof(LoadOrder)
-				CloseFile LoadOrder
-				;[End Block]
-				
-				;[Block] Voices -------------------------------------------------
+			
+			LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadSoundAsset("Assets\Music\"+LoadData$+".ogg")
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Voices -------------------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Voices
 				;----------------------------------------------------------------
-				;[End Block]
-				
-				;[Block] Other Important Stuff
+			;[End Block]
+			
+			;[Block] Other Important Stuff
 				;----------------------------------------------------------------
 				;! Visual - Important
 				;----------------------------------------------------------------
-				LoadTextureAsset("Assets\3D\Utilities\texture_fog_basic.tga", 1+2)
-				;[End Block]
-				
-				; Advance to next State
-				Loading_State_Next = LOADING_STATE_LOADING
-				AssetManager_Resume()
-			EndIf
-			
-			If AssetManager_Suspend(False) Then
-				ls_Count_Total = 0
-				ls_Count_Loaded = 0
-				ls_Count_Loading = 0
-				ls_Count_Pending = 0
-				ls_Count_Error = 0
-				
-				For Ass.Asset = Each Asset
-					ls_Count_Total = ls_Count_Total + 1
-					
-					Select Ass\EAssetStatus
-						Case EAssetStatus_Unknown
-							ls_Count_Pending = ls_Count_Pending + 1
-						Case EAssetStatus_Loading
-							ls_Count_Loading = ls_Count_Loading + 1
-						Case EAssetStatus_Loaded
-							ls_Count_Loaded = ls_Count_Loaded + 1
-						Case EAssetStatus_Error
-							ls_Count_Error = ls_Count_Error + 1
-					End Select
-				Next
-				AssetManager_Resume()
-				
-				If ls_Count_Total = ls_Count_Loaded Then
-					Loading_State_Next = LOADING_STATE_INITIALIZE
-					AssetManager_Shutdown() ; Kill the AssetManager, it's not needed anymore.
-				EndIf
-			EndIf
+			LoadTextureAsset("Assets\3D\Utilities\texture_fog_basic.tga", 1+2)
 			;[End Block]
-		Case LOADING_STATE_INITIALIZE ;[Block]
+			
+				; Advance to next State
+			Loading_State_Next = LOADING_STATE_LOADING
+			AssetManager_Resume()
+		EndIf
+		
+		If AssetManager_Suspend(False) Then
+			ls_Count_Total = 0
+			ls_Count_Loaded = 0
+			ls_Count_Loading = 0
+			ls_Count_Pending = 0
+			ls_Count_Error = 0
+			
+			For Ass.Asset = Each Asset
+				ls_Count_Total = ls_Count_Total + 1
+				
+				Select Ass\EAssetStatus
+					Case EAssetStatus_Unknown
+						ls_Count_Pending = ls_Count_Pending + 1
+					Case EAssetStatus_Loading
+						ls_Count_Loading = ls_Count_Loading + 1
+					Case EAssetStatus_Loaded
+						ls_Count_Loaded = ls_Count_Loaded + 1
+					Case EAssetStatus_Error
+						ls_Count_Error = ls_Count_Error + 1
+				End Select
+			Next
+			AssetManager_Resume()
+			
+			If ls_Count_Total = ls_Count_Loaded Then
+				Loading_State_Next = LOADING_STATE_INITIALIZE
+				AssetManager_Shutdown() ; Kill the AssetManager, it's not needed anymore.
+			EndIf
+		EndIf
+		;[End Block]
+	Case LOADING_STATE_INITIALIZE ;[Block]
 			; Assign Loaded resources to Globals.
 			
 			PreloadAudio()
@@ -413,7 +413,7 @@ Repeat
 	;[Block] State Update
 	InputEx_Update()
 	
-	; Advance State
+;	Advance State
 	If Loading_State <> Loading_State_Next Then
 		Loading_State = Loading_State_Next
 		Loading_State_JustSwitched = True
@@ -421,7 +421,7 @@ Repeat
 		Loading_State_JustSwitched = False
 	EndIf
 	
-	; Wait
+;	Wait
 	WaitTimer RenderTimer
 	;[End Block]
 Until (Loading_State = LOADING_STATE_COMPLETE)
@@ -1091,8 +1091,6 @@ Music_Volume#=.2
 
 Music_Update()
 
-Lighting_Initialize()
-
 CreateListener(WorldCamera, 0.0025, 8, 20000)
 
 Environment_Dust_Create()
@@ -1507,5 +1505,5 @@ ShowPointer
 
 Goto MainMenu
 ;~IDEal Editor Parameters:
-;~F#168#19C#231#257#260#269#283#290#3AA#415#458#596#59B
+;~F#231#257#260#269#283#290#3AA#415#456#594#599
 ;~C#Blitz3D

@@ -159,7 +159,7 @@ Function PreloadMesh()
 		Text_SkyLF[LoadCounter] = AssetManager_GetAsset(EAssetType_Texture, "Assets\3D\Skybox\"+LoadData$+"LF.png", 1+16+32+512)
 		Text_SkyRT[LoadCounter] = AssetManager_GetAsset(EAssetType_Texture, "Assets\3D\Skybox\"+LoadData$+"RT.png", 1+16+32+512)
 		Text_SkyUP[LoadCounter] = AssetManager_GetAsset(EAssetType_Texture, "Assets\3D\Skybox\"+LoadData$+"UP.png", 1+16+32+512)
-		
+	
 		Text_SkyCM[LoadCounter] = MakeCubeFromXYZTex(LoadCounter)
 		SetCubeMode Text_SkyCM[LoadCounter], 3
 		LoadCounter= LoadCounter + 1
@@ -171,6 +171,4 @@ End Function
 
 ;~IDEal Editor Parameters:
 ;~F#C
-;~C#Blitz3D
-;~IDEal Editor Parameters:
 ;~C#Blitz3D

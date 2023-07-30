@@ -16,8 +16,12 @@ Function HandleInput()
 		
 		If KeyHit(37) ;PgDn
 			Render_B#=Render_B#-0.025
+		EndIf				If KeyHit(20) Then World_Generate(1,1,0,0,0)
+		If KeyHit(21) Then
+			ShipMake = ShipMake + 1
+			If ShipMake > 11 Then ShipMake = 1
+			PlayerSwitchShip(ShipMake)
 		EndIf
-		
 		
 		If Render_A#>0.5 Then Render_A#=0.5
 		If Render_B#>2 Then Render_B#=2

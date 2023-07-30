@@ -10,11 +10,6 @@ SunScale=180000
 SunColorR=255
 SunColorG=255
 SunColorB=255
-FogSector
-FogRange=150000
-FogColorR=150
-FogColorG=220
-FogColorB=255
 PlanetSetup
 PlanetTiltX=-15
 PlanetTiltY=150
@@ -30,11 +25,11 @@ BeltAmount=5000
 GateSetup
 SystemX=2
 SystemY=1
-GatePosX=500000
+GatePosX=100000
 GatePosY=0
 GatePosZ=0
 GateRotation=90
-GateAimX=-500000
+GateAimX=-100000
 GateAimY=0
 GateAimZ=0
 StationSetup

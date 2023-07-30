@@ -15,6 +15,11 @@ PlanetTiltX=-15
 PlanetTiltY=150
 PlanetScale=2900
 PlanetType=12
+FogSector
+FogRange=150000
+FogColorR=150
+FogColorG=220
+FogColorB=255
 BeltSetup
 BeltPosX=0
 BeltPosY=0
@@ -25,10 +30,30 @@ BeltAmount=2000
 GateSetup
 SystemX=1
 SystemY=1
-GatePosX=-500000
+GatePosX=-100000
 GatePosY=0
 GatePosZ=0
 GateRotation=-90
-GateAimX=500000
+GateAimX=100000
 GateAimY=0
 GateAimZ=0
+StationSetup
+StationName=Virgillian II
+StationPosX=-100000
+StationPosY=0
+StationPosZ=100000
+StationType=2
+StationRotation=15
+StationBuy=1
+StationSell=1
+StationService=0
+StationSetup
+StationName=Vigillian I
+StationPosX=100000
+StationPosY=0
+StationPosZ=100000
+StationType=1
+StationRotation=165
+StationBuy=1
+StationSell=1
+StationService=0

@@ -9,13 +9,8 @@ Global Object_Charge, KeyMode
 
 Global MAPHUD
 
-Global SceneRoot, SceneDataRoot
 Global RenderTimer
 Global D3DMouseX, D3DMouseY
-
-Global Mode_Demo = 0
-
-;2,6,7,11,17,18,22,23,24,27,28,30,31,33,38,39,40,42,49,51,52,56,60,61,63,72,79,81,84,85,87,88,89,91,92,95,96,97,103,104,107,108,109,110,120
 
 ;[Block] Basics
 Global Player_Effect_Drift_X, Player_Effect_Drift_Y, PlayerX, PlayerY, PlayerZ
@@ -25,6 +20,8 @@ Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boo
 Global System_Name$, System_Owner$, System_Security
 
 Global FastTravelSpot, Travel_To_LastSave, Savecounter
+
+Global ShipMake
 
 ;[End Block]
 
@@ -931,5 +928,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#1E#C0#C6#CB#CF#D5#DC#E1#E7#F8#1A9#22D#23B#2BE
+;~F#1B#BD#C3#C8#CC#D2#D9#DE#E4#F5#1A6#22A#238#2BB
 ;~C#Blitz3D

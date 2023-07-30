@@ -2311,7 +2311,7 @@ Function LoadImage3D(FDrawFile$,FDrawMode%=2,FDrawBlend%=2,FDrawPivot%=0,FDrawOr
 	Local IDrawKing%=IFaceBank
 	Local IDrawMesh%=CreateMesh(IDrawPivot)
 	Local IDrawFace%=CreateSurface(IDrawMesh)
-	Local IDrawTure%=AssetManager_GetAsset(EAssetType_Texture, FDrawFile, FDrawMode)
+	Local IDrawTure%=LoadTexture( FDrawFile, FDrawMode)
 	If IDrawTure = 0 Then ;!ToDo: AssetManager should have all textures ready.
 		IDrawTure = LoadTexture(FDrawFile,FDrawMode)
 	EndIf

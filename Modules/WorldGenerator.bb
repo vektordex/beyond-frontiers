@@ -18,6 +18,8 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
 	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
 	
+	Asset_Clear_All()
+	
 	Modify_Fog(0,0,0,0,0,0)
 	AmbientLight 30,30,30
 	
@@ -39,7 +41,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorR=",""): ColorR = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorG=",""): ColorG = Int(SystemReadSub$)
 			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorB=",""): ColorB = Int(SystemReadSub$)
-			Modify_Light(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
+			Lighting_Initialize(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
 		EndIf
 		;-> System Foggyness
 		If Instr(SystemRead$,"FogSector") Then 
@@ -147,13 +149,19 @@ Function Asset_Clear_All()
 	Next
 	
 	For Orbit.Planet = Each Planet
-		FreeEntity Orbit\Pivot
 		FreeEntity Orbit\Sprite
+		FreeEntity Orbit\Pivot
 		Delete Orbit
 	Next
 	
 	; Skybox
+	FreeEntity Object_Light[0]
+	
+	FreeEntity Object_Environment[1]
+	FreeEntity Object_Environment[0]
 	FreeEntity Object_Environment[2]
+	
+	
 	
 	For XY.MapWaypoints = Each MapWaypoints
 		Delete XY
@@ -222,7 +230,6 @@ Function Asset_Gate_Update()
 		EndIf
 	Next
 	If Gate_Jump = 1 Then
-		Asset_Clear_All()
 		World_Generate(Future_SystemX, Future_SystemY, TX, TY, TZ)
 	EndIf
 End Function
@@ -563,12 +570,8 @@ Function LoadSkyBox(TxID, Parent%=0)
 	
 End Function
 
-Function Lighting_Initialize()
+Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
 	
-	Local SunScale# = 90000
-	Local SunColorR = 200
-	Local SunColorG = 210
-	Local SunColorB = 255
 	
     ; Sun
 	
@@ -576,23 +579,11 @@ Function Lighting_Initialize()
 	Object_Environment[1] = CopyEntity(Mesh_Environment[0], Object_Environment[0])
 	
 	Object_Light[0] = CreateLight(1, Object_Environment[0])
-	Object_Light[1] = CreateLight(1, Object_Environment[0]):RotateEntity Object_Light[1],0,180,0
 	
-;	ScaleEntity Object_Environment[0],5,5,5
 	EntityColor Object_Environment[1],255,255,255
 	EntityFX Object_Environment[1],1
 	
 	MoveEntity Object_Environment[1],0,0,-600000
-	
-	ScaleSprite Object_Environment[1], SunScale, SunScale
-	LightColor Object_Light[0],250,250,250
-	LightColor Object_Light[1],50,50,50
-	
-	AmbientLight 10,10,10
-End Function
-
-Function Modify_Light(RotX,RotY,Scale, SunR, SunG, SunB)
-	
 	
 	RotateEntity Object_Environment[0], RotX, RotY, 0, True
 	ScaleSprite Object_Environment[1], Scale, Scale
@@ -600,10 +591,27 @@ Function Modify_Light(RotX,RotY,Scale, SunR, SunG, SunB)
 	PointEntity Object_Environment[1], WorldCamera
 	
 	LightColor Object_Light[0], SunR, SunG, SunB
-	LightColor Object_Light[1], SunR/7, SunG/7, SunB/7	
+	AmbientLight SunR/7, SunG/7, SunB/7
+	
 	EntityColor Object_Environment[1],SunR, SunG, SunB
 	
+	
+	AmbientLight 10,10,10
 End Function
+
+;Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
+;	
+;	
+;	RotateEntity Object_Environment[0], RotX, RotY, 0, True
+;	ScaleSprite Object_Environment[1], Scale, Scale
+;	
+;	PointEntity Object_Environment[1], WorldCamera
+;	
+;	LightColor Object_Light[0], SunR, SunG, SunB
+;	LightColor Object_Light[1], SunR/7, SunG/7, SunB/7;	
+;	EntityColor Object_Environment[1],SunR, SunG, SunB
+;	
+;End Function
 
 Function Modify_Fog(Enable, RangeNear, RangeFar, R, G, B)
 	If Enable = 1 Then
@@ -887,6 +895,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#11A#12B#131#146#16F#178#192#197#1A1#1F9#235#251#260#26B#2C8#2D5#2DC#2F1#304#317
-;~F#35D
+;~F#AC#D0#EC#121#132#138#14D#176#17F#199#19E#1A8#200#268#273#2D0#2DD#2E4#2F9#30C
+;~F#31F#365
 ;~C#Blitz3D
