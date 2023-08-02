@@ -828,7 +828,7 @@ Function Environment_NavMesh_Update()
             Local DrawPosY# = WaypointY# - CPosY#
             Local DrawPosZ# = WaypointZ# - CPosZ#
             
-;			If (DrawPosZ# + DrawPosY#)*-1 < MapOriginZ+113 Then DrawPosZ = MapOriginZ+113
+;;			If (DrawPosZ# + DrawPosY#)*-1 < MapOriginZ+113 Then DrawPosZ = MapOriginZ+113
 			
 			DrawImage3D(GUI_Game[12], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)))
 			
@@ -949,5 +949,6 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2E2
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2E2#2EC#307
+;~F#30E#319#32A#359#36E#387
 ;~C#Blitz3D

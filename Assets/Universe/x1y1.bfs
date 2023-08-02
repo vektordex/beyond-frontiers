@@ -6,10 +6,10 @@ BackgroundIndex=6
 SunSetup
 SunTiltX=15
 SunTiltY=20
-SunScale=100000
+SunScale=150000
 SunColorR=255
-SunColorG=255
-SunColorB=255
+SunColorG=0
+SunColorB=0
 PlanetSetup
 PlanetTiltX=-15
 PlanetTiltY=150
@@ -19,9 +19,9 @@ BeltSetup
 BeltPosX=-100000
 BeltPosY=0
 BeltPosZ=100000
-BeltResource=2
+BeltResource=0
 BeltRange=200000
-BeltAmount=5000
+BeltAmount=2000
 GateSetup
 SystemX=2
 SystemY=1

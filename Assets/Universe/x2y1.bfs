@@ -16,7 +16,7 @@ PlanetTiltY=150
 PlanetScale=2900
 PlanetType=12
 FogSector
-FogRange=150000
+FogRange=48000
 FogColorR=150
 FogColorG=220
 FogColorB=255

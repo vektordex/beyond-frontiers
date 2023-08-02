@@ -694,7 +694,7 @@ Function Asset_Station_Update()
 	Next
 End Function
 
-Function Asset_Planet_Create(Scale, Texture, RotX, RotY);( PosX%, PosY%, PosZ%, Size#, SurfaceTexture%, Name$, AtmosR, AtmosG, AtmosB, Ring=0, Ringtilt=0, Ringtype=0)
+Function Asset_Planet_Create(Scale, Texture, RotX, RotY)
 	Orbit.Planet = New Planet
 	Orbit\Pivot = CreatePivot()
 	Orbit\Sprite = CreateSprite(Orbit\Pivot)
@@ -872,5 +872,6 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#A5#11A#12B#131#146#16F#178#192#197#1A1#1F9#252#25C#2C5#2CC#2E1#2F4#307#34D
+;~F#A5#C9#E5#11A#12B#131#146#16F#178#192#197#1A1#1F9#235#252#25C#26B#2A6#2B8#2C5
+;~F#2CC#2E1#2F4#307#34D
 ;~C#Blitz3D

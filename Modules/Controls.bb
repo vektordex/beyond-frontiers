@@ -42,34 +42,34 @@ Function HandleInput()
 			
 			If KeyDown(17) Then							; MOVE FORWARD
 				Player_Value_Movement_State=1
-				Player_Value_Speed_Target#=Player_Value_Speed_Target#+0.5;(0.5*Player_Value_Inertia_Positive)
+				Player_Value_Speed_Target#=Player_Value_Speed_Target#+(.5*Player_Value_Inertia_Positive#)
 			EndIf
 			
 			If KeyDown(31) Then							; BRAKE SHIP
 				Player_Value_Movement_State=-1
-				Player_Value_Speed_Target#= Player_Value_Speed_Target# -0.5;(.5*Player_Value_Inertia_Negative)
+				Player_Value_Speed_Target#= Player_Value_Speed_Target# -(.5*Player_Value_Inertia_Negative#)
 			EndIf
 			
 			If KeyDown(16) And ShipRollZ#<5 Then		; ROLL SHIP
-				ShipRollZ#=ShipRollZ#+.1;(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#+(.1*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(18) And ShipRollZ#>-5 Then
-				ShipRollZ#=ShipRollZ#-.1;(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#-(.1*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipRollZ#=ShipRollZ#*0.9
 			EndIf
 			
 			If KeyDown(32) And ShipStrafeX#<7.5 Then	; MOVE LEFT/RIGHT
-				ShipStrafeX#=ShipStrafeX#+.2;(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#+(.2*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(30) And ShipStrafeX#>-7.5 Then
-				ShipStrafeX#=ShipStrafeX#-.2;(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#-(.2*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipStrafeX#=ShipStrafeX#*0.9
 			EndIf
 			
 			If KeyDown(19) And ShipStrafeY#<7.5 Then	; MOVE UP/DOWN
-				ShipStrafeY#=ShipStrafeY#+.2;(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#+(.2*Player_Value_Inertia_Modifier#)
 			ElseIf KeyDown(33) And ShipStrafeY#>-7.5 Then
-				ShipStrafeY#=ShipStrafeY#-.2;(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#-(.2*Player_Value_Inertia_Modifier#)
 			Else 
 				ShipStrafeY#=ShipStrafeY#*0.9
 			EndIf
