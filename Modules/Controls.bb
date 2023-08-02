@@ -105,10 +105,14 @@ Function HandleInput()
 			EndIf
 			
 			If KeyDown(15) And eCameraMode<>MODE_CAMERA Then 
-				Player_Value_Boost_State = 1
-				Player_Value_Speed_Target#=Player_Value_Speed_Maximum*6
+;				Player_Value_Boost_State = 1
+;				Player_Value_Speed_Target#=Player_Value_Speed_Maximum*6
 			ElseIf KeyDown(15)<>1 Then
-				Player_Value_Boost_State = 0
+;				Player_Value_Boost_State = 0
+			EndIf
+			
+			If KeyHit(25) Then 
+				Game_Menu_Debug = 1 - Game_Menu_Debug
 			EndIf
 			
 		EndIf

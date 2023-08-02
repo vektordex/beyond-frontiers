@@ -25,8 +25,7 @@ Global FastTravelSpot, Travel_To_LastSave, Savecounter
 
 Global ShipMake
 
-Global Game_Menu_Open=0, Game_End=0
-
+Global Game_Menu_Open=0, Game_End=0, Game_Menu_Debug=0
 ;[End Block]
 
 ;[Block] Weapon/Module/Item Names and Descriptions --- ToDo: Move this in a moddable file, and add translation efforts, at least DE/EN
@@ -176,6 +175,7 @@ Global HUD
 ;[End Block]
 
 ;[Block] Character Values
+Global Player_Environment_Shipname$, Player_Environment_BaseSpeed, Player_Environment_BaseInertia, Player_Environment_BaseArmor, Player_Environment_BaseShield
 
 ;[End Block]
 
@@ -932,5 +932,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#1F#C1#C7#CC#D0#D6#DD#E2#E8#F9#1AA#22E#23C#2BF
+;~F#1E#C7#CC#D0#D6#DD#E2#E8#F9#1AA#22E#23C#2BF
 ;~C#Blitz3D

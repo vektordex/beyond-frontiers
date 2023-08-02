@@ -736,17 +736,6 @@ Function ConvertNumerics(InputNumber)
 	
 End Function
 
-
-
-
-Function CreateMyShipGun(ShipVersion, WID)
-	
-End Function
-
-Function GetWeaponvalue(WeaponID)
-	
-End Function
-
 Function PlayerSwitchShip(sid)
 	FreeEntity eShipBody
 	
@@ -754,23 +743,34 @@ Function PlayerSwitchShip(sid)
 	GetPlayerShipValues(sid)
 	
 	EntityType pvShip,Collision_Player
+	
+End Function
+
+Function GetPlayerShipValues(ShipID)
+	Local Shipinfo$
 	EntityRadius pvShip,500
 	EntityType WorldCamera,0
 	Yoffset=55
 	Zoffset=-150
-End Function
-
-Function GetPlayerShipValues(ShipID)
+	Local ShipFile = OpenFile("Assets\Manifest\LoadShips.lof")
+	For A = 1 To ShipID
+		Shipinfo$ = ReadLine(ShipFile)
+	Next
+	CloseFile ShipFile
+	Local Path$ ="Assets\Config\"+Shipinfo$+".bfc"
+;	
+	Local ShipData = ReadFile(Path$)
+;	RuntimeError ShipData + " | " + Path$
+;	
+	Player_Environment_Shipname$ = ReadLine(ShipData)
+	Player_Environment_BaseSpeed = ReadLine(ShipData)
+	Player_Environment_BaseInertia = ReadLine(ShipData)
+	Player_Environment_BaseArmor = ReadLine(ShipData)
+	Player_Environment_BaseShield = ReadLine(ShipData)
+	CloseFile ShipData
 	
-;			Player_Value_Shield_Maximum=25000: Player_Value_Armor_Maximum=12500 :Player_Value_Energy_Maximum=2500
-;			Ship_Shield_Reload_Tick = 25: Ship_Shield_Reload_Amount = 190
-;			
-;			Player_Value_Miner_Strength#=.1
-;			Player_Value_Inertia_Modifier#=1
-;			
-;			Ship_Value_ScanningStrength = 18000
-;			
-;			Player_Value_Inertia_Base# = 3.5: Player_Value_Speed_Maximum=15: Ship_Rad_Resistance#=1
+	Player_Value_Speed_Maximum = Player_Environment_BaseSpeed
+	SHipInertia# = Player_Environment_BaseInertia
 End Function
 
 Type MapWaypoints
@@ -949,5 +949,5 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#94#9C#AC#11A#1D0#1F6#22B#2DE
+;~F#5#46#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2E2
 ;~C#Blitz3D

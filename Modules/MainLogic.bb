@@ -8,6 +8,8 @@ Function UpdateGraphics()
 	
 	Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
 	Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
+	
+	Text3D(Text_Font[6],0, D3DOU-25,Player_Environment_Shipname$,1)
 	Select System_Security
 		Case 0
 			Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
@@ -29,8 +31,8 @@ Function UpdateGraphics()
 	Local SpeedMath = Floor(Player_Value_Speed_Current#*4)
 	
 	Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
-	Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"shield goes here",1)
-	Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"Armor goes here",1)
+	Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
+	Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
 	;Player Status Display
 	Text3D(Text_Font[1],-550,GraphicsHeight()/2*-1+18,"Money: 3.141.597,34 Cr.")
 	

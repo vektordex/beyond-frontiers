@@ -1378,47 +1378,45 @@ Repeat
 	
 	
 	;[Block] Debug Information
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*02), "Frame")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*02), Performance)
+	If Game_Menu_Debug = 1 Then
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*02), "Frame")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*02), Performance)
 	
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*03), "Update")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*03), Performance_Update)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*04), "Player")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*04), Performance_Update_Players)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*05), "Projectiles")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*05), Performance_Update_Projectiles)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*06), "Input")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*06), Performance_Update_Input)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*07), "User Interface")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*07), Performance_Update_UI)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*08), "Unknown")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*08), Performance_RestUpdate)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*09), "Physics")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*09), Performance_Physics)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*03), "Update")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*03), Performance_Update)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*04), "Player")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*04), Performance_Update_Players)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*05), "Projectiles")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*05), Performance_Update_Projectiles)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*06), "Input")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*06), Performance_Update_Input)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*07), "User Interface")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*07), Performance_Update_UI)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*08), "Unknown")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*08), Performance_RestUpdate)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*09), "Physics")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*09), Performance_Physics)
 	
+		
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*10), "Render")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*10), Performance_Render)
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*11), "3D")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*11), Performance_Render_3D + "(Tris: "+Performance_Render_3D_Tris+")")
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*13), "User Interface")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*13), Performance_Render_UI + "(Tris: "+Performance_Render_UI_Tris+")")
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*14), "Flip")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*14), Performance_Flip)
 	
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*10), "Render")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*10), Performance_Render)
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*11), "3D")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*11), Performance_Render_3D + "(Tris: "+Performance_Render_3D_Tris+")")
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*13), "User Interface")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*13), Performance_Render_UI + "(Tris: "+Performance_Render_UI_Tris+")")
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*14), "Flip")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*14), Performance_Flip)
-	
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*15), "X")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*15), EntityX(pvShip,True))
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*16), "Y")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*16), EntityY(pvShip,True))
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*17), "Z")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*17), EntityZ(pvShip,True))
-	
-	
-	
-	Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*20), "Wait")
-	Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*20), Performance_Wait)
-	
-	;	EndIf
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*15), "X")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*15), EntityX(pvShip,True))
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*16), "Y")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*16), EntityY(pvShip,True))
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*17), "Z")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*17), EntityZ(pvShip,True))
+		
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*20), "Wait")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*20), Performance_Wait)
+	EndIf
 	;[End Block]
 	
 	Performance_Update_UI = MilliSecs() - ms_Performance_Update_UI
@@ -1546,5 +1544,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#263#26C#286#293#31C#3AD#418#5B1#5B6
+;~F#263#26C#286#293#31C#3AD#418#5AF#5B4
 ;~C#Blitz3D

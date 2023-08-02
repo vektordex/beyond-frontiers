@@ -32,6 +32,16 @@ GateRotation=90
 GateAimX=-100000
 GateAimY=0
 GateAimZ=0
+GateSetup
+SystemX=1
+SystemY=2
+GatePosX=0
+GatePosY=0
+GatePosZ=-10000
+GateRotation=0
+GateAimX=0
+GateAimY=0
+GateAimZ=10000
 StationSetup
 StationName=Miner's Respite
 StationPosX=-100000

@@ -11,7 +11,6 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 	Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
 	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
 	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
-	
 	Asset_Clear_All()
 	
 	Modify_Fog(0,0,0,0,0,0)
@@ -705,7 +704,7 @@ Function Asset_Planet_Create(Scale, Texture, RotX, RotY);( PosX%, PosY%, PosZ%, 
 	RotateEntity Orbit\Pivot,RotX, RotY,0
 	SpriteViewMode Orbit\Sprite,2
 	PointEntity Orbit\Sprite, Orbit\Pivot
-	EntityFX Orbit\Sprite,1+16
+	EntityFX Orbit\Sprite,1+16+32
 End Function
 
 Function Asset_Planet_Update()
@@ -873,6 +872,5 @@ Function UpdateShockwave()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#A6#E6#11B#12C#132#147#170#179#193#198#1A2#1FA#253#25D#2B9#2C6#2CD#2E2#2F5#308
-;~F#34E
+;~F#A5#11A#12B#131#146#16F#178#192#197#1A1#1F9#252#25C#2C5#2CC#2E1#2F4#307#34D
 ;~C#Blitz3D
