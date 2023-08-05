@@ -1,5 +1,18 @@
-Matsuhima Observatory Cruiser
-16
-10
-200
-25
+ShipName=Matsuhima
+ShipClass=Exploratory Cruiser
+BaseArmor=200
+BaseShield=150
+BaseAccel=12
+BaseMSpeed=90
+BaseTurn=14
+BaseEnergy=100
+SlotsWeapon=0
+SlotsArmor=1
+SlotsShield=1
+SlotsCore=1
+SlotsEngine=1
+SlotsMining=1
+SlotsResearch=1
+SlotsCargo=1
+CameraOffsetZ=300
+CameraOffsetY=68

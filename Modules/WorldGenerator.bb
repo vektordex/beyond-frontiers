@@ -6,110 +6,126 @@ Type Stargate
 End Type
 
 Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPosZ)
+	;Decide Dock or 
+	If SystemPosX<1 And SystemPosY<1 Then
+		Asset_Clear_All()
+		
+		Modify_Fog(0,0,0,0,0,0)
+		AmbientLight 130,130,130
+		
+		Force_UI_Mode = 1
+	Else
+		;Read System File and Parse Content
+		Force_UI_Mode = 0
+		Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
+		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
+		Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
+		Asset_Clear_All()
 	
-	;Read System File and Parse Content
-	Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
-	Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
-	Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
-	Asset_Clear_All()
-	
-	Modify_Fog(0,0,0,0,0,0)
-	AmbientLight 30,30,30
-	
-	Repeat
-		Local SystemRead$ = ReadLine(SystemFile)
+		Modify_Fog(0,0,0,0,0,0)
+		AmbientLight 30,30,30
+		
+		Repeat
+			Local SystemRead$ = ReadLine(SystemFile)
 		;System Seed
-		If Instr(SystemRead$,"SystemSeed=") Then SystemRead$ = Replace$(SystemRead$,"SystemSeed=",""): Local SystemSeed=Int SystemRead$: SeedRnd SystemSeed
+			If Instr(SystemRead$,"SystemSeed=") Then SystemRead$ = Replace$(SystemRead$,"SystemSeed=",""): Local SystemSeed=Int SystemRead$: SeedRnd SystemSeed
 		;System Name and Values
-		If Instr(SystemRead$,"SystemName=") Then SystemRead$ = Replace$(SystemRead$,"SystemName=",""): System_Name$ = SystemRead$
-		If Instr(SystemRead$,"SystemSecurity=") Then SystemRead$ = Replace$(SystemRead$,"SystemSecurity=",""): System_Security = SystemRead$
-		If Instr(SystemRead$,"OwnerRace=") Then SystemRead$ = Replace$(SystemRead$,"OwnerRace=",""): System_Owner$ = SystemRead$
+			If Instr(SystemRead$,"SystemName=") Then SystemRead$ = Replace$(SystemRead$,"SystemName=",""): System_Name$ = SystemRead$
+			If Instr(SystemRead$,"SystemSecurity=") Then SystemRead$ = Replace$(SystemRead$,"SystemSecurity=",""): System_Security = SystemRead$
+			If Instr(SystemRead$,"OwnerRace=") Then SystemRead$ = Replace$(SystemRead$,"OwnerRace=",""): System_Owner$ = SystemRead$
 		;Visual Background
-		If Instr(SystemRead$,"BackgroundIndex=") Then SystemRead$ = Replace$(SystemRead$,"BackgroundIndex=",""): Local SystemInt = Int SystemRead$: Object_Environment[2] = LoadSkyBox(SystemInt)
+			If Instr(SystemRead$,"BackgroundIndex=") Then SystemRead$ = Replace$(SystemRead$,"BackgroundIndex=",""): Local SystemInt = Int SystemRead$: Object_Environment[2] = LoadSkyBox(SystemInt)
 		;-> Sun Color and Orientation
-		If Instr(SystemRead$,"SunSetup") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunTiltX=",""): TiltX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunTiltY=",""): TiltY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunScale=",""): Scale = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorR=",""): ColorR = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorG=",""): ColorG = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorB=",""): ColorB = Int(SystemReadSub$)
-			Lighting_Initialize(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
-		EndIf
+			If Instr(SystemRead$,"SunSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunTiltX=",""): TiltX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunTiltY=",""): TiltY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunScale=",""): Scale = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorR=",""): ColorR = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorG=",""): ColorG = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorB=",""): ColorB = Int(SystemReadSub$)
+				Lighting_Initialize(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
+			EndIf
 		;-> System Foggyness
-		If Instr(SystemRead$,"FogSector") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogRange=",""): Scale = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorR=",""): ColorR = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorG=",""): ColorG = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorB=",""): ColorB = Int(SystemReadSub$)
-			Modify_Fog(1,Scale*0.8,Scale,ColorR,ColorG,ColorB)
-			AmbientLight ColorR/2,ColorG/2,ColorB/2
-		EndIf
+			If Instr(SystemRead$,"FogSector") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogRange=",""): Scale = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorR=",""): ColorR = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorG=",""): ColorG = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorB=",""): ColorB = Int(SystemReadSub$)
+				Modify_Fog(1,Scale*0.8,Scale,ColorR,ColorG,ColorB)
+				AmbientLight ColorR/2,ColorG/2,ColorB/2
+			EndIf
 		;-> Planets
-		If Instr(SystemRead$,"PlanetSetup") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetTiltX=",""): TiltX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetTiltY=",""): TiltY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetScale=",""): Scale = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetType=",""): PlanetType = Int(SystemReadSub$)
-			Asset_Planet_Create(Scale,PlanetType,TiltX,TiltY)
-		EndIf
+			If Instr(SystemRead$,"PlanetSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetTiltX=",""): TiltX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetTiltY=",""): TiltY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetScale=",""): Scale = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"PlanetType=",""): PlanetType = Int(SystemReadSub$)
+				Asset_Planet_Create(Scale,PlanetType,TiltX,TiltY)
+			EndIf
 		;-> Asteroids
-		If Instr(SystemRead$,"BeltSetup") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosX=",""): PosX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosY=",""): PosY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosZ=",""): PosZ = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltRange=",""): Scale = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltAmount=",""): Amount = Int(SystemReadSub$)
-			Asset_Belt_Create(Amount,Resource,PosX,PosY,PosZ,Scale)
-		EndIf
+			If Instr(SystemRead$,"BeltSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosX=",""): PosX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosY=",""): PosY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltPosZ=",""): PosZ = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltRange=",""): Scale = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltAmount=",""): Amount = Int(SystemReadSub$)
+				Asset_Belt_Create(Amount,Resource,PosX,PosY,PosZ,Scale)
+			EndIf
 		;-> Gates
-		If Instr(SystemRead$,"GateSetup") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SystemX=",""): TargetX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SystemY=",""): TargetY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosX=",""): PosX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosY=",""): PosY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosZ=",""): PosZ = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateRotation=",""): Rotation = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimX=",""): AimX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimY=",""): AimY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimZ=",""): AimZ = Int(SystemReadSub$)
-			Asset_Gate_Create(TargetX, TargetY, PosX, PosY, PosZ, Rotation, AimX, AimY, AimZ)
-		EndIf
+			If Instr(SystemRead$,"GateSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SystemX=",""): TargetX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SystemY=",""): TargetY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosX=",""): PosX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosY=",""): PosY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GatePosZ=",""): PosZ = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateRotation=",""): Rotation = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimX=",""): AimX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimY=",""): AimY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"GateAimZ=",""): AimZ = Int(SystemReadSub$)
+				Asset_Gate_Create(TargetX, TargetY, PosX, PosY, PosZ, Rotation, AimX, AimY, AimZ)
+			EndIf
 		;-> Stations
-		If Instr(SystemRead$,"StationSetup") Then 
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationName=",""): SName$ = SystemReadSub$
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosX=",""): PosX = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosY=",""): PosY = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosZ=",""): PosZ = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationType=",""): StationType = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationRotation=",""): Rotation = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationBuy=",""): InventoryIn = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationSell=",""): InventoryOut = Int(SystemReadSub$)
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationService=",""): InventoryService = Int(SystemReadSub$)
-			Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
-		EndIf
+			If Instr(SystemRead$,"StationSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationName=",""): SName$ = SystemReadSub$
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosX=",""): PosX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosY=",""): PosY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationPosZ=",""): PosZ = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationType=",""): StationType = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationRotation=",""): Rotation = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationBuy=",""): InventoryIn = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationSell=",""): InventoryOut = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationService=",""): InventoryService = Int(SystemReadSub$)
+				Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
+			EndIf
 		;-> RandomBelt
-		If Instr(SystemRead$,"RandomBelt") Then
-			SeedRnd MilliSecs()
-			SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
-			Asset_Belt_Create(Rand(1000,15000),Resource,Rand(-500000,500000),Rand(-1000,1000),Rand(-500000,500000),Rand(15000,500000))
-			SeedRnd SystemSeed
-		EndIf
+			If Instr(SystemRead$,"RandomBelt") Then
+				SeedRnd MilliSecs()
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
+				Asset_Belt_Create(Rand(1000,15000),Resource,Rand(-500000,500000),Rand(-1000,1000),Rand(-500000,500000),Rand(15000,500000))
+				SeedRnd SystemSeed
+			EndIf
+			
+			
+		Until Eof(SystemFile)
+		CloseFile SystemFile
 		
+		SeedRnd MilliSecs()
 		
-	Until Eof(SystemFile)
-	CloseFile SystemFile
-	
-	SeedRnd MilliSecs()
-	
-	FastTravel(TravelPosX,TravelPosY,TravelPosZ)
-	
+		FastTravel(TravelPosX,TravelPosY,TravelPosZ)
+		Player_GlobalX = SystemPosX
+		Player_GlobalY = SystemPosY
+	EndIf
 End Function
 
 Function Asset_Clear_All()
 	
 ;	FreeEntity Object_Zero
+	
+	For Cube.DockPort = Each DockPort
+		FreeEntity Cube\mesh
+		Delete Cube
+	Next
 	
 	For Effect.Explosion = Each Explosion
 		FreeEntity Effect\Sprite
@@ -127,11 +143,6 @@ Function Asset_Clear_All()
 		FreeEntity da\effect
 		FreeEntity da\mesh
 		Delete da
-	Next
-	
-	For SC.ScrapField = Each ScrapField
-		FreeEntity sc\mesh
-		Delete sc
 	Next
 	
 	For Portal.Stargate = Each Stargate
@@ -297,74 +308,6 @@ Function Asset_Belt_Update()
 	Next
 End Function
 
-Type ScrapField
-	Field X,Y,Z
-	Field Mesh, MaxTurn#
-	Field decaytimer
-End Type
-
-Function Scrapfield_Create(amount,x,y,z,span, MaxScale#=2, Maxturn#=1, Minscale#=0.8, Fading=0)
-	For Scraps = 1 To amount
-		SC.ScrapField=New ScrapField
-		Mesh=Rand(1,4)
-;		SC\Mesh=CopyEntity(Mesh_Scrap[Mesh])
-		SC\Maxturn#=Maxturn#
-		PositionEntity SC\Mesh,x,y,z
-		RotateEntity SC\Mesh,Rand(-180,180),Rand(-180,180),Rand(-180,180)
-		MoveEntity SC\Mesh, 0, 0,Rand(150,span)
-		EntityTexture SC\Mesh, Text_Scrap
-		Local Scale#=Rnd(Minscale#,MaxScale#)
-		ScaleEntity SC\Mesh,Scale#, Scale#, Scale#
-;		VirtualScene_Register(Scene,SC\Mesh)
-		EntityAutoFade SC\Mesh, 70000,72500
-		If Fading=1 Then SC\decaytimer=1
-	Next
-	If Fading=0 Then
-		Environment_NavMesh_Create(x,y,z,3)
-	EndIf
-End Function
-
-Function Scrapfield_Update()
-	For SC.ScrapField = Each ScrapField
-		TurnEntity SC\Mesh,.12+SC\maxturn#,.12+SC\maxturn#,.12+SC\maxturn#
-		If SC\Maxturn#>0 Then SC\MAxturn=Sc\MaxTurn-0.01
-		If SC\decaytimer>0 Then SC\decaytimer=SC\decaytimer+1
-		
-		If SC\decaytimer>150 Then
-			
-			Removestate=1
-			
-		EndIf
-		
-		For Player.Player_Bullet = Each Player_Bullet
-			If EntityDistance(player\mesh, sc\mesh)<50 Then
-				
-				LootChance=Rand(1,15)
-				If Lootchance=15 Then
-					
-				Else
-					
-				EndIf
-				
-				FreeEntity player\mesh:
-;				VirtualScene_Unregister(Scene, player\mesh)
-				Delete player
-				
-				Removestate=1
-				
-			EndIf
-		Next
-		
-		If Removestate=1 Then
-			FreeEntity sc\mesh: 
-;			VirtualScene_Unregister(Scene, sc\mesh)
-			Delete sc
-			Exit
-		EndIf
-		
-	Next
-End Function
-
 Function Tweakseed()
     
     Local temp%=(seed[0]+seed[1]+seed[2]) Mod $10000
@@ -374,133 +317,15 @@ Function Tweakseed()
     
 End Function
 
-Function CreateName$()
-    
-    Local longnameflag=seed[0] And $40
-    Local planetname$=""
-    Local c%,n%,d%
-    
-    For n=0 To 3
-        
-        d=((seed[2] Shr 8) And $1f) Shl 1
-        Tweakseed()
-        
-        If n<3 Or longnameflag Then
-			
-            planetname=planetname+Mid(syllables,1+d,2)
-            planetname=Replace(planetname,".","")
-            
-        EndIf
-        
-    Next
-    
-    planetname=Upper(Mid(planetname,1,1))+Mid(planetname,2,Len(planetname)-1)
-    
-    Return planetname
-    
-End Function
-
-Function Battlefield_Update()
-	
-	
-End Function
-
 Function WorldTimers_Update()
 	Timer_Gatejump = Timer_Gatejump - 1
 	Respawn_Timer = Respawn_Timer - 1
 	Music_Aggro_Timer = Music_Aggro_Timer - 1
-	Timer_Storyline = Timer_Storyline - 1
-	Title_Timer = Title_Timer - 1
-	Timer_Hacking = Timer_Hacking - 1
-	
+	Timer_Dock = Timer_Dock - 1
 End Function
 
 Function Worldmap_Display()
-	Local Mapdist=80
 	
-	If HUD=1 And MAPHUD = 1 And Options = 0 And Upgrade_GlobalMap = 1
-;		DrawImage3D(GUI_WorldMap[9],0,0)
-;		DrawImage3D(GUI_Interface[0],MouseX()-(GraphicsWidth()/2),-MouseY()+(GraphicsHeight()/2))
-		For A = 0 To 127
-			
-			If String_SystemDiscovered[a] = 1 And String_SystemName[a]<>"Unmapped Sector" Then
-				Select String_SystemFaction[a]
-					Case Faction_Pirate, Faction_Crimson
-;						DrawImage3D(GUI_WorldMap[1],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Neutral
-;						DrawImage3D(GUI_WorldMap[2],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Terran
-;						DrawImage3D(GUI_WorldMap[3],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Sirian
-;						DrawImage3D(GUI_WorldMap[4],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Battleground_OS, Faction_Battleground_TO, Faction_Battleground_TS
-;						DrawImage3D(GUI_WorldMap[5],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Unknown
-;						DrawImage3D(GUI_WorldMap[7],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case Faction_Orion
-;						DrawImage3D(GUI_WorldMap[8],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-				End Select
-				
-				Select String_SystemGate[a]
-					Case 1
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case 2
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 3
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 4
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-					Case 5
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-					Case 6
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-					Case 7
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 8
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-					Case 9
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-					Case 10
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 11
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 12
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-					Case 13
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,0)
-					Case 14
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-					Case 15
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,270)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,180)
-;						DrawImage3D(GUI_WorldMap[6],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist,0,90)
-				End Select
-				
-				Text3D(Text_Font[11],(String_SystemPosX[a]-String_SystemPosX[SystemID_Global])*Mapdist,(String_SystemPosY[a]-String_SystemPosY[SystemID_Global])*Mapdist-18,String_SystemName[a],1)
-				
-			EndIf
-		Next
-		
-;		DrawImage3D(GUI_WorldMap[0],0,0)
-		
-	Else
-		
-	EndIf
 End Function
 
 Function LoadSkyBox(TxID, Parent%=0)
@@ -646,19 +471,20 @@ Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, Invento
 			ScaleEntity da\utility, 0.75,0.75,0.75
 			ScaleEntity da\effect, 0.3,0.3,0.3
 			MoveEntity da\effect, 330,30,415
+			
 			Environment_NavMesh_Create(x,y,z,5)
+			Asset_DockCube_Create(x,y,z,Rotation,3, 14150,190,-6000)
 		Case 2
 			ScaleEntity da\mesh,25,25,25
 ;			ScaleEntity da\utility,2,2,1
+			
 			Environment_NavMesh_Create(x,y,z,4)
-			
-			
+			Asset_DockCube_Create(x,y,z,Rotation,2,0,350,-11500)
 		Case 1
-			
 			ScaleEntity da\mesh,35,35,35
 			
-			
 			Environment_NavMesh_Create(x,y,z,3)
+			Asset_DockCube_Create(x,y,z,Rotation,1)
 		Default 
 			ScaleEntity da\mesh,35,35,35
 			
@@ -674,12 +500,13 @@ Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, Invento
 	
 	NameEntity da\Mesh,Name$
 	
+	
 End Function
 
 Function Asset_Station_Update()
 	For da.station= Each Station
 		
-		If EntityDistance(pvShip, da\Mesh)<25000 And EntityInView(da\Mesh,WorldCamera)=True Then
+		If EntityDistance(pvShip, da\Mesh)<25000 And EntityInView(da\Mesh,WorldCamera)=True And HUD = 1 Then
 			Text3D(Text_Font[6],0,275,"- Location entered -",1)
 			Text3D(Text_Font[9],0,256,"Station: "+EntityName(da\mesh),1)
 		EndIf
@@ -871,7 +698,34 @@ Function UpdateShockwave()
 	
 End Function
 
+Function Asset_DockCube_Create(x,y,z,rot,sizecase,offsetx=0,offsety=0,offsetz=0)
+	Cube.DockPort = New DockPort
+	Cube\Mesh = CreateCube()
+	Cube\X = x
+	Cube\Y = y
+	Cube\Z = z
+	Cube\Rot = rot
+	Select sizecase
+		Case 1
+			ScaleEntity Cube\Mesh,2500,350,2500
+		Case 2
+			ScaleEntity Cube\Mesh,5900,400,1100
+		Case 3
+			ScaleEntity Cube\Mesh,500,350,1000
+	End Select
+	PositionEntity Cube\Mesh, Cube\X, Cube\Y, Cube\Z
+	RotateEntity Cube\Mesh,0,Cube\Rot,0
+	MoveEntity Cube\mesh, offsetx,offsety, offsetz
+	EntityFX Cube\mesh,1
+	EntityColor Cube\Mesh,0,255,255
+;	EntityAutoFade Cube\Mesh,5000,20000
+	EntityAlpha Cube\Mesh,0.3
+End Function
+
+Function Asset_DockCube_Update()
+	For Cube.DockPort = Each DockPort		
+	Next
+End Function
 ;~IDEal Editor Parameters:
-;~F#A5#C9#E5#11A#12B#131#146#16F#178#192#197#1A1#1F9#235#252#25C#26B#2A6#2B8#2C5
-;~F#2CC#2E1#2F4#307#34D
+;~F#B0#D4#F0#125#136#14A#186#1A3#1AD#20B#218#21F#234#247#25A#2A0
 ;~C#Blitz3D

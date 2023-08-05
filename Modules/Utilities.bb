@@ -750,27 +750,40 @@ Function GetPlayerShipValues(ShipID)
 	Local Shipinfo$
 	EntityRadius pvShip,500
 	EntityType WorldCamera,0
-	Yoffset=55
-	Zoffset=-150
 	Local ShipFile = OpenFile("Assets\Manifest\LoadShips.lof")
 	For A = 1 To ShipID
 		Shipinfo$ = ReadLine(ShipFile)
 	Next
 	CloseFile ShipFile
 	Local Path$ ="Assets\Config\"+Shipinfo$+".bfc"
-;	
-	Local ShipData = ReadFile(Path$)
-;	RuntimeError ShipData + " | " + Path$
-;	
-	Player_Environment_Shipname$ = ReadLine(ShipData)
-	Player_Environment_BaseSpeed = ReadLine(ShipData)
-	Player_Environment_BaseInertia = ReadLine(ShipData)
-	Player_Environment_BaseArmor = ReadLine(ShipData)
-	Player_Environment_BaseShield = ReadLine(ShipData)
-	CloseFile ShipData
 	
-	Player_Value_Speed_Maximum = Player_Environment_BaseSpeed
-	SHipInertia# = Player_Environment_BaseInertia
+	Local ShipData = ReadFile(Path$)
+	
+	Repeat
+		Local ShipRead$ = ReadLine(ShipData)
+		If Instr(ShipRead$,"ShipName=") Then ShipRead$ = Replace$(ShipRead$,"ShipName=",""): Player_Environment_Shipname$ = ShipRead$
+		If Instr(ShipRead$,"ShipClass=") Then ShipRead$ = Replace$(ShipRead$,"ShipClass=",""): Player_Environment_ShipClass$ = ShipRead$
+		If Instr(ShipRead$,"BaseArmor=") Then ShipRead$ = Replace$(ShipRead$,"BaseArmor=",""): Player_Environment_BaseArmor = Int(ShipRead$)
+		If Instr(ShipRead$,"BaseShield=") Then ShipRead$ = Replace$(ShipRead$,"BaseShield=",""): Player_Environment_BaseShield = Int(ShipRead$)
+		If Instr(ShipRead$,"BaseAccel=") Then ShipRead$ = Replace$(ShipRead$,"BaseAccel=",""): Player_Environment_BaseAccel# = Int(ShipRead$): Player_Environment_BaseAccel#= Player_Environment_BaseAccel#/10
+		If Instr(ShipRead$,"BaseMSpeed=") Then ShipRead$ = Replace$(ShipRead$,"BaseMSpeed=",""): Player_Environment_BaseMSpeed = Int(ShipRead$): Player_Environment_BaseMSpeed = Player_Environment_BaseMSpeed/3
+		If Instr(ShipRead$,"BaseTurn=") Then ShipRead$ = Replace$(ShipRead$,"BaseTurn=",""): Player_Environment_BaseTurn# = Int(ShipRead$): Player_Environment_BaseTurn#= Player_Environment_BaseTurn#/10
+		If Instr(ShipRead$,"BaseEnergy=") Then ShipRead$ = Replace$(ShipRead$,"BaseEnergy=",""): Player_Environment_BaseEnergy = Int(ShipRead$)
+		If Instr(ShipRead$,"SlotsWeapon=") Then ShipRead$ = Replace$(ShipRead$,"SlotsWeapon=","")
+		If Instr(ShipRead$,"SlotsArmor=") Then ShipRead$ = Replace$(ShipRead$,"SlotsArmor=","")
+		If Instr(ShipRead$,"SlotsShield=") Then ShipRead$ = Replace$(ShipRead$,"SlotsShield=","")
+		If Instr(ShipRead$,"SlotsCore=") Then ShipRead$ = Replace$(ShipRead$,"SlotsCore=","")
+		If Instr(ShipRead$,"SlotsEngine=") Then ShipRead$ = Replace$(ShipRead$,"SlotsEngine=","")
+		If Instr(ShipRead$,"SlotsMining=") Then ShipRead$ = Replace$(ShipRead$,"SlotsMining=","")
+		If Instr(ShipRead$,"SlotsResearch=") Then ShipRead$ = Replace$(ShipRead$,"SlotsResearch=","")
+		If Instr(ShipRead$,"SlotsCargo=") Then ShipRead$ = Replace$(ShipRead$,"SlotsCargo=","")
+		If Instr(ShipRead$,"CameraOffsetZ=") Then ShipRead$ = Replace$(ShipRead$,"CameraOffsetZ=",""): Zoffset = Int(ShipRead$)
+		If Instr(ShipRead$,"CameraOffsetY=") Then ShipRead$ = Replace$(ShipRead$,"CameraOffsetY=",""): Yoffset = Int(ShipRead$)
+	Until Eof(ShipData)
+	
+	CloseFile ShipData
+	Player_Value_Speed_Maximum = Player_Environment_BaseMSpeed
+	
 End Function
 
 Type MapWaypoints
@@ -809,50 +822,52 @@ Function UpdateMapScale(Scale)
 End Function
 
 Function Environment_NavMesh_Update()
-	Local CPosX#=EntityX(pvShip)/MP_SCALE
-	Local CPosY#=EntityY(pvShip)/MP_SCALE
-	Local CPosZ#=EntityZ(pvShip)/MP_SCALE
-	
-	MapOriginX=GraphicsWidth()/2-(16+128)
-	MapOriginZ=GraphicsHeight()/2-(16+128)
-	
-	DrawImage3D(GUI_Game[9],MapOriginX,MapOriginZ,0,-EntityYaw(eShipBody, True),2)
-	
-	For XY.MapWaypoints = Each MapWaypoints
-		Local WaypointX# = XY\X
-        Local WaypointY# = XY\Y
-        Local WaypointZ# = XY\Z
+	If HUD = 1
+		Local CPosX#=EntityX(pvShip)/MP_SCALE
+		Local CPosY#=EntityY(pvShip)/MP_SCALE
+		Local CPosZ#=EntityZ(pvShip)/MP_SCALE
 		
-        If WaypointX# > CPosX# - 113 And WaypointX# < CPosX# + 113 And WaypointZ# > CPosZ# - 113 And WaypointZ# < CPosZ# + 113 And WaypointY# > CPosY# - 113 And WaypointY# < CPosY# + 113
-			Local DrawPosX# = WaypointX# - CPosX#
-            Local DrawPosY# = WaypointY# - CPosY#
-            Local DrawPosZ# = WaypointZ# - CPosZ#
-            
-;;			If (DrawPosZ# + DrawPosY#)*-1 < MapOriginZ+113 Then DrawPosZ = MapOriginZ+113
+		MapOriginX=GraphicsWidth()/2-(16+128)
+		MapOriginZ=GraphicsHeight()/2-(16+128)
+		
+		DrawImage3D(GUI_Game[9],MapOriginX,MapOriginZ,0,-EntityYaw(eShipBody, True),2)
+		
+		For XY.MapWaypoints = Each MapWaypoints
+			Local WaypointX# = XY\X
+			Local WaypointY# = XY\Y
+			Local WaypointZ# = XY\Z
 			
-			DrawImage3D(GUI_Game[12], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)))
-			
-            Select XY\PT
-                Case 1 ;Asteroid
-                    DrawImage3D(GUI_Game[7], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)))
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
-                Case 2 ;Gate
-                    DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
-				Case 3 ;Border Post
-                    DrawImage3D(GUI_Game[15], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
-				Case 4 ;Trade Station
-                    DrawImage3D(GUI_Game[13], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
-				Case 5 ;Mining Dock
-                    DrawImage3D(GUI_Game[14], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
-					Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
-					
-                ;Add other cases as needed
-            End Select        
-        EndIf
-	Next
+			If WaypointX# > CPosX# - 113 And WaypointX# < CPosX# + 113 And WaypointZ# > CPosZ# - 113 And WaypointZ# < CPosZ# + 113 And WaypointY# > CPosY# - 113 And WaypointY# < CPosY# + 113
+				Local DrawPosX# = WaypointX# - CPosX#
+				Local DrawPosY# = WaypointY# - CPosY#
+				Local DrawPosZ# = WaypointZ# - CPosZ#
+				
+	;;			If (DrawPosZ# + DrawPosY#)*-1 < MapOriginZ+113 Then DrawPosZ = MapOriginZ+113
+				
+				DrawImage3D(GUI_Game[12], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)))
+				
+				Select XY\PT
+					Case 1 ;Asteroid
+						DrawImage3D(GUI_Game[7], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)))
+						Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+					Case 2 ;Gate
+						DrawImage3D(GUI_Game[5], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
+						Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+					Case 3 ;Border Post
+						DrawImage3D(GUI_Game[15], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
+						Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+					Case 4 ;Trade Station
+						DrawImage3D(GUI_Game[13], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
+						Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+					Case 5 ;Mining Dock
+						DrawImage3D(GUI_Game[14], MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), 0, 0, 1)
+						Line3D(GUI_Game[4],MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1)), MapOriginX - (DrawPosX# * -1), (MapOriginZ - (DrawPosZ# * -1) - (DrawPosY# * -1)),0.5)
+						
+					;Add other cases as needed
+				End Select        
+			EndIf
+		Next
+	EndIf
 End Function
 
 Function AlignEntity(x_objekt1, x_objekt2, Abstufungen = 0) 
@@ -949,6 +964,6 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2E2#2EC#307
-;~F#30E#319#32A#359#36E#387
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#314#31B#326
+;~F#368#37D#396
 ;~C#Blitz3D

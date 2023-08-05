@@ -1,5 +1,18 @@
-Horizon Science Vessel
-18
-400
-200
-25
+ShipName=Horizon
+ShipClass=Science Vessel
+BaseArmor=200
+BaseShield=150
+BaseAccel=7
+BaseMSpeed=55
+BaseTurn=11
+BaseEnergy=100
+SlotsWeapon=0
+SlotsArmor=1
+SlotsShield=1
+SlotsCore=1
+SlotsEngine=1
+SlotsMining=1
+SlotsResearch=1
+SlotsCargo=1
+CameraOffsetZ=380
+CameraOffsetY=60

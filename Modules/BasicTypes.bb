@@ -41,28 +41,6 @@ Type Spotmark
 	Field mesh, TOfSpot, ruby
 End Type
 
-Type ChatMSGS
-	Field msg$, id, age
-	Field ColorR,ColorG,ColorB
-End Type
-
-Type WalletLog
-	Field amount$, Msg$, timestamp$, ID, SubType
-End Type
-
-Type Player_Bullet
-	Field mesh, Pivot
-	Field speed
-	Field scale#, distance
-	Field dmg,guntype,decay,viable, btyp, SID, OBB
-	
-End Type
-
-Type hardpoint
-	Field plusX,plusy,plusz
-	Field pivot
-End Type
-
 Type Planet
 	Field Pivot, SubType, Sprite, Distance, Scale, RotX, RotY, RotZ
 End Type
@@ -72,39 +50,8 @@ Type MainZone
 	Field range,name$,pha
 End Type
 
-Type Profiles
-	Field Name$, Pass$
-End Type
-
-Type SubZone
-	Field x,y,z
-	Field range,name$,pha
-End Type
-
-Type NebZone
-	Field x,y,z
-	Field trange,vrange,faderange
-	Field colorr,colorg,colorb
-	Field tpiv
-End Type
-
 Type Info
 	Field txt$
-End Type
-
-Global GlobalSID=9
-
-Type RZone
-	Field x,y,z, rate
-	Field mesh, insmesh
-	Field size
-	Field P1#,  P2#,  P3#,  P4#,  P5#, P6#,  P7#
-	Field StationID
-End Type
-
-Type SBubble
-	Field pivot, sphere
-	Field durat#, fade#
 End Type
 
 Type Station
@@ -112,33 +59,14 @@ Type Station
 	Field StaSub, Effect
 End Type
 
+Type DockPort
+	Field X, Y, Z, Rot, Mesh
+End Type
+
 Type Shockwave
 	Field x,y,z
 	Field mesh,scale,age, alpha#, Speed, level
 End Type
-
-Type trailpivot
-	Field parent, srcid, x, y, z, sprite
-End Type
-
-Type SafeZone
-	Field mesh, range
-End Type
-
-Type DropZone
-	Field mesh, size, maxsize, typ, timer, maxtimer
-End Type
-
-Type DebrisBelt
-	Field Mesh, x,y,z
-End Type
-
-Type ExplosionLight
-	Field X,Y,Z
-	Field R,G,B
-	Field Range
-End Type
-
 ;[End Block]
 
 Type GFXModes
@@ -279,23 +207,8 @@ Type pcl_groupbrush
 	Field texrot# [7]			; particle-texture-rotation
 End Type
 
-Type VirtualScene ; Utilities.bb
-End Type
-
-Type VirtualSceneEntity
-	Field VS.VirtualScene
-	Field Entity%, State%
-End Type
-
 Type Location ; Coordinates.bb
 	Field X,Y,Z
-End Type
-
-Type PRing
-	Field X,Y,Z
-	Field Tilt
-	Field Alignmesh
-	Field RingSprite
 End Type
 
 Type Explosion

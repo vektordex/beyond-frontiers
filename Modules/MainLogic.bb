@@ -1,50 +1,65 @@
 Function UpdateGraphics()
 	;General UI Overlay
-	Local MapOX =GraphicsWidth()/2-(16+128)
-	Local MapOZ =GraphicsHeight()/2-(16+128)
-	DrawImage3D(GUI_Game[1],MapOX,MapOZ)
 	
-	DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
-	
-	Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
-	Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
-	
-	Text3D(Text_Font[6],0, D3DOU-25,Player_Environment_Shipname$,1)
-	Select System_Security
-		Case 0
-			Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
-		Case 1
-			Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: Dangerous")
-		Case 2
-			Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
-		Case 3
-			Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Medium")
-		Case 4
-			Text3D(Text_Font[3],D3DOL+45, D3DOU-82,"Security Status: High")
-		Case 5
-			Text3D(Text_Font[2],D3DOL+45, D3DOU-82,"Security Status: Fortress")
-	End Select
-	
-	
-	DrawImage3D(GUI_Game[10],0,GraphicsHeight()/2*-1+4,0,0,1.2)
-	;General Ship Status Display
-	Local SpeedMath = Floor(Player_Value_Speed_Current#*4)
-	
-	Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
-	Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
-	Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
-	;Player Status Display
-	Text3D(Text_Font[1],-550,GraphicsHeight()/2*-1+18,"Money: 3.141.597,34 Cr.")
-	
-	Select eCameraMode
-		Case MODE_SHIP
-			DrawImage3D(GUI_Game[17],MouseX3D,MouseY3D)
-			DrawImage3D(GUI_Game[18],MouseX3D,MouseY3D)
-		Case MODE_CAMERA
-			DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
-		Case MODE_DOCKED
-			DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
-	End Select
+	If HUD = 1 Then
+			
+		Local MapOX =GraphicsWidth()/2-(16+128)
+		Local MapOZ =GraphicsHeight()/2-(16+128)
+		DrawImage3D(GUI_Game[1],MapOX,MapOZ)
+		
+		DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
+		
+		Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
+		Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
+		
+		Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+		
+		Text3D(Text_Font[6],0, D3DOU-70 ,"Armor: "+Player_Environment_BaseArmor+" mm",1)
+		Text3D(Text_Font[6],0, D3DOU-85 ,"Shield: "+Player_Environment_BaseShield+" MJ",1)
+		Text3D(Text_Font[6],0, D3DOU-100,"Max Speed: "+(Player_Environment_BaseMSpeed*6)+" m/s (Accel: "+Player_Environment_BaseAccel+")",1)
+		Text3D(Text_Font[6],0, D3DOU-115,"TurnRate: "+Player_Environment_BaseTurn#+" °/sec",1)
+		Text3D(Text_Font[6],0, D3DOU-130,"Energy Supply: "+Player_Environment_BaseEnergy+" Wh",1)
+		Text3D(Text_Font[6],0, D3DOU-145,Zoffset + "Camera Z Offset",1)
+	;	Text3D(Text_Font[6],0, D3DOU-160,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+	;	Text3D(Text_Font[6],0, D3DOU-175,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+	;	
+		
+		Select System_Security
+			Case 0
+				Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
+			Case 1
+				Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: Dangerous")
+			Case 2
+				Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
+			Case 3
+				Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Medium")
+			Case 4
+				Text3D(Text_Font[3],D3DOL+45, D3DOU-82,"Security Status: High")
+			Case 5
+				Text3D(Text_Font[2],D3DOL+45, D3DOU-82,"Security Status: Fortress")
+		End Select
+		
+		
+		DrawImage3D(GUI_Game[10],0,GraphicsHeight()/2*-1+4,0,0,1.2)
+		;General Ship Status Display
+		Local SpeedMath = Floor(Player_Value_Speed_Current#*6)
+		
+		Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
+		Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
+		Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
+		;Player Status Display
+		Text3D(Text_Font[1],-550,GraphicsHeight()/2*-1+18,"Money: 3.141.597,34 Cr.")
+		
+		Select eCameraMode
+			Case MODE_SHIP
+				DrawImage3D(GUI_Game[17],MouseX3D,MouseY3D)
+				DrawImage3D(GUI_Game[18],MouseX3D,MouseY3D)
+			Case MODE_CAMERA
+				DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
+			Case MODE_DOCKED
+				DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
+		End Select
+	EndIf
 	
 	MoveEntity eShipBody,(Sin(Player_Effect_Drift_X)/78), (Sin(Player_Effect_Drift_Y)/110),0
 	

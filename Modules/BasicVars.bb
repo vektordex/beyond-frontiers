@@ -25,7 +25,7 @@ Global FastTravelSpot, Travel_To_LastSave, Savecounter
 
 Global ShipMake
 
-Global Game_Menu_Open=0, Game_End=0, Game_Menu_Debug=0
+Global Game_Menu_Open=0, Game_End=0, Game_Menu_Debug=0, Force_UI_Mode=0
 ;[End Block]
 
 ;[Block] Weapon/Module/Item Names and Descriptions --- ToDo: Move this in a moddable file, and add translation efforts, at least DE/EN
@@ -175,7 +175,11 @@ Global HUD
 ;[End Block]
 
 ;[Block] Character Values
-Global Player_Environment_Shipname$, Player_Environment_BaseSpeed, Player_Environment_BaseInertia, Player_Environment_BaseArmor, Player_Environment_BaseShield
+Global Player_Environment_Shipname$, Player_Environment_BaseSpeed, Player_Environment_BaseInertia#, Player_Environment_BaseArmor, Player_Environment_BaseShield
+Global Player_Environment_BaseMobility#, Player_Environment_ShipClass$, Player_Environment_BaseAccel#, Player_Environment_BaseMSpeed,  Player_Environment_BaseTurn#
+Global Player_Environment_BaseEnergy
+
+Global Player_GlobalX, Player_GlobalY
 
 ;[End Block]
 
@@ -192,7 +196,7 @@ Global Timer_Gatejump
 ;[End Block]
 
 ;[Block] Ship Movement Identifiers
-Global ShipStrafeX#, ShipStrafeY#, ShipSpeedZ#, ShipRollZ#, SHipInertia#
+Global ShipStrafeX#, ShipStrafeY#, ShipSpeedZ#, ShipRollZ#, Player_Value_Inertia_Modifier#
 Global Weapon_Target_Cube, ShipPosXYZ, Ship_Shield_Reload_Tick, Ship_Shield_Reload_Amount, Ship_Shield_Reload_Tick_Timer
 Global Ship_Value_ScanningStrength
 ;[End Block]
@@ -226,8 +230,7 @@ Global Light_Pivot, Weapon_Maxdistance, System_TextID, RaceTrack_BaseID=0, RaceT
 
 ;[Block] Timers
 Global Timer_Update, Timer_Texture#, Weapon_Maxtimer, Timer_HitRegister, Timer_MoveTexture#, Timer_Scanwave, Respawn_Timer
-Global WorldClock$, Timer_Storyline, Storyline_Step, Storyline_Descriptor$, Storyline_Portrait[6], Storyline_Person$, Storyline_Subtitle$
-Global Title_Timer, Story_Pivot, Upgrade_Timer, Timer_Hacking, State_Hacking=2
+Global WorldClock$, Timer_Dock
 ;[End Block]
 
 ;[Block] Various <- Sort THIS
@@ -932,5 +935,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#1E#C7#CC#D0#D6#DD#E2#E8#F9#1AA#22E#23C#2BF
+;~F#1E#CB#D0#D4#DA#E1#EB#FC#1AD#231#23F#2C2
 ;~C#Blitz3D

@@ -1,5 +1,18 @@
-Cosmove Heavy Hauler
-4
-400
-200
-25
+ShipName=Cosmove
+ShipClass=Heavy Freighter
+BaseArmor=200
+BaseShield=150
+BaseAccel=2
+BaseMSpeed=15
+BaseTurn=4
+BaseEnergy=100
+SlotsWeapon=0
+SlotsArmor=1
+SlotsShield=1
+SlotsCore=1
+SlotsEngine=1
+SlotsMining=1
+SlotsResearch=1
+SlotsCargo=1
+CameraOffsetZ=4500
+CameraOffsetY=85

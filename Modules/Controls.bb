@@ -42,36 +42,36 @@ Function HandleInput()
 			
 			If KeyDown(17) Then							; MOVE FORWARD
 				Player_Value_Movement_State=1
-				Player_Value_Speed_Target#=Player_Value_Speed_Target#+(.5*Player_Value_Inertia_Positive#)
+				Player_Value_Speed_Target#=Player_Value_Speed_Target#+Player_Environment_BaseAccel#
 			EndIf
 			
 			If KeyDown(31) Then							; BRAKE SHIP
 				Player_Value_Movement_State=-1
-				Player_Value_Speed_Target#= Player_Value_Speed_Target# -(.5*Player_Value_Inertia_Negative#)
+				Player_Value_Speed_Target#= Player_Value_Speed_Target#-Player_Environment_BaseAccel#
 			EndIf
 			
 			If KeyDown(16) And ShipRollZ#<5 Then		; ROLL SHIP
-				ShipRollZ#=ShipRollZ#+(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#+(.1*Player_Environment_BaseTurn)
 			ElseIf KeyDown(18) And ShipRollZ#>-5 Then
-				ShipRollZ#=ShipRollZ#-(.1*Player_Value_Inertia_Modifier#)
+				ShipRollZ#=ShipRollZ#-(.1*Player_Environment_BaseTurn)
 			Else 
-				ShipRollZ#=ShipRollZ#*0.9
+				ShipRollZ#=ShipRollZ#*0.95
 			EndIf
 			
 			If KeyDown(32) And ShipStrafeX#<7.5 Then	; MOVE LEFT/RIGHT
-				ShipStrafeX#=ShipStrafeX#+(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#+(.1*Player_Environment_BaseTurn)
 			ElseIf KeyDown(30) And ShipStrafeX#>-7.5 Then
-				ShipStrafeX#=ShipStrafeX#-(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeX#=ShipStrafeX#-(.1*Player_Environment_BaseTurn)
 			Else 
-				ShipStrafeX#=ShipStrafeX#*0.9
+				ShipStrafeX#=ShipStrafeX#*0.95
 			EndIf
 			
 			If KeyDown(19) And ShipStrafeY#<7.5 Then	; MOVE UP/DOWN
-				ShipStrafeY#=ShipStrafeY#+(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#+(.1*Player_Environment_BaseTurn)
 			ElseIf KeyDown(33) And ShipStrafeY#>-7.5 Then
-				ShipStrafeY#=ShipStrafeY#-(.2*Player_Value_Inertia_Modifier#)
+				ShipStrafeY#=ShipStrafeY#-(.1*Player_Environment_BaseTurn)
 			Else 
-				ShipStrafeY#=ShipStrafeY#*0.9
+				ShipStrafeY#=ShipStrafeY#*0.95
 			EndIf
 			
 		End If
@@ -121,29 +121,19 @@ Function HandleInput()
 	
 	If Player_Value_Movement_State = -1 Then
 		If Player_Value_Speed_Current#>Player_Value_Speed_Target# Then
-			Player_Value_Speed_Current#=Player_Value_Speed_Current#*.90
+			Player_Value_Speed_Current#=Player_Value_Speed_Current#*(.98)
 		EndIf
 	EndIf
 	
 	If Player_Value_Movement_State = 1 Then
 		If Player_Value_Speed_Current < .1 Then Player_Value_Speed_Current = .1
 		If Player_Value_Speed_Current#<Player_Value_Speed_Target# Then
-			Player_Value_Speed_Current#=Player_Value_Speed_Current#*1.05
-		EndIf
-		If Player_Value_Boost_State = 0 Then
-			If Player_Value_Speed_Current#>Player_Value_Speed_Target# Then
-				Player_Value_Speed_Current#=Player_Value_Speed_Target#
-			EndIf
-			If Player_Value_Speed_Current#>Player_Value_Speed_Maximum Then
-				Player_Value_Speed_Current#=Player_Value_Speed_Maximum
-			EndIf
+			Player_Value_Speed_Current#=Player_Value_Speed_Current#+Player_Environment_BaseAccel
 		EndIf
 	EndIf
 	
 	If Player_Value_Speed_Target# > Player_Value_Speed_Maximum Then
-		If Player_Value_Boost_State = 0 Then
-			Player_Value_Speed_Target = Player_Value_Speed_Maximum
-		EndIf
+		Player_Value_Speed_Target = Player_Value_Speed_Maximum
 	EndIf
 	
 	If Player_Value_Speed_Target# > Player_Value_Speed_Maximum*6 And Player_Value_Boost_State = 1 Then

@@ -1,5 +1,18 @@
-Crusader Corvette
-26
-400
-200
-25
+ShipName=Crusader
+ShipClass=Corvette
+BaseArmor=200
+BaseShield=150
+BaseAccel=4
+BaseMSpeed=75
+BaseTurn=10
+BaseEnergy=100
+SlotsWeapon=0
+SlotsArmor=1
+SlotsShield=1
+SlotsCore=1
+SlotsEngine=1
+SlotsMining=1
+SlotsResearch=1
+SlotsCargo=1
+CameraOffsetZ=700
+CameraOffsetY=55

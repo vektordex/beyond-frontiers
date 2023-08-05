@@ -460,7 +460,7 @@ Global Player_Location.Location = Location_Create(0, 0, 0)
  ;!ToDo: AssetManager
 
 ;[Block] Old
-SHipInertia#=1.085
+Player_Value_Inertia_Modifier#=1.085
 ShipPosXYZ = CreatePivot()
 ;Weapon_Target_Cube = LoadSprite("Content\GFX\Interface\Icons\interface_mouse_aim.png",2)
 
@@ -556,9 +556,9 @@ While Not Eof(Creditsfile)
 Wend
 CloseFile Creditsfile
 
-FastTravelSpot = CreateCube()
-ScaleEntity FastTravelSpot,10,10,10
-EntityFX FastTravelSpot,1
+;FastTravelSpot = CreateCube()
+;ScaleEntity FastTravelSpot,10,10,10
+;EntityFX FastTravelSpot,1
 
 .MainMenu
 Game_End = 0
@@ -1067,9 +1067,6 @@ Repeat
 			
 	End Select
 	
-	Local WIPString$ = tmx+" | "+tmy
-	Text3D (Text_Font[7], 50-GwBy2,-300,key,1)
-	
 	InputEx_Update
 	
 	UpdateWorld	
@@ -1099,15 +1096,15 @@ CreateListener(WorldCamera, 0.0025, 8, 20000)
 Environment_Dust_Create()
 ;UI Loading Code
 ; variables 
-Global RollSpeed#   = 2.0 
-Global TurnSpeed#	= 3.0
-Global MaxRoll#      = 45.0 
-Global Speed#      = 500 
+;Global Player_Environment_BaseTurn#   = 2.0 
+;Global Player_Environment_BaseTurn#	= 3.0
+;Global MaxRoll#      = 45.0 
+;Global Speed#      = 500 
 
 Global nearestdist#,nearestscale#,nearestname%,nearestglowscale# 
 
-PlayerSwitchShip(9)
-GetPlayerShipValues(1)
+PlayerSwitchShip(10)
+;GetPlayerShipValues(1)
 
 ;[Block]
 
@@ -1135,8 +1132,6 @@ Local multiplier#
 HidePointer
 
 ;set camera:
-Yoffset=55
-
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
 
 UpdateMapScale(4)
@@ -1191,6 +1186,9 @@ Repeat
 	Local mSpeedX#, mSpeedY#
 	mSpeedX = MouseXSpeed()
 	mSpeedY = MouseYSpeed()
+	If Force_UI_Mode = 1 Then
+		eCameraMode = MODE_CAMERA
+	EndIf
 	
 	Select eCameraMode
 		Case MODE_SHIP 
@@ -1214,11 +1212,11 @@ Repeat
 			If t1#<0 Then t1#=(Abs(t1#)^2.0)*-1 Else t1#=t1#^2.0 
 			If t2#<0 Then t2#=(Abs(t2#)^2.0)*-1 Else t2#=t2#^2.0 
 			
-			Local TurnXTotal#=t1#*TurnSpeed#
-			Local TurnYTotal#=t2#*TurnSpeed#
+			Local TurnXTotal#=t1#*(Player_Environment_BaseTurn#*2)
+			Local TurnYTotal#=t2#*(Player_Environment_BaseTurn#*2)
 			
-			TurnEntity pvShip,t1#*Player_Value_Inertia_Base#,t2#*Player_Value_Inertia_Base#,roll*TurnSpeed#
-			
+;			TurnEntity pvShip,t1#,t2#,roll*Player_Environment_BaseTurn#
+			TurnEntity pvShip,TurnXTotal#,TurnYTotal#,roll
 			tmSpeedX#=mSpeedY*2
 			tmSpeedy#=mSpeedX*-4
 			
@@ -1241,9 +1239,9 @@ Repeat
 			Local RollY#=(MouseX()-(GraphicsWidth()/2))/18*-1
 			Local RollX#=(MouseY()-(GraphicsHeight()/2))/18
 			RotateEntity eShipBody,RollX#,EntityYaw(eShipBody),RollY#
-			RotateEntity tShip,RollX#,EntityYaw(eShipBody),RollY#*Player_Value_Inertia_Base;SpeedX#
+			RotateEntity tShip,RollX#,EntityYaw(eShipBody),RollY#;SpeedX#
 			
-			RotateEntity pvCamera, fCameraRotation[0], fCameraRotation[1], 0
+			RotateEntity pvCamera, fCameraRotation[0]/2, fCameraRotation[1]/2, 0
 			;[End Block]			
 			
 			;[End Block]
@@ -1544,5 +1542,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#263#26C#286#293#31C#3AD#418#5AF#5B4
+;~F#90#16B#19F#234#263#26C#286#293#31C#3AD#418#5AD#5B2
 ;~C#Blitz3D

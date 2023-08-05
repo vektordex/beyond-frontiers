@@ -8,8 +8,8 @@ SunTiltX=15
 SunTiltY=20
 SunScale=150000
 SunColorR=255
-SunColorG=0
-SunColorB=0
+SunColorG=255
+SunColorB=255
 PlanetSetup
 PlanetTiltX=-15
 PlanetTiltY=150
@@ -32,23 +32,13 @@ GateRotation=90
 GateAimX=-100000
 GateAimY=0
 GateAimZ=0
-GateSetup
-SystemX=1
-SystemY=2
-GatePosX=0
-GatePosY=0
-GatePosZ=-10000
-GateRotation=0
-GateAimX=0
-GateAimY=0
-GateAimZ=10000
 StationSetup
 StationName=Miner's Respite
-StationPosX=-100000
+StationPosX=0
 StationPosY=0
-StationPosZ=100000
+StationPosZ=20000
 StationType=3
-StationRotation=15
+StationRotation=90
 StationBuy=1
 StationSell=1
 StationService=0
