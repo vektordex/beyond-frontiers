@@ -2,63 +2,127 @@ Function UpdateGraphics()
 	;General UI Overlay
 	
 	If HUD = 1 Then
+		If Force_UI_Mode = 0 Then	
+			Local MapOX =GraphicsWidth()/2-(16+128)
+			Local MapOZ =GraphicsHeight()/2-(16+128)
+			DrawImage3D(GUI_Game[1],MapOX,MapOZ)
 			
-		Local MapOX =GraphicsWidth()/2-(16+128)
-		Local MapOZ =GraphicsHeight()/2-(16+128)
-		DrawImage3D(GUI_Game[1],MapOX,MapOZ)
-		
-		DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
-		
-		Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
-		Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
-		
-		Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
-		
-		Text3D(Text_Font[6],0, D3DOU-70 ,"Armor: "+Player_Environment_BaseArmor+" mm",1)
-		Text3D(Text_Font[6],0, D3DOU-85 ,"Shield: "+Player_Environment_BaseShield+" MJ",1)
-		Text3D(Text_Font[6],0, D3DOU-100,"Max Speed: "+(Player_Environment_BaseMSpeed*6)+" m/s (Accel: "+Player_Environment_BaseAccel+")",1)
-		Text3D(Text_Font[6],0, D3DOU-115,"TurnRate: "+Player_Environment_BaseTurn#+" °/sec",1)
-		Text3D(Text_Font[6],0, D3DOU-130,"Energy Supply: "+Player_Environment_BaseEnergy+" Wh",1)
-		Text3D(Text_Font[6],0, D3DOU-145,Zoffset + "Camera Z Offset",1)
-	;	Text3D(Text_Font[6],0, D3DOU-160,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
-	;	Text3D(Text_Font[6],0, D3DOU-175,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
-	;	
-		
-		Select System_Security
-			Case 0
-				Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
-			Case 1
-				Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: Dangerous")
-			Case 2
-				Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
-			Case 3
-				Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Medium")
-			Case 4
-				Text3D(Text_Font[3],D3DOL+45, D3DOU-82,"Security Status: High")
-			Case 5
-				Text3D(Text_Font[2],D3DOL+45, D3DOU-82,"Security Status: Fortress")
-		End Select
-		
-		
-		DrawImage3D(GUI_Game[10],0,GraphicsHeight()/2*-1+4,0,0,1.2)
-		;General Ship Status Display
-		Local SpeedMath = Floor(Player_Value_Speed_Current#*6)
-		
-		Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
-		Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
-		Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
-		;Player Status Display
-		Text3D(Text_Font[1],-550,GraphicsHeight()/2*-1+18,"Money: 3.141.597,34 Cr.")
-		
-		Select eCameraMode
-			Case MODE_SHIP
-				DrawImage3D(GUI_Game[17],MouseX3D,MouseY3D)
-				DrawImage3D(GUI_Game[18],MouseX3D,MouseY3D)
-			Case MODE_CAMERA
-				DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
-			Case MODE_DOCKED
-				DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
-		End Select
+			DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
+			
+			Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
+			Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
+			
+			Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+			
+;			Text3D(Text_Font[6],0, D3DOU-70 ,"Armor: "+Player_Environment_BaseArmor+" mm",1)
+	;		Text3D(Text_Font[6],0, D3DOU-85 ,"Shield: "+Player_Environment_BaseShield+" MJ",1)
+	;		Text3D(Text_Font[6],0, D3DOU-100,"Max Speed: "+(Player_Environment_BaseMSpeed*6)+" m/s (Accel: "+Player_Environment_BaseAccel+")",1)
+	;		Text3D(Text_Font[6],0, D3DOU-115,"TurnRate: "+Player_Environment_BaseTurn#+" °/sec",1)
+	;		Text3D(Text_Font[6],0, D3DOU-130,"Energy Supply: "+Player_Environment_BaseEnergy+" Wh",1)
+	;		Text3D(Text_Font[6],0, D3DOU-145,Zoffset + "Camera Z Offset",1)
+		;	Text3D(Text_Font[6],0, D3DOU-160,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+		;	Text3D(Text_Font[6],0, D3DOU-175,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+		;	
+			
+			Select System_Security
+				Case 0
+					Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
+				Case 1
+					Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: Dangerous")
+				Case 2
+					Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
+				Case 3
+					Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Medium")
+				Case 4
+					Text3D(Text_Font[3],D3DOL+45, D3DOU-82,"Security Status: High")
+				Case 5
+					Text3D(Text_Font[2],D3DOL+45, D3DOU-82,"Security Status: Fortress")
+			End Select
+			
+			
+			DrawImage3D(GUI_Game[10],0,GraphicsHeight()/2*-1+4,0,0,1.2)
+			;General Ship Status Display
+			Local SpeedMath = Floor(Player_Value_Speed_Current#*6)
+			
+			Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
+			Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
+			Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
+			;Player Status Display
+			Text3D(Text_Font[1],-550,GraphicsHeight()/2*-1+18,"Money: 3.141.597,34 Cr.")
+			
+			Select eCameraMode
+				Case MODE_SHIP
+					DrawImage3D(GUI_Game[17],MouseX3D,MouseY3D)
+					DrawImage3D(GUI_Game[18],MouseX3D,MouseY3D)
+				Case MODE_CAMERA
+					DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
+				Case MODE_DOCKED
+					DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
+			End Select
+		ElseIf Force_UI_Mode= 1 Then
+			FlushMouse()
+			Player_Value_Speed_Current = 0
+			
+			
+			DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
+			; Company Owner
+			DrawImage3D(GUI_Company[Station_Owner],D3DOR-144,D3DOU-144,0,0,1)
+			Text3D(Text_Font[9],D3DOR-144, D3DOU-280,Station_Name$,1)
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-300,"Station offers Services:",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-320,"Bar and Food Court",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-340,"Market Import (Ores)",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-360,"Market Export (Ores)",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-380,"Equipment Dock",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-400,"Shipyard",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-420,"Your Funds:",1)
+			
+			Text3D(Text_Font[6],D3DOR-144, D3DOU-440,"13.021.215 KyD",1)
+			
+			; Undock Button
+			DrawImage3D(GUI_Game[19],D3DOR-144,D3DOD+128,0,0,0.5)
+			If MouseX3D>D3DOR-144-64 And MouseX3D<D3DOR-144+64 And MouseY3D>D3DOD+128-64 And MouseY3D<D3DOD+128+64 Then
+				If MouseHit(1) Then 
+					Camera_Zoom_Speed#=5
+					World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
+					Force_UI_Mode = 0
+				EndIf
+			EndIf
+			;Sidebar Left
+			DrawImage3D(GUI_Windows[21],D3DOL-270,0,0,0,3.8)
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-34,GUI_Game[21]) ; Hangar
+			Text3D(Text_Font[9], D3DOL+68,D3DOU-34,"Hangar")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-98,GUI_Game[21]) ; Bar/Food Court
+			Text3D(Text_Font[9], D3DOL+68,D3DOU-98,"Bartender")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-162,GUI_Game[21]) ; Trader
+			DrawImage3D(GUI_Game[22],D3DOL+33,D3DOU-162)
+			Text3D(Text_Font[9], D3DOL+68,D3DOU-162,"Trading Shop")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-226,GUI_Game[21]) ; Equipment Dock
+			DrawImage3D(GUI_Game[23],D3DOL+33,D3DOU-226)
+			Text3D(Text_Font[9], D3DOL+68,D3DOU-226,"Equipment Workshop")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-290,GUI_Game[21]) ; Shipyard
+			Text3D(Text_Font[9], D3DOL+68,D3DOU-290,"Internal Shipyard")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOD+98,GUI_Game[21])
+			Text3D(Text_Font[9], D3DOL+68,D3DOD+98,"Ship Information")
+			
+			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOD+34,GUI_Game[21])
+			Text3D(Text_Font[9], D3DOL+68,D3DOD+34,"Chat")
+			
+			;Sidebar Right
+			DrawImage3D(GUI_Windows[21],D3DOR-6,-50,0,0,3.8)
+			
+		EndIf
 	EndIf
 	
 	MoveEntity eShipBody,(Sin(Player_Effect_Drift_X)/78), (Sin(Player_Effect_Drift_Y)/110),0
@@ -77,7 +141,7 @@ End Function
 
 Function FastTravel(FTX, FTY, FTZ)
 ;	PositionEntity FastTravelSpot, FTX, FTX, FTZ, True
-	PositionEntity pvShip,FTX,FTY,FTZ
+	PositionEntity pvShip,FTX,FTY,FTZ,True
 	
 	Travel_To_LastSave=1
 	Savecounter = Savecounter + 1
@@ -222,7 +286,6 @@ Function UI_Draw_Options()
 	Text3D(Text_Font[7],-420,-130,"Q u i t  t o   M e n u",1)
 	Text3D(Text_Font[7],-420,-220,"C o n f i r m",1)
 End Function
-
 
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

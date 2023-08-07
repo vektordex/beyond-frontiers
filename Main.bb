@@ -175,6 +175,12 @@ Select Loading_State
 			CloseFile LoadOrder
 			;[End Block]
 			
+			;[Block] Environmental Objects
+			LoadMeshAsset("Assets\3D\Environment\Hangar.3DS")
+			LoadMeshAsset("Assets\3D\Environment\Flare.3DS")
+			LoadTextureAsset("Assets\3D\Environment\Flare.png",1+2)
+			;[End Block]
+			
 			;[Block] Planets
 			LoadOrder = OpenFile("Assets\Manifest\LoadPlanets.lof")
 			Repeat
@@ -229,6 +235,12 @@ Select Loading_State
 				LoadData$ = ReadLine(LoadOrder)
 			Until Eof(LoadOrder)
 			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Companies
+			For A = 1 To 33
+				LoadTextureAsset("Assets\2D\Companies\"+a+".png",2)
+			Next
 			;[End Block]
 			
 			;[Block] Standard Windows Font
@@ -1188,6 +1200,13 @@ Repeat
 	mSpeedY = MouseYSpeed()
 	If Force_UI_Mode = 1 Then
 		eCameraMode = MODE_CAMERA
+		Player_Value_Speed_Target = 0:  Player_Value_Speed_Current = 0
+		TurnEntity pvCamera,0,.05,0
+		MoveEntity WorldCamera,0,0,Camera_Zoom_Speed#
+		Camera_Zoom_Speed#=Camera_Zoom_Speed#*0.9
+		ShipStrafeX = 0
+		ShipStrafeY = 0
+		ShipRollZ =0
 	EndIf
 	
 	Select eCameraMode
@@ -1236,8 +1255,8 @@ Repeat
 				SpeedY#=0
 			EndIf
 			
-			Local RollY#=(MouseX()-(GraphicsWidth()/2))/18*-1
-			Local RollX#=(MouseY()-(GraphicsHeight()/2))/18
+			Local RollY#=(MouseX()-(GraphicsWidth()/2))/50*-1
+			Local RollX#=(MouseY()-(GraphicsHeight()/2))/50
 			RotateEntity eShipBody,RollX#,EntityYaw(eShipBody),RollY#
 			RotateEntity tShip,RollX#,EntityYaw(eShipBody),RollY#;SpeedX#
 			
@@ -1247,82 +1266,82 @@ Repeat
 			;[End Block]
 		Case MODE_CAMERA
 			;[Block] Kamerasteuerung
-			
-			PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
-			
-			If MouseDown(2)<>1 And MouseDown(1)<>1 Then
-				PointEntity(WorldCamera,WorldCameraPivot)
-				RotateEntity WorldCamera, EntityPitch(WorldCameraPivot), EntityYaw(WorldCameraPivot),EntityRoll(WorldCameraPivot)
-			EndIf
-			
-			If MouseDown(1) And MouseDown(2)<>1 And MouseX()>40 And MenuStat=0 And Options=0 Then
+			If Force_UI_Mode = 0 Then 
+				PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
 				
-				MX=MouseX() 
-				MY=MouseY() 
+				If MouseDown(2)<>1 And MouseDown(1)<>1 Then
+					PointEntity(WorldCamera,WorldCameraPivot)
+					RotateEntity WorldCamera, EntityPitch(WorldCameraPivot), EntityYaw(WorldCameraPivot),EntityRoll(WorldCameraPivot)
+				EndIf
 				
-				Local c1#
-				Local c2# 
+				If MouseDown(1) And MouseDown(2)<>1 And MouseX()>40 And MenuStat=0 And Options=0 Then
+					
+					MX=MouseX() 
+					MY=MouseY() 
+					
+					Local c1#
+					Local c2# 
+					
+					c1#=Normalize(MY,0,Gh,-1,1) 
+					c2#=Normalize(MX,0,Gw,1,-1) 
+					
+					TurnEntity pvCamera,c1#,c2#,0
+					
+					RotateEntity pvCamera,EntityPitch(pvCamera), EntityYaw(pvCamera),0
+					
+					If EntityPitch(pvCamera)> 85 Then RotateEntity pvCamera,  85, EntityYaw(pvCamera),0
+					
+					If EntityPitch(pvCamera)<-85 Then RotateEntity pvCamera, -85, EntityYaw(pvCamera),0
+					
+				EndIf
 				
-				c1#=Normalize(MY,0,Gh,-1,1) 
-				c2#=Normalize(MX,0,Gw,1,-1) 
+				If MouseDown(2) And MouseDown(1)<>1 And MouseX()>40 And MenuStat=0 And Options=0  Then
+					
+					
+					MX=MouseX() 
+					MY=MouseY() 
+					
+					c1#=Normalize(MY,0,Gh,-1,1) 
+					c2#=Normalize(MX,0,Gw,1,-1) 
+					
+					TurnEntity WorldCamera,c1#,c2#,0
+					
+					RotateEntity WorldCamera,EntityPitch(WorldCamera), EntityYaw(WorldCamera),EntityRoll(pvCamera)
+					
+					If EntityPitch(pvCamera)> 85 Then RotateEntity pvCamera,  85, EntityYaw(pvCamera),0
+					
+					If EntityPitch(pvCamera)<-85 Then RotateEntity pvCamera, -85, EntityYaw(pvCamera),0
+					
+				EndIf
 				
-				TurnEntity pvCamera,c1#,c2#,0
-				
-				RotateEntity pvCamera,EntityPitch(pvCamera), EntityYaw(pvCamera),0
-				
-				If EntityPitch(pvCamera)> 85 Then RotateEntity pvCamera,  85, EntityYaw(pvCamera),0
-				
-				If EntityPitch(pvCamera)<-85 Then RotateEntity pvCamera, -85, EntityYaw(pvCamera),0
-				
-			EndIf
-			
-			If MouseDown(2) And MouseDown(1)<>1 And MouseX()>40 And MenuStat=0 And Options=0  Then
 				
 				
-				MX=MouseX() 
-				MY=MouseY() 
+				Camera_Zoom_Speed#=Camera_Zoom_Speed#+MouseZSpeed()
+				MoveEntity WorldCamera,0,0,Camera_Zoom_Speed#
+				Camera_Zoom_Speed#=Camera_Zoom_Speed#*0.9
 				
-				c1#=Normalize(MY,0,Gh,-1,1) 
-				c2#=Normalize(MX,0,Gw,1,-1) 
+				RotateEntity eShipBody,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
+				RotateEntity tShip,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
 				
-				TurnEntity WorldCamera,c1#,c2#,0
+				tmSpeedX#=0
+				tmSpeedy#=0
 				
-				RotateEntity WorldCamera,EntityPitch(WorldCamera), EntityYaw(WorldCamera),EntityRoll(pvCamera)
+				If SpeedX#<tmSpeedX# Then
+					SpeedX#=SpeedX+1
+				ElseIf SpeedX#>tmSpeedX#
+					SpeedX#=SpeedX#-1
+				ElseIf SpeedX#<0.99 And SpeedX#>-0.99
+					SpeedX#=0
+				EndIf
 				
-				If EntityPitch(pvCamera)> 85 Then RotateEntity pvCamera,  85, EntityYaw(pvCamera),0
-				
-				If EntityPitch(pvCamera)<-85 Then RotateEntity pvCamera, -85, EntityYaw(pvCamera),0
-				
-			EndIf
-			
-			
-			
-			GUI_CZOOM_IN#=GUI_CZOOM_IN#+MouseZSpeed()
-			MoveEntity WorldCamera,0,0,GUI_CZOOM_IN#
-			GUI_CZOOM_IN#=GUI_CZOOM_IN#*0.9
-			
-			RotateEntity eShipBody,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
-			RotateEntity tShip,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
-			
-			tmSpeedX#=0
-			tmSpeedy#=0
-			
-			If SpeedX#<tmSpeedX# Then
-				SpeedX#=SpeedX+1
-			ElseIf SpeedX#>tmSpeedX#
-				SpeedX#=SpeedX#-1
-			ElseIf SpeedX#<0.99 And SpeedX#>-0.99
-				SpeedX#=0
-			EndIf
-			
-			If SpeedY#<tmSpeedy# Then
-				SpeedY#=SpeedY#+1
-			ElseIf SpeedY#>tmSpeedy#
-				SpeedY#=SpeedY#-1
-			ElseIf SpeedY#<0.99 And SpeedY#>-0.99
-				SpeedY#=0
-			EndIf
-			
+				If SpeedY#<tmSpeedy# Then
+					SpeedY#=SpeedY#+1
+				ElseIf SpeedY#>tmSpeedy#
+					SpeedY#=SpeedY#-1
+				ElseIf SpeedY#<0.99 And SpeedY#>-0.99
+					SpeedY#=0
+				EndIf
+			EndIf	
 			;[End Block]
 		Case MODE_DOCKED
 			RotateEntity eShipBody,SpeedX#,EntityYaw(eShipBody),SpeedY#*Player_Value_Inertia_Base	;SpeedX#
@@ -1478,6 +1497,7 @@ Repeat
 	
 	Asset_Belt_Update()
 	Asset_Station_Update()
+	Asset_DockCube_Update()
 	Asset_Planet_Update()
 	Asset_Gate_Update()
 	
@@ -1486,6 +1506,8 @@ Repeat
 	If Game_Menu_Open = 1 Then UI_Draw_Options()
 	
 	DST_Update()
+	
+	Asset_Flare_Update()
 	
 	UpdateGraphics()
 	
@@ -1542,5 +1564,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#90#16B#19F#234#263#26C#286#293#31C#3AD#418#5AD#5B2
+;~F#159#166#169#177#1AB#266#26F#278#292#29F#328#3B9#424#5C0#5C5
 ;~C#Blitz3D

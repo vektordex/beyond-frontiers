@@ -22,6 +22,10 @@ Function HandleInput()
 			If ShipMake > 11 Then ShipMake = 1
 			PlayerSwitchShip(ShipMake)
 		EndIf
+		If KeyHit(22) Then
+			Station_Owner = Station_Owner + 1
+			If Station_Owner > 33 Then Station_Owner = 1
+		EndIf
 		
 		If Render_A#>0.5 Then Render_A#=0.5
 		If Render_B#>2 Then Render_B#=2

@@ -11,14 +11,19 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		Asset_Clear_All()
 		
 		Modify_Fog(0,0,0,0,0,0)
+		Lighting_Initialize(0,90,1,255,255,255)
 		AmbientLight 130,130,130
-		
+		Object_Environment[2] = LoadSkyBox(2)
+		ShowEntity Mesh_Environment[1]
+		PositionEntity Mesh_Environment[1],EntityX(pvShip,True), EntityY(pvShip,True),EntityZ(pvShip,True)
+		RotateEntity Mesh_Environment[1],EntityPitch(pvShip,True), EntityYaw(pvShip,True),EntityRoll(pvShip,True)
 		Force_UI_Mode = 1
 	Else
 		;Read System File and Parse Content
 		Force_UI_Mode = 0
+		HideEntity Mesh_Environment[1]
 		Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
-		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$
+		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$, StationOwner
 		Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
 		Asset_Clear_All()
 	
@@ -52,7 +57,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorG=",""): ColorG = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"FogColorB=",""): ColorB = Int(SystemReadSub$)
 				Modify_Fog(1,Scale*0.8,Scale,ColorR,ColorG,ColorB)
-				AmbientLight ColorR/2,ColorG/2,ColorB/2
+				AmbientLight ColorR/1.25,ColorG/1.25,ColorB/1.25
 			EndIf
 		;-> Planets
 			If Instr(SystemRead$,"PlanetSetup") Then 
@@ -96,7 +101,8 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationBuy=",""): InventoryIn = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationSell=",""): InventoryOut = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationService=",""): InventoryService = Int(SystemReadSub$)
-				Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationOwner=",""): StationOwner = Int(SystemReadSub$)
+				Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService, StationOwner)
 			EndIf
 		;-> RandomBelt
 			If Instr(SystemRead$,"RandomBelt") Then
@@ -185,7 +191,7 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	RotateEntity Portal\Mesh, 0,Rotation,0	
 	PositionEntity Portal\Mesh,PosX,PosY,PosZ
 	
-	Portal\JumpOBB = CreateOBB(PosX, PosY, PosZ, 0, Rotation, 0, 20000, 20000, 1000)
+	Portal\JumpOBB = CreateOBB(PosX, PosY, PosZ, 0, Rotation, 0, 10000, 10000, 1000)
 	
 	EntityFX Portal\Mesh_Effect,1+16
 	
@@ -214,7 +220,7 @@ Function Asset_Gate_Update()
 	Local Gate_Jump = 0
 	For Portal.Stargate = Each Stargate
 		
-		If EntityDistance(pvShip, portal\mesh)<25000 And EntityInView(Portal\Mesh,WorldCamera)=True Then
+		If EntityDistance(pvShip, portal\mesh)<25000 And EntityInView(Portal\Mesh,WorldCamera)=True And HUD = 1 And Force_UI_Mode = 0 Then
 			Text3D(Text_Font[6],0,275,"- Location entered -",1)
 			Text3D(Text_Font[9],0,256,"Gate: "+EntityName(Portal\mesh),1)
 		EndIf
@@ -442,7 +448,7 @@ Function Environment_Dust_Create()
 	DST_Set_ColorRange(Zone_Dust_Base,55,55,55,255,255,255)
 End Function
 
-Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0)
+Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, InventoryIn=1, InventoryOut=1, InventoryService=0, Owner=1)
 	
 	da.Station = New Station
 	da\Mesh = CopyEntity(Mesh_Station[Station_Subtype])
@@ -473,18 +479,18 @@ Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, Invento
 			MoveEntity da\effect, 330,30,415
 			
 			Environment_NavMesh_Create(x,y,z,5)
-			Asset_DockCube_Create(x,y,z,Rotation,3, 14150,190,-6000)
+			Asset_DockCube_Create(x,y,z,Rotation,3, 14150,190,-6000,Name$, Owner, InventoryIn, InventoryOut, InventoryService)
 		Case 2
 			ScaleEntity da\mesh,25,25,25
 ;			ScaleEntity da\utility,2,2,1
 			
 			Environment_NavMesh_Create(x,y,z,4)
-			Asset_DockCube_Create(x,y,z,Rotation,2,0,350,-11500)
+			Asset_DockCube_Create(x,y,z,Rotation,2,0,350,-11500,Name$, Owner, InventoryIn, InventoryOut, InventoryService)
 		Case 1
 			ScaleEntity da\mesh,35,35,35
 			
 			Environment_NavMesh_Create(x,y,z,3)
-			Asset_DockCube_Create(x,y,z,Rotation,1)
+			Asset_DockCube_Create(x,y,z,Rotation,1,0,0,0,Name$, Owner, InventoryIn, InventoryOut, InventoryService)
 		Default 
 			ScaleEntity da\mesh,35,35,35
 			
@@ -506,7 +512,7 @@ End Function
 Function Asset_Station_Update()
 	For da.station= Each Station
 		
-		If EntityDistance(pvShip, da\Mesh)<25000 And EntityInView(da\Mesh,WorldCamera)=True And HUD = 1 Then
+		If EntityDistance(pvShip, da\Mesh)<25000 And EntityInView(da\Mesh,WorldCamera)=True And HUD = 1 And Force_UI_Mode = 0 Then
 			Text3D(Text_Font[6],0,275,"- Location entered -",1)
 			Text3D(Text_Font[9],0,256,"Station: "+EntityName(da\mesh),1)
 		EndIf
@@ -698,13 +704,19 @@ Function UpdateShockwave()
 	
 End Function
 
-Function Asset_DockCube_Create(x,y,z,rot,sizecase,offsetx=0,offsety=0,offsetz=0)
+Function Asset_DockCube_Create(x,y,z,rot,sizecase,offsetx=0,offsety=0,offsetz=0, Name$="Test Station", Owner = 1, WareBuy=0, WareSell=0, Service=0)
 	Cube.DockPort = New DockPort
 	Cube\Mesh = CreateCube()
+	
 	Cube\X = x
 	Cube\Y = y
 	Cube\Z = z
 	Cube\Rot = rot
+	Cube\Name$ = Name$
+	Cube\Owner = Owner
+	Cube\WareBuy=WareBuy
+	Cube\WareSell = WareSell
+	Cube\Service = Service
 	Select sizecase
 		Case 1
 			ScaleEntity Cube\Mesh,2500,350,2500
@@ -716,16 +728,33 @@ Function Asset_DockCube_Create(x,y,z,rot,sizecase,offsetx=0,offsety=0,offsetz=0)
 	PositionEntity Cube\Mesh, Cube\X, Cube\Y, Cube\Z
 	RotateEntity Cube\Mesh,0,Cube\Rot,0
 	MoveEntity Cube\mesh, offsetx,offsety, offsetz
+	Select sizecase
+		Case 1
+			Cube\OBB = CreateOBB(EntityX(Cube\Mesh),EntityY(Cube\Mesh),EntityZ(Cube\Mesh),0,rot,0,2500,350,2500)
+		Case 2
+			Cube\OBB = CreateOBB(EntityX(Cube\Mesh),EntityY(Cube\Mesh),EntityZ(Cube\Mesh),0,rot,0,5900,400,1100)
+		Case 3
+			Cube\OBB = CreateOBB(EntityX(Cube\Mesh),EntityY(Cube\Mesh),EntityZ(Cube\Mesh),0,rot,0,500,350,1000)
+	End Select
 	EntityFX Cube\mesh,1
 	EntityColor Cube\Mesh,0,255,255
-;	EntityAutoFade Cube\Mesh,5000,20000
+	EntityAutoFade Cube\Mesh,5000,20000
 	EntityAlpha Cube\Mesh,0.3
 End Function
 
 Function Asset_DockCube_Update()
-	For Cube.DockPort = Each DockPort		
+	For Cube.DockPort = Each DockPort		If EntityInOBB(Cube\OBB,pvShip) Then
+			Station_Owner = Cube\Owner
+			Station_Name$ = Cube\Name$
+			Station_WareImport = Cube\WareBuy
+			Station_WareExport = Cube\WareSell
+			Station_Services = Cube\Service
+			Camera_Zoom_Speed#=-5
+			Force_UI_Mode = 1
+			World_Generate(0,0,0,0,0)
+		EndIf
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#B0#D4#F0#125#136#14A#186#1A3#1AD#20B#218#21F#234#247#25A#2A0
+;~F#F6#12B#13C#150#1A9#1B3#211#21E#225#23A#24D#260#2A6
 ;~C#Blitz3D

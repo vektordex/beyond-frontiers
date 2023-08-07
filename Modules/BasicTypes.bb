@@ -60,7 +60,12 @@ Type Station
 End Type
 
 Type DockPort
-	Field X, Y, Z, Rot, Mesh
+	Field X, Y, Z, Rot, Mesh, OBB, Owner, Name$, WareBuy, WareSell, Service
+End Type
+
+Type Flare
+	Field X,Y,Z, ScaleX#, ScaleY#, Rotation, Weight
+	Field Mesh
 End Type
 
 Type Shockwave

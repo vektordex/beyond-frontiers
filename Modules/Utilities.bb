@@ -748,7 +748,12 @@ End Function
 
 Function GetPlayerShipValues(ShipID)
 	Local Shipinfo$
-	EntityRadius pvShip,500
+	
+	For Engine.Flare = Each Flare
+		FreeEntity Engine\mesh
+		Delete Engine
+	Next
+	
 	EntityType WorldCamera,0
 	Local ShipFile = OpenFile("Assets\Manifest\LoadShips.lof")
 	For A = 1 To ShipID
@@ -758,6 +763,7 @@ Function GetPlayerShipValues(ShipID)
 	Local Path$ ="Assets\Config\"+Shipinfo$+".bfc"
 	
 	Local ShipData = ReadFile(Path$)
+	Local XCollision, YCollision, FlareX, FlareY, FlareZ, FlareSX#, FlareSY#, FlareRot,FlareWgt
 	
 	Repeat
 		Local ShipRead$ = ReadLine(ShipData)
@@ -779,8 +785,21 @@ Function GetPlayerShipValues(ShipID)
 		If Instr(ShipRead$,"SlotsCargo=") Then ShipRead$ = Replace$(ShipRead$,"SlotsCargo=","")
 		If Instr(ShipRead$,"CameraOffsetZ=") Then ShipRead$ = Replace$(ShipRead$,"CameraOffsetZ=",""): Zoffset = Int(ShipRead$)
 		If Instr(ShipRead$,"CameraOffsetY=") Then ShipRead$ = Replace$(ShipRead$,"CameraOffsetY=",""): Yoffset = Int(ShipRead$)
+		If Instr(ShipRead$,"CollisionSphereX=") Then ShipRead$ = Replace$(ShipRead$,"CollisionSphereX=",""): XCollision = Int(ShipRead$)
+		If Instr(ShipRead$,"CollisionSphereY=") Then ShipRead$ = Replace$(ShipRead$,"CollisionSphereY=",""): YCollision = Int(ShipRead$)
+		If Instr(ShipRead$,"EngineConfig") Then 
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareX=") Then ShipRead$ = Replace$(ShipRead$,"FlareX=",""): FlareX = Int(ShipRead$)
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareY=") Then ShipRead$ = Replace$(ShipRead$,"FlareY=",""): FlareY = Int(ShipRead$)
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareZ=") Then ShipRead$ = Replace$(ShipRead$,"FlareZ=",""): FlareZ = Int(ShipRead$)
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareScaleX=") Then ShipRead$ = Replace$(ShipRead$,"FlareScaleX=",""): FlareSX# = Int(ShipRead$): FlareSX# = FlareSX# / 10
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareScaleY=") Then ShipRead$ = Replace$(ShipRead$,"FlareScaleY=",""): FlareSY# = Int(ShipRead$): FlareSY# = FlareSY# / 10
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareRotation=") Then ShipRead$ = Replace$(ShipRead$,"FlareRotation=",""): FlareRot = Int(ShipRead$)
+			ShipRead$ = ReadLine(ShipData): If Instr(ShipRead$,"FlareWeight=") Then ShipRead$ = Replace$(ShipRead$,"FlareWeight=",""): FlareWgt = Int(ShipRead$)
+			Asset_Flare_Create( FlareX, FlareY, FlareZ,FlareSX#,FlareSY#,FlareRot,FlareWgt,255,255,255)
+		EndIf
 	Until Eof(ShipData)
 	
+	EntityRadius pvShip,XCollision, YCollision
 	CloseFile ShipData
 	Player_Value_Speed_Maximum = Player_Environment_BaseMSpeed
 	
@@ -962,8 +981,35 @@ End Function
 Function GenAudio_Update()
 End Function
 
+Function Asset_Flare_Create(x,y,z,scalex#,scaley#,rotation,weight=33,r=255,b=255,g=255)
+	Engine.Flare = New Flare
+	Engine\Mesh = CopyEntity(Mesh_Environment[2])
+	Engine\X = x
+	Engine\Y = y
+	Engine\Z = z
+	Engine\ScaleX# = scalex#
+	Engine\ScaleY# = scaley#
+	Engine\Rotation = rotation
+	Engine\Weight = weight
+	PositionEntity Engine\Mesh,EntityX(ShipPosXYZ)+engine\x, EntityY(ShipPosXYZ)+engine\y, EntityZ(ShipPosXYZ)+Engine\z
+	EntityColor Engine\Mesh,r,g,b
+End Function
 
+Function Asset_Flare_Update()
+	
+	For Engine.Flare = Each Flare
+		Local Speedpercent# = (Player_Value_Speed_Current/(Player_Value_Speed_Maximum/100))/Engine\Weight
+		PositionEntity Engine\Mesh,EntityX(pvShip), EntityY(pvShip), EntityZ(pvShip)
+		RotateEntity Engine\Mesh,EntityPitch(pvShip), EntityYaw(pvShip), EntityRoll(pvShip)
+		TurnEntity Engine\Mesh,EntityPitch(eShipBody), EntityYaw(eShipBody), EntityRoll(eShipBody)
+		MoveEntity Engine\Mesh, Engine\X, Engine\Y, Engine\Z
+		TurnEntity Engine\Mesh,0,0,Engine\Rotation
+		ScaleEntity Engine\Mesh,Engine\ScaleX,Engine\ScaleY,Speedpercent#+2
+	Next
+	
+	PositionTexture Text_Environment[2], (MilliSecs()),1
+End Function
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#314#31B#326
-;~F#368#37D#396
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#327#32E#339
+;~F#37B#390#3A9
 ;~C#Blitz3D

@@ -7,6 +7,8 @@ Const VERSION_STRING$ = VERSION_MAJOR+"."+VERSION_MINOR+"."+VERSION_PATCH+"."+VE
 Global System_Flashlight
 Global Object_Charge, KeyMode
 
+Global Testentity
+
 Global MAPHUD
 
 Global RenderTimer
@@ -166,11 +168,7 @@ Global Music_ID[11], Music_Enabled=1, Desired_MVolume# = 0.5
 ;[Block] Interface
 Global GUI_Windows[50]
 Global GUI_Game[50]
-
-Const DrawLayer_Game_Low = -90
-Const DrawLayer_Game_Mid = -89
-Const DrawLayer_Game_Top = -88
-
+Global GUI_Company[33]
 Global HUD
 ;[End Block]
 
@@ -188,6 +186,11 @@ Global Player_GlobalX, Player_GlobalY
 ;[End Block]
 
 ;[Block] AI Voices
+
+;[End Block]
+
+;[Block] Globalized System Vars
+Global Station_Owner, Station_Services, Station_WareImport, Station_WareExport, Station_Rumors, Station_Name$
 
 ;[End Block]
 
@@ -226,6 +229,7 @@ String_Status[1]="+"
 ;[Block] Environment
 Global Zone_Dust_Base, Zone_Dust_Handle, Zone_Dust_External[15], Zone_Dust_Created=0
 Global Light_Pivot, Weapon_Maxdistance, System_TextID, RaceTrack_BaseID=0, RaceTrack_Pivot, RandRot, RaceTrack_Active=1, Racetrack_Max
+Global Camera_Zoom_Speed#
 ;[End Block]
 
 ;[Block] Timers
@@ -935,5 +939,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#1E#CB#D0#D4#DA#E1#EB#FC#1AD#231#23F#2C2
+;~F#20#CE#D3#D7#DD#EF#100#1B1#235#243#2C6
 ;~C#Blitz3D

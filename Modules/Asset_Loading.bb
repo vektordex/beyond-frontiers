@@ -54,6 +54,9 @@ Function PreloadUI()
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
 	
+	For A = 1 To 33
+		GUI_Company[A]=LoadImage3D("Assets\2D\Companies\"+A+".png",2,2,0,-96)
+	Next
 	
 End Function
 
@@ -122,7 +125,16 @@ Function PreloadMesh()
 	Text_Environment[0] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Sun.png",1+2)
 	EntityTexture Mesh_Environment[0], Text_Environment[0]
 	EntityFX Mesh_Environment[0],0
-	
+	Mesh_Environment[1]= AssetManager_GetAsset(EAssetType_Model,"Assets\3D\Environment\Hangar.3ds")
+	HideEntity Mesh_Environment[1]
+	ScaleEntity Mesh_Environment[1],350,350,350
+	EntityColor Mesh_Environment[1],65,65,65
+	Mesh_Environment[2]= AssetManager_GetAsset(EAssetType_Model,"Assets\3D\Environment\Flare.3ds")
+	Text_Environment[2] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Flare.png",1+2)
+	EntityFX Mesh_Environment[2],1+16
+	EntityTexture Mesh_Environment[2],Text_Environment[2]
+	HideEntity Mesh_Environment[2]
+	RotateMesh Mesh_Environment[2],180,0,0
 	;[End Block]
 	
 	;[Block] Gate
@@ -173,7 +185,7 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#C
 ;~C#Blitz3D
 ;~IDEal Editor Parameters:
-;~F#C
 ;~C#Blitz3D
