@@ -1059,6 +1059,7 @@ Repeat
 			;[Block]
 			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
 			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			DrawImage3D(GUI_Windows[37], D3DOL+256,D3DOD+64,0,0,0.5)
 			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
 				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
 				If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[1])
@@ -1564,5 +1565,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#159#166#169#177#1AB#266#26F#278#292#29F#328#3B9#424#5C0#5C5
+;~F#159#166#169#177#1AB#266#26F#278#292#29F#328#3B9#4C0#4F6#5C1#5C6
 ;~C#Blitz3D
