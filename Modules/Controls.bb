@@ -1,37 +1,24 @@
 Function HandleInput()
 	
 	If KeyMode=0 Then
-												; CONTROL PARADIGMS
-		If KeyHit(52) ;PgUp
-			Render_A#=Render_A#+0.025
-		EndIf
 		
-		If KeyHit(51) ;PgDn
-			Render_A#=Render_A#-0.025
-		EndIf
-		
-		If KeyHit(38) ;PgUp
-			Render_B#=Render_B#+0.025
-		EndIf
-		
-		If KeyHit(37) ;PgDn
-			Render_B#=Render_B#-0.025
-		EndIf				If KeyHit(20) Then World_Generate(1,1,0,0,0)
+		FlushKeys()
+												; CONTROL PARADIGMS		If KeyHit(20) Then World_Generate(1,1,0,0,0)
 		If KeyHit(21) Then
 			ShipMake = ShipMake + 1
 			If ShipMake > 11 Then ShipMake = 1
 			PlayerSwitchShip(ShipMake)
 		EndIf
 		If KeyHit(22) Then
-			Station_Owner = Station_Owner + 1
-			If Station_Owner > 33 Then Station_Owner = 1
+			Inventory_Add(Rand(1,2),1)
+		EndIf
+		If KeyHit(23) Then
+			Inventory_Remove(Rand(1,2),1)
 		EndIf
 		
-		If Render_A#>0.5 Then Render_A#=0.5
-		If Render_B#>2 Then Render_B#=2
-		If Render_A#<0 Then Render_A#=0
-		If Render_B#<0 Then Render_B#=0
-		
+		If KeyHit(24) Then
+			Container_Create(Rand(-1000,1000),Rand(-1000,1000),Rand(-1000,1000),Rand(1,50),Rand(1,4))
+		EndIf
 		
 		If KeyHit(57) Then 
 			If eCameraMode = MODE_SHIP Then
@@ -41,6 +28,8 @@ Function HandleInput()
 			eCameraMode = 1 - eCameraMode
 			If eCameraMode < 0 Then eCameraMode = 0
 		EndIf
+		
+		If KeyDown(42)=False Then FlushKeys
 		
 		If KeyDown(42)=False And KeyMode=0 Then				; GENERAL SHIP CONTROLS
 			

@@ -21,7 +21,7 @@ BeltPosY=0
 BeltPosZ=100000
 BeltResource=0
 BeltRange=200000
-BeltAmount=2000
+BeltAmount=4000
 GateSetup
 SystemX=2
 SystemY=1
@@ -34,10 +34,10 @@ GateAimY=0
 GateAimZ=0
 StationSetup
 StationName=Miner's Respite
-StationPosX=0
+StationPosX=10000
 StationPosY=0
 StationPosZ=20000
-StationType=2
+StationType=3
 StationRotation=0
 StationBuy=1
 StationSell=1

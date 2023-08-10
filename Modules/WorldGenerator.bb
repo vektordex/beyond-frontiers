@@ -756,5 +756,5 @@ Function Asset_DockCube_Update()
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#F6#12B#13C#150#1A9#1B3#211#21E#225#23A#24D#260#2A6
+;~F#12B#13C#150#1A9#1B3#211#21E#225#23A#24D#260#2A6
 ;~C#Blitz3D

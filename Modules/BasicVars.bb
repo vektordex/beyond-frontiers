@@ -114,6 +114,7 @@ Global Mesh_Planets[25]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 Global Text_Effects[5]
 Global Mesh_Environment[5]
+Global Mesh_Loot
 ;[End Block]
 
 ;[Block] Objects
@@ -143,6 +144,8 @@ Global Text_SkyCM[30]
 Global Text_Font[35]
 
 Global Text_Environment[5]
+
+Global Text_Loot, Text_Loot_FX
 ;[End Block]
 
 ;[Block] Sounds
@@ -169,13 +172,28 @@ Global Music_ID[11], Music_Enabled=1, Desired_MVolume# = 0.5
 Global GUI_Windows[50]
 Global GUI_Game[50]
 Global GUI_Company[33]
+Global GUI_Items[20]
 Global HUD
 ;[End Block]
 
 ;[Block] Character Values
-Global Player_Environment_Shipname$, Player_Environment_BaseSpeed, Player_Environment_BaseInertia#, Player_Environment_BaseArmor, Player_Environment_BaseShield
-Global Player_Environment_BaseMobility#, Player_Environment_ShipClass$, Player_Environment_BaseAccel#, Player_Environment_BaseMSpeed,  Player_Environment_BaseTurn#
-Global Player_Environment_BaseEnergy
+;- > Unchangeable Variables
+Global Player_Environment_Shipname$ 
+Global Player_Environment_ShipClass$
+
+;- > Ship Equipment
+Global Player_Environment_BaseSpeed, Player_Environment_FullSpeed#
+Global Player_Environment_BaseInertia#, Player_Environment_FullInertia# 
+Global Player_Environment_BaseMobility#, Player_Environment_FullMobility# 
+Global Player_Environment_BaseAccel#, Player_Environment_FullAccel# 
+Global Player_Environment_BaseMSpeed, Player_Environment_FullMSpeed
+Global Player_Environment_BaseTurn#, Player_Environment_FullTurn#
+
+;- > Ship Influenced Equipment with Current Values
+Global Player_Environment_BaseArmor, Player_Environment_CurrentArmor, Player_Environment_FullArmor
+Global Player_Environment_BaseShield, Player_Environment_CurrentShield, Player_Environment_FullShield
+Global Player_Environment_BaseEnergy, Player_Environment_CurrentEnergy, Player_Environment_FullEnergy
+Global Player_Environment_BaseCargo, Player_Environment_CurrentCargo, Player_Environment_FullCargo 
 
 Global Player_GlobalX, Player_GlobalY
 
@@ -939,5 +957,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#20#CE#D3#D7#DD#EF#100#1B1#235#243#2C6
+;~F#20#E0#E5#E9#EF#101#112#1C3#247#255#2D8
 ;~C#Blitz3D

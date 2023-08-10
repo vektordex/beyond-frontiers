@@ -6,6 +6,7 @@ BaseAccel=12
 BaseMSpeed=150
 BaseTurn=11
 BaseEnergy=100
+BaseCargo=1000
 SlotsWeapon=0
 SlotsArmor=1
 SlotsShield=1

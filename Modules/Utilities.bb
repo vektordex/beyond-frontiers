@@ -775,6 +775,7 @@ Function GetPlayerShipValues(ShipID)
 		If Instr(ShipRead$,"BaseMSpeed=") Then ShipRead$ = Replace$(ShipRead$,"BaseMSpeed=",""): Player_Environment_BaseMSpeed = Int(ShipRead$): Player_Environment_BaseMSpeed = Player_Environment_BaseMSpeed/3
 		If Instr(ShipRead$,"BaseTurn=") Then ShipRead$ = Replace$(ShipRead$,"BaseTurn=",""): Player_Environment_BaseTurn# = Int(ShipRead$): Player_Environment_BaseTurn#= Player_Environment_BaseTurn#/10
 		If Instr(ShipRead$,"BaseEnergy=") Then ShipRead$ = Replace$(ShipRead$,"BaseEnergy=",""): Player_Environment_BaseEnergy = Int(ShipRead$)
+		If Instr(ShipRead$,"BaseCargo=") Then ShipRead$ = Replace$(ShipRead$,"BaseCargo=",""): Player_Environment_BaseCargo = Int(ShipRead$)
 		If Instr(ShipRead$,"SlotsWeapon=") Then ShipRead$ = Replace$(ShipRead$,"SlotsWeapon=","")
 		If Instr(ShipRead$,"SlotsArmor=") Then ShipRead$ = Replace$(ShipRead$,"SlotsArmor=","")
 		If Instr(ShipRead$,"SlotsShield=") Then ShipRead$ = Replace$(ShipRead$,"SlotsShield=","")
@@ -803,6 +804,14 @@ Function GetPlayerShipValues(ShipID)
 	CloseFile ShipData
 	Player_Value_Speed_Maximum = Player_Environment_BaseMSpeed
 	
+End Function
+
+Function UpdatePlayerShipValues()
+	Player_Environment_FullCargo = Player_Environment_BaseCargo
+	Player_Environment_CurrentCargo = 0
+	For Item.Inventory = Each Inventory
+		Player_Environment_CurrentCargo = Player_Environment_CurrentCargo + Item\Amount
+	Next
 End Function
 
 Type MapWaypoints
@@ -1009,7 +1018,113 @@ Function Asset_Flare_Update()
 	
 	PositionTexture Text_Environment[2], (MilliSecs()),1
 End Function
+
+Function Inventory_Add(ItemID, Amount)
+	If Player_Environment_FullCargo + 1 > Player_Environment_CurrentCargo + Amount Then
+		Local  ItemAdded = 0
+		For Item.Inventory = Each Inventory
+			If Item\ItemID = ItemID Then
+				Item\Amount = Item\Amount + Amount
+				ItemAdded = 1
+			EndIf
+		Next
+		If ItemAdded = 0 Then
+			Item.Inventory = New Inventory
+			Item\ItemID = ItemID
+			Item\Amount = Amount
+		EndIf
+	EndIf
+End Function
+
+Function Inventory_List()
+	Local X = 0
+	Local Y = 0
+	For Item.Inventory = Each Inventory
+		DrawImage3D(GUI_Items[1],X,Y,0,0,0.5)
+		X = X + 33
+		If X >  (10*X) Then 
+			Y = Y +33
+			X= 0
+		EndIf
+	Next
+End Function
+
+Function Inventory_Remove(ItemID, Amount)
+	Local ItemRemoved = 0
+	For Item.Inventory = Each Inventory
+		If Item\ItemID = ItemID Then
+			Item\Amount = Item\Amount - Amount
+			If Item\Amount <= 0 Then
+				Delete Item
+			EndIf
+		EndIf
+	Next
+End Function
+
+Function Inventory_Debug_Show()
+;	Local X = 0
+;	Local Y = 0
+;	
+;	For Item.inventory = Each Inventory
+;		If HUD = 1 Then Text3D(Text_Font[6],X,Y,"Item ID: "+Item\ItemID + " (Amount: "+Item\Amount+"x)",1)
+;		Y = Y - 18
+;	Next
+	Local X = D3DOL + 33 + 64
+	Local Y =  250
+	For Item.Inventory = Each Inventory
+		DrawImage3D(GUI_Items[1],X,Y,0,0,0.75)
+		X = X + 50
+		If X > 450 Then 
+			Y = Y - 50
+			X = D3DOL + 33 + 64
+		EndIf
+	Next
+End Function
+
+Function Container_Create(x,y,z,contentID, ContentAmount)
+	Loot.Container = New Container
+	Loot\Mesh = CopyEntity(Mesh_Loot)
+	Loot\Pivot = CreatePivot()
+	PositionEntity Loot\Mesh,x,y,z
+	PositionEntity Loot\Pivot,x,y,z
+	RotateEntity Loot\Mesh, Rand(-180,180), Rand(-180,180), Rand(-180,180)
+	ScaleEntity Loot\Mesh,6,6,6
+	Loot\ItemID = contentID
+	Loot\Amount = ContentAmount
+	Local NameString$ = "Item "+Loot\ItemID+" ("+Loot\Amount+"m³)"
+	NameEntity Loot\Mesh, NameString$
+	EntityAutoFade Loot\Mesh, 5000,15000
+End Function
+
+Function Container_Update()
+	For Loot.Container = Each Container
+		PositionEntity Loot\Mesh, EntityX(Loot\Pivot), EntityY(loot\pivot), EntityZ(loot\pivot)
+		
+		If EntityDistance(Loot\Mesh, pvShip) < 1500 And EntityInView(Loot\Mesh,WorldCamera)
+			CameraProject WorldCamera, EntityX(loot\mesh), EntityY(Loot\Mesh), EntityZ(loot\Mesh)
+			If HUD = 1 Then Text3D(Text_Font[6],D3DOL+ProjectedX(),D3DOU-ProjectedY(),EntityName$(Loot\Mesh),1)
+		EndIf
+			
+		If EntityDistance(Loot\pivot, pvShip) < 700 And EntityDistance(Loot\pivot, pvShip) > 49 Then
+			If Player_Environment_FullCargo + 1 > Player_Environment_CurrentCargo + Loot\Amount Then
+				PointEntity(loot\pivot, pvShip)
+				MoveEntity Loot\pivot,0,0,2
+			EndIf
+		ElseIf EntityDistance(Loot\pivot, pvShip) < 50 Then
+			If Player_Environment_FullCargo + 1 > Player_Environment_CurrentCargo + loot\Amount Then
+				Inventory_Add(Loot\ItemID, Loot\Amount)
+				PlaySound Sound_ID[5]
+				FreeEntity Loot\mesh
+				FreeEntity Loot\pivot
+				Delete Loot
+				Exit			EndIf
+		ElseIf EntityDistance(Loot\pivot, pvShip) > 299 Then
+			TurnEntity Loot\Mesh,0.2,0.2,0.2
+		EndIf
+	Next
+End Function
+
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#327#32E#339
-;~F#37B#390#3A9
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#330#337#342
+;~F#384#399#3B2
 ;~C#Blitz3D

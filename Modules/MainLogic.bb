@@ -13,6 +13,8 @@ Function UpdateGraphics()
 			Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
 			
 			Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
+			Text3D(Text_Font[6],0, D3DOU-62,Player_Environment_CurrentCargo+"m³ / "+Player_Environment_FullCargo+"m³",1)
+			
 			
 ;			Text3D(Text_Font[6],0, D3DOU-70 ,"Armor: "+Player_Environment_BaseArmor+" mm",1)
 	;		Text3D(Text_Font[6],0, D3DOU-85 ,"Shield: "+Player_Environment_BaseShield+" MJ",1)

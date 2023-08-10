@@ -220,6 +220,11 @@ Select Loading_State
 			
 			LoadTextureAsset("Assets\3D\Environment\sun.png",1+2)
 			;[End Block]
+			
+			;[Block] Loot
+			LoadMeshAsset("Assets\3D\Environment\Container_mesh.3DS")
+			LoadTextureAsset("Assets\3D\Environment\Container_Color.png",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Container_Glow.png",1+2)
 			;[End Block]
 			
 			;[Block] Interface and Menus ------------------------------------
@@ -232,6 +237,16 @@ Select Loading_State
 			Repeat
 				LoadData$ = ReadLine(LoadOrder)
 				LoadTextureAsset("Assets\2D\Fonts\"+LoadData$+".png", 2)
+				LoadData$ = ReadLine(LoadOrder)
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
+			;[Block] Fonts
+			LoadOrder = OpenFile("Assets\Manifest\LoadItems.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				LoadTextureAsset("Assets\2D\Items\"+LoadData$+".png", 2)
 				LoadData$ = ReadLine(LoadOrder)
 			Until Eof(LoadOrder)
 			CloseFile LoadOrder
@@ -1496,14 +1511,21 @@ Repeat
 	
 	Music_Update()
 	
+	UpdatePlayerShipValues()
+	
 	Asset_Belt_Update()
 	Asset_Station_Update()
 	Asset_DockCube_Update()
 	Asset_Planet_Update()
 	Asset_Gate_Update()
 	
+	Container_Update()
+	
 	Environment_FastTravel_Update()
 	Environment_NavMesh_Update()
+	
+	Inventory_Debug_Show()
+	
 	If Game_Menu_Open = 1 Then UI_Draw_Options()
 	
 	DST_Update()
@@ -1565,5 +1587,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#159#166#169#177#1AB#266#26F#278#292#29F#328#3B9#4C0#4F6#5C1#5C6
+;~F#168#175#178#186#1BA#275#27E#287#2A1#2AE#337#3C8#4CF#505#5D0#5D5
 ;~C#Blitz3D

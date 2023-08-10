@@ -54,6 +54,15 @@ Function PreloadUI()
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
 	
+	LoadCounter = 1
+	LoadOrder = OpenFile("Assets\Manifest\LoadItems.lof")
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
+		GUI_Items[LoadCounter]=LoadImage3D("Assets\2D\Items\"+LoadData$+".png",2,2,0,-92)
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	
 	For A = 1 To 33
 		GUI_Company[A]=LoadImage3D("Assets\2D\Companies\"+A+".png",2,2,0,-96)
 	Next
@@ -89,6 +98,16 @@ Function PreloadMesh()
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
+	;[End Block]
+	
+	;[Block] Preload Loot
+	Mesh_Loot		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Environment\Container_Mesh.3DS")
+	Text_Loot		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Container_Color.png",1+2)
+	Text_Loot_FX	=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Container_Glow.png",1+2)
+	TextureBlend Text_Loot_FX,3
+	EntityTexture Mesh_Loot, Text_Loot,0,0
+	EntityTexture Mesh_Loot, Text_Loot_FX,0,1
+	HideEntity Mesh_Loot
 	;[End Block]
 	
 	;[Block] Preload Stations

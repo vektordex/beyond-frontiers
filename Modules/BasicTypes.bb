@@ -72,6 +72,19 @@ Type Shockwave
 	Field x,y,z
 	Field mesh,scale,age, alpha#, Speed, level
 End Type
+
+Type Inventory
+	Field amount, ItemID
+End Type
+
+Type Storage
+	Field Amount, ItemID
+End Type
+
+Type Container
+	Field Amount, ItemID, Mesh, Pivot
+End Type
+
 ;[End Block]
 
 Type GFXModes
