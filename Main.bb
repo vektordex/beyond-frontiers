@@ -298,6 +298,14 @@ Select Loading_State
 			CloseFile LoadOrder
 			;[End Block]
 			
+			LoadOrder = OpenFile("Assets\Manifest\LoadSound3D.lof")
+			Repeat
+				LoadData$ = ReadLine(LoadOrder)
+				Load3DSoundAsset("Assets\Sounds\"+LoadData$+".ogg")
+			Until Eof(LoadOrder)
+			CloseFile LoadOrder
+			;[End Block]
+			
 			;[Block] Music --------------------------------------------------
 				;----------------------------------------------------------------
 				;! Game - Music
@@ -903,7 +911,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],-428,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Terran Conglomerate": NewChar_Money=12000:NewChar_System$="Luna":State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Terran Conglomerate": NewChar_Money=12000:NewChar_System$="Luna":State_Menu_Subcontext_Character=2:Player_GlobalX=14 :Player_GlobalY=6
 						EndIf
 						
 					ElseIf MouseX()>GwBy2-215 And MouseX()<GwBy2+205 Then
@@ -912,7 +920,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],0,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Sirius Dominion": NewChar_Money=8000:NewChar_System$="Kurai":State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Sirius Dominion": NewChar_Money=8000:NewChar_System$="Kurai":State_Menu_Subcontext_Character=2:Player_GlobalX=5 :Player_GlobalY=16
 						EndIf
 						
 						
@@ -922,7 +930,7 @@ Repeat
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
 							DrawImage3D(GUI_Windows[16],428,-350,0,0,2)
-							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Orionic Council Republic": NewChar_Money=10000:NewChar_System$="Maia":State_Menu_Subcontext_Character=2
+							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Orionic Council Republic": NewChar_Money=10000:NewChar_System$="Maia":State_Menu_Subcontext_Character=2:Player_GlobalX=5 :Player_GlobalY=7
 						EndIf
 						
 					EndIf
@@ -1145,6 +1153,7 @@ mzoom#=1
 Global WorldCameraPivot = CreatePivot(pvCamera)
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(pvCamera)-Zoffset, False
 PositionEntity WorldCameraPivot, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(pvCamera), False
+Global PlayerChannel = EmitSound(Sound3D_ID[1],pvShip)
 
 Global OldMS, NewMS, TDFMS, MaxMS, MinMS=10000
 Global DebugInfo_Enabled
@@ -1152,7 +1161,7 @@ Global DebugInfo_Enabled
 ;!Todo: Find out why this doesn't call itself earlier.
 ;[End Block]
 
-World_Generate(1,1,0,0,0)
+World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
 
 ;!ToDo: Temporary
 Local multiplier#
@@ -1587,5 +1596,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#168#175#178#186#1BA#275#27E#287#2A1#2AE#337#3C8#4CF#505#5D0#5D5
+;~F#170#17D#180#18E#1C2#27D#286#28F#2A9#2B6#3D0#4D8#50E#5D9#5DE
 ;~C#Blitz3D

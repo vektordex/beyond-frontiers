@@ -9,15 +9,17 @@ Function HandleInput()
 			If ShipMake > 11 Then ShipMake = 1
 			PlayerSwitchShip(ShipMake)
 		EndIf
-		If KeyHit(22) Then
-			Inventory_Add(Rand(1,2),1)
+		If KeyHit(22) Then ;(Key U)
 		EndIf
-		If KeyHit(23) Then
-			Inventory_Remove(Rand(1,2),1)
+		
+		If KeyHit(23) Then ; Open/Close Inventory
+			InventoryShow = 1 - InventoryShow
 		EndIf
 		
 		If KeyHit(24) Then
-			Container_Create(Rand(-1000,1000),Rand(-1000,1000),Rand(-1000,1000),Rand(1,50),Rand(1,4))
+			For A = 1 To 10
+				Container_Create(Rand(-1000,1000),Rand(-1000,1000),Rand(-1000,1000),Rand(1,6),Rand(1,4))
+			Next
 		EndIf
 		
 		If KeyHit(57) Then 
@@ -66,6 +68,8 @@ Function HandleInput()
 			Else 
 				ShipStrafeY#=ShipStrafeY#*0.95
 			EndIf
+			
+			If KeyHit(35) Then donothing=1
 			
 		End If
 		

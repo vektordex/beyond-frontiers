@@ -21,6 +21,18 @@ Function PreloadAudio()
 	CloseFile LoadOrder
 	;[End Block]
 	
+	;[Block] Sounds in 3D
+	LoadOrder = OpenFile("Assets\Manifest\LoadSound3D.lof")
+	LoadCounter = 1
+	Repeat
+		LoadData$ = ReadLine(LoadOrder)
+		Sound3D_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_3DSound, "Assets\Sounds\"+LoadData$+".ogg")
+		LoadCounter = LoadCounter + 1
+	Until Eof(LoadOrder)
+	CloseFile LoadOrder
+	LoopSound Sound3D_ID[1]
+	;[End Block]
+	
 	;[Block] Music
 	LoadOrder = OpenFile("Assets\Manifest\LoadMusic.lof")
 	LoadCounter = 1
@@ -58,7 +70,8 @@ Function PreloadUI()
 	LoadOrder = OpenFile("Assets\Manifest\LoadItems.lof")
 	Repeat
 		LoadData$ = ReadLine(LoadOrder)
-		GUI_Items[LoadCounter]=LoadImage3D("Assets\2D\Items\"+LoadData$+".png",2,2,0,-92)
+		GUI_Items[LoadCounter]=LoadImage3D("Assets\2D\Items\"+LoadData$+".png",2,2,0,-110)
+		ItemName[LoadCounter] = LoadData$
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -204,7 +217,6 @@ Function PreloadMesh()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#C
 ;~C#Blitz3D
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

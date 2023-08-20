@@ -21,6 +21,7 @@
  AbsPath="\World" Expanded="True"
 </Folders>
 <Files>
+ AbsPath="\Modules\AILogic.bb" PrjFolder="\GameLogic" Line="0" Column="0" Tip="0" Visible="False"
  AbsPath="\Engine\AssetManager.bb" PrjFolder="\Engine" Line="0" Column="0" Tip="0" Visible="False"
  AbsPath="\Modules\Asset_Loading.bb" PrjFolder="\Graphics" Line="0" Column="0" Tip="0" Visible="False"
  AbsPath="\Modules\BasicConst.bb" PrjFolder="\Basic" Line="0" Column="0" Tip="0" Visible="False"

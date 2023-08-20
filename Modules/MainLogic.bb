@@ -5,12 +5,13 @@ Function UpdateGraphics()
 		If Force_UI_Mode = 0 Then	
 			Local MapOX =GraphicsWidth()/2-(16+128)
 			Local MapOZ =GraphicsHeight()/2-(16+128)
+			DrawImage3D(GUI_Windows[30],D3DOL-420,0,0,0,3)
 			DrawImage3D(GUI_Game[1],MapOX,MapOZ)
 			
 			DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
 			
-			Text3D(Text_Font[9],D3DOL+45, D3DOU-45,System_Name$)
-			Text3D(Text_Font[6],D3DOL+45, D3DOU-65,System_Owner$)
+			Text3D(Text_Font[9],D3DOL+65, D3DOU-45,System_Name$)
+			Text3D(Text_Font[6],D3DOL+65, D3DOU-65,System_Owner$)
 			
 			Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
 			Text3D(Text_Font[6],0, D3DOU-62,Player_Environment_CurrentCargo+"m³ / "+Player_Environment_FullCargo+"m³",1)
@@ -28,17 +29,17 @@ Function UpdateGraphics()
 			
 			Select System_Security
 				Case 0
-					Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: None")
+					Text3D(Text_Font[5],D3DOL+65, D3DOU-82,"Security Status: None")
 				Case 1
-					Text3D(Text_Font[5],D3DOL+45, D3DOU-82,"Security Status: Dangerous")
+					Text3D(Text_Font[5],D3DOL+65, D3DOU-82,"Security Status: Dangerous")
 				Case 2
-					Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Low")
+					Text3D(Text_Font[4],D3DOL+65, D3DOU-82,"Security Status: Low")
 				Case 3
-					Text3D(Text_Font[4],D3DOL+45, D3DOU-82,"Security Status: Medium")
+					Text3D(Text_Font[4],D3DOL+65, D3DOU-82,"Security Status: Medium")
 				Case 4
-					Text3D(Text_Font[3],D3DOL+45, D3DOU-82,"Security Status: High")
+					Text3D(Text_Font[3],D3DOL+65, D3DOU-82,"Security Status: High")
 				Case 5
-					Text3D(Text_Font[2],D3DOL+45, D3DOU-82,"Security Status: Fortress")
+					Text3D(Text_Font[2],D3DOL+65, D3DOU-82,"Security Status: Fortress")
 			End Select
 			
 			
@@ -85,6 +86,14 @@ Function UpdateGraphics()
 			Text3D(Text_Font[6],D3DOR-144, D3DOU-420,"Your Funds:",1)
 			
 			Text3D(Text_Font[6],D3DOR-144, D3DOU-440,"13.021.215 KyD",1)
+			
+			Local Randomannouncer = Rand(1,5000)
+			Text3D(Text_Font[6],0,0,Randomannouncer)
+			If Randomannouncer = 333 Then
+				Local RandomAnnouncement = Rand(1,10)
+				Local RandomNumber = RandomAnnouncement + 6
+				PlaySound Sound_ID[RandomNumber]
+			EndIf
 			
 			; Undock Button
 			DrawImage3D(GUI_Game[19],D3DOR-144,D3DOD+128,0,0,0.5)
@@ -134,6 +143,8 @@ Function UpdateGraphics()
 		
 		If Music_Volume#>Desired_MVolume# Then Music_Volume# = Music_Volume# - 0.005
 	EndIf
+	
+	ChannelPitch PlayerChannel,880*Player_Value_Speed_Current
 	
 End Function
 
@@ -278,7 +289,9 @@ Function UI_Draw_Options()
 	EndIf
 	
 	
-	
+	If MouseHit(1) Then
+		
+	EndIf
 	Text3D(Text_Font[7],-420,210,"G r a p h i c s",1)
 	Text3D(Text_Font[7],-420,170,"S o u n d s",1)
 	Text3D(Text_Font[7],-420,130,"M u s i c",1)

@@ -1,6 +1,6 @@
 Const VERSION_MAJOR% = 0
-Const VERSION_MINOR% = 0
-Const VERSION_PATCH% = 1
+Const VERSION_MINOR% = 1
+Const VERSION_PATCH% = 3
 Const VERSION_BUILD% = 100026
 Const VERSION_STRING$ = VERSION_MAJOR+"."+VERSION_MINOR+"."+VERSION_PATCH+"."+VERSION_BUILD
 
@@ -31,58 +31,7 @@ Global Game_Menu_Open=0, Game_End=0, Game_Menu_Debug=0, Force_UI_Mode=0
 ;[End Block]
 
 ;[Block] Weapon/Module/Item Names and Descriptions --- ToDo: Move this in a moddable file, and add translation efforts, at least DE/EN
-Global Weapon_Type$[20]
-Global Weapon_Desc$[20]
-Global Weapon_Timer[20]
-
-Weapon_Type[0] = "No Weapon Installed"
-Weapon_Desc[0] = "No description available"
-
-Weapon_Type[1] = "Light Beam Laser"
-Weapon_Desc[1] = "The light beam laser is an ancient weapon of unknown origin. It does weak damage to both shields and armor and lacks serious potential in any usage case, except it is very cheap to produce"
-Weapon_Timer[1] = 27
-
-Weapon_Type[2] = "Ion Pulse"
-Weapon_Desc[2] = "Ion Pulses are fast, and mostly go for shield damage. Its an efficient weapon to disable any combathungry pilot."
-Weapon_Timer[2] = 5
-
-Weapon_Type[3] = "Rapid Shell Gun"
-Weapon_Desc[3] = "Basically, this weapon throws a big amount of metallic objects at an already shieldless enemy. It is very inefficient against shields, but can wreak havoc on armor plates.
-
-Weapon_Type[4] = "Hypercoil Accelerator"
-Weapon_Desc[4] = "Accelerator-Weapons are an advanced form of Shelling, using tripolic Magnets to accelerate shells to supersonic speeds. They can penetrate shields better, but excel at causing immense explosive damage."
-
-Weapon_Type[5] = "Ray-Infuse-Emitter"
-Weapon_Desc[5] = "The RIE is a standard military weapon, designed from a high powered guidance laser with projectile assist and such does equal damage to shields and to armor. This however yields a low fire rate."
-
-Weapon_Type[6] = "Supercelerator"
-Weapon_Desc[6] = "Take Projectile. Add Slow Charge for high rotation. Get much speed. And shatter through hulls like no one else"
-
-Weapon_Type[7] = "AEGIS Lance"
-Weapon_Desc[7] = "This Weapons does not have a publicly available description."
-
-
-Global Core_Type$[20]
-Global Core_Desc$[20]
-
-Core_Type[0] = "No Core Module"
-Core_Desc[0] = "This should not happen."
-
-Global Prop_Type$[20]
-Global Prop_Desc$[20]
-
-Prop_Type[0] = "No Prop Module"
-Prop_Desc[0] = "Congratulations, you can't move!"
-
-Global Shield_Type$[20]
-Global Shield_Desc$[20]
-
-Global Item_Type$[128]
-Global Item_Desc$[128]
-
-Item_Type[0] = "Item ERROR"
-Item_Desc[0] = "This Item should not be in your Inventory"
-
+Global ItemName$[50]
 ;[End BLOCK]
 
 ;[Block] Performance Tracking
@@ -151,6 +100,7 @@ Global Text_Loot, Text_Loot_FX
 ;[Block] Sounds
 Global Sound_ID[50]
 Global Sound_Game[80]
+Global Sound3D_ID[10]
 ;[End Block]
 
 ;[Block] Channels
@@ -173,7 +123,7 @@ Global GUI_Windows[50]
 Global GUI_Game[50]
 Global GUI_Company[33]
 Global GUI_Items[20]
-Global HUD
+Global HUD, InventoryShow
 ;[End Block]
 
 ;[Block] Character Values
@@ -196,7 +146,6 @@ Global Player_Environment_BaseEnergy, Player_Environment_CurrentEnergy, Player_E
 Global Player_Environment_BaseCargo, Player_Environment_CurrentCargo, Player_Environment_FullCargo 
 
 Global Player_GlobalX, Player_GlobalY
-
 ;[End Block]
 
 ;[Block] Ship Expansions
@@ -957,5 +906,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#20#E0#E5#E9#EF#101#112#1C3#247#255#2D8
+;~F#AD#B2#B6#BC#DF#190#214#222#2A5
 ;~C#Blitz3D

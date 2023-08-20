@@ -1,0 +1,27 @@
+SystemSeed=37589162
+SystemName=Sirius B
+SystemSecurity=3
+OwnerRace=Developers
+BackgroundIndex=6
+SunSetup
+SunTiltX=15
+SunTiltY=195
+SunScale=10000
+SunColorR=170
+SunColorG=255
+SunColorB=255
+GateSetup
+SystemX=5
+SystemY=16
+GatePosX=0
+GatePosY=0
+GatePosZ=-150000
+GateRotation=-180
+GateAimX=0
+GateAimY=0
+GateAimZ=150000
+PlanetSetup
+PlanetTiltX=-15
+PlanetTiltY=150
+PlanetScale=1600
+PlanetType=24

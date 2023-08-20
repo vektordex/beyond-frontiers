@@ -1016,7 +1016,7 @@ Function Asset_Flare_Update()
 		ScaleEntity Engine\Mesh,Engine\ScaleX,Engine\ScaleY,Speedpercent#+2
 	Next
 	
-	PositionTexture Text_Environment[2], (MilliSecs()),1
+;	PositionTexture Text_Environment[2], (MilliSecs()),1
 End Function
 
 Function Inventory_Add(ItemID, Amount)
@@ -1069,16 +1069,35 @@ Function Inventory_Debug_Show()
 ;		If HUD = 1 Then Text3D(Text_Font[6],X,Y,"Item ID: "+Item\ItemID + " (Amount: "+Item\Amount+"x)",1)
 ;		Y = Y - 18
 ;	Next
-	Local X = D3DOL + 33 + 64
-	Local Y =  250
-	For Item.Inventory = Each Inventory
-		DrawImage3D(GUI_Items[1],X,Y,0,0,0.75)
-		X = X + 50
-		If X > 450 Then 
-			Y = Y - 50
-			X = D3DOL + 33 + 64
-		EndIf
-	Next
+	If HUD = 1 And InventoryShow = 1 Then
+		DrawImage3D(GUI_Windows[31],D3DOL+253,+28,0,0,2)
+		Local X = D3DOL + 64
+		Local Y =  0 + ( 2 * 65 )
+		For A = 1 To 50
+			DrawImage3D(GUI_Game[24],X,Y,0,0,0.85)
+			X = X + 50
+			If X > D3DOL + 33 + 64 + 450 Then 
+				Y = Y - 50
+				X = D3DOL + 64
+			EndIf
+		Next
+		
+		X = D3DOL + 64
+		Y =  0 + ( 2 * 65 )
+		For Item.Inventory = Each Inventory
+			DrawImage3D(GUI_Items[Item\ItemID],X,Y,0,0,0.8)
+			If MouseX3D > X - 30 And MouseX3D < X + 30 And MouseY3D < Y +30 And MouseY3D > Y - 30 Then
+				Text3D(Text_Font[6],MouseX3D+5, MouseY3D-20,ItemName[Item\ItemID])
+			EndIf
+			Text3D(Text_Font[6],X+20,Y-15,Item\Amount+"m³",2,0,0)
+			X = X + 50
+			If X > D3DOL + 64 + 450 Then 
+				Y = Y - 50
+				X = D3DOL + 64
+			EndIf
+		Next
+	EndIf
+	
 End Function
 
 Function Container_Create(x,y,z,contentID, ContentAmount)
@@ -1091,7 +1110,7 @@ Function Container_Create(x,y,z,contentID, ContentAmount)
 	ScaleEntity Loot\Mesh,6,6,6
 	Loot\ItemID = contentID
 	Loot\Amount = ContentAmount
-	Local NameString$ = "Item "+Loot\ItemID+" ("+Loot\Amount+"m³)"
+	Local NameString$ = "Item "+ItemName[Loot\ItemID]+" ("+Loot\Amount+"m³)"
 	NameEntity Loot\Mesh, NameString$
 	EntityAutoFade Loot\Mesh, 5000,15000
 End Function
@@ -1125,6 +1144,6 @@ Function Container_Update()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#330#337#342
-;~F#384#399#3B2
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2EC#328#330
+;~F#337#342#353#384#399
 ;~C#Blitz3D

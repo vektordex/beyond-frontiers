@@ -20,6 +20,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		Force_UI_Mode = 1
 	Else
 		;Read System File and Parse Content
+		PlaySound Sound_ID[6]
 		Force_UI_Mode = 0
 		HideEntity Mesh_Environment[1]
 		Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
@@ -162,6 +163,12 @@ Function Asset_Clear_All()
 		FreeEntity Orbit\Sprite
 		FreeEntity Orbit\Pivot
 		Delete Orbit
+	Next
+	
+	For Item.Container = Each Container
+		FreeEntity Item\Mesh
+		FreeEntity Item\Pivot
+		Delete Item
 	Next
 	
 	; Skybox
@@ -756,5 +763,5 @@ Function Asset_DockCube_Update()
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#12B#13C#150#1A9#1B3#211#21E#225#23A#24D#260#2A6
+;~F#132#143#157#1B0#1BA#218#225#22C#241#254#267#2AD
 ;~C#Blitz3D
