@@ -41,4 +41,13 @@ StationBuy=1
 StationSell=1
 StationService=0
 StationOwner=25
-StationSetup
+GateSetup
+SystemX=9
+SystemY=8
+GatePosX=-100000
+GatePosY=0
+GatePosZ=0
+GateRotation=90
+GateAimX=100000
+GateAimY=0
+GateAimZ=0

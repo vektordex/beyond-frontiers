@@ -71,6 +71,7 @@ Function UpdateGraphics()
 			; Company Owner
 			DrawImage3D(GUI_Company[Station_Owner],D3DOR-144,D3DOU-144,0,0,1)
 			Text3D(Text_Font[9],D3DOR-144, D3DOU-280,Station_Name$,1)
+			
 			Text3D(Text_Font[6],D3DOR-144, D3DOU-300,"Station offers Services:",1)
 			
 			Text3D(Text_Font[6],D3DOR-144, D3DOU-320,"Bar and Food Court",1)
@@ -88,7 +89,6 @@ Function UpdateGraphics()
 			Text3D(Text_Font[6],D3DOR-144, D3DOU-440,"13.021.215 KyD",1)
 			
 			Local Randomannouncer = Rand(1,5000)
-			Text3D(Text_Font[6],0,0,Randomannouncer)
 			If Randomannouncer = 333 Then
 				Local RandomAnnouncement = Rand(1,10)
 				Local RandomNumber = RandomAnnouncement + 6
