@@ -5,10 +5,11 @@ Function UpdateGraphics()
 		If Force_UI_Mode = 0 Then	
 			Local MapOX =GraphicsWidth()/2-(16+128)
 			Local MapOZ =GraphicsHeight()/2-(16+128)
-			DrawImage3D(GUI_Windows[30],D3DOL-420,0,0,0,3)
+			
 			DrawImage3D(GUI_Game[1],MapOX,MapOZ)
 			
-			DrawImage3D(GUI_Game[16],0,GraphicsHeight()/2,0,0,1.5)
+			DrawImage3D(GUI_Windows[30],D3DOL-420,0,0,0,3)
+			DrawImage3D(GUI_Windows[21],D3DOL-270,0,0,0,3.8)
 			
 			Text3D(Text_Font[9],D3DOL+65, D3DOU-45,System_Name$)
 			Text3D(Text_Font[6],D3DOL+65, D3DOU-65,System_Owner$)
@@ -46,7 +47,9 @@ Function UpdateGraphics()
 			DrawImage3D(GUI_Game[10],0,GraphicsHeight()/2*-1+4,0,0,1.2)
 			;General Ship Status Display
 			Local SpeedMath = Floor(Player_Value_Speed_Current#*6)
-			
+			If Timer_Dock > 0 Then
+				Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+60,"Docking unavailable for "+Timer_Dock+" sec.",1)
+			EndIf
 			Text3D(Text_Font[4],0,GraphicsHeight()/2*-1+48,SpeedMath+" m/s",1)
 			Text3D(Text_Font[2],-400,GraphicsHeight()/2*-1+48,"%",1)
 			Text3D(Text_Font[3],+400,GraphicsHeight()/2*-1+48,"%",1)
@@ -65,7 +68,6 @@ Function UpdateGraphics()
 		ElseIf Force_UI_Mode= 1 Then
 			FlushMouse()
 			Player_Value_Speed_Current = 0
-			
 			
 			DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
 			; Company Owner
@@ -101,10 +103,16 @@ Function UpdateGraphics()
 				If MouseHit(1) Then 
 					Camera_Zoom_Speed#=5
 					World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
+					Timer_Dock = 10
 					Force_UI_Mode = 0
 				EndIf
 			EndIf
+			If MouseHit(1) Then
+				
+			EndIf
+			
 			;Sidebar Left
+			DrawImage3D(GUI_Windows[30],D3DOL-420,0,0,0,3)
 			DrawImage3D(GUI_Windows[21],D3DOL-270,0,0,0,3.8)
 			
 			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-34,GUI_Game[21]) ; Hangar

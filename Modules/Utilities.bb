@@ -1070,6 +1070,7 @@ Function Inventory_Debug_Show()
 ;		Y = Y - 18
 ;	Next
 	If HUD = 1 And InventoryShow = 1 Then
+		Text3D(Text_Font[6],D3DOL+32, 175 ,"Inventory")
 		DrawImage3D(GUI_Windows[31],D3DOL+253,+28,0,0,2)
 		Local X = D3DOL + 64
 		Local Y =  0 + ( 2 * 65 )
@@ -1143,7 +1144,27 @@ Function Container_Update()
 	Next
 End Function
 
+Type Emitter
+	Field X, Y, Z, Pitch, Roll, Yaw
+	Field Mesh, Subtype
+End Type
+
+Function Emitter_Create()
+	
+End Function
+
+Function Emitter_Update()
+	
+End Function
+
+Function Particle_Create()	End Function
+
+Function Particle_Update()
+	
+End Function
+
+
 ;~IDEal Editor Parameters:
 ;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2EC#328#330
-;~F#337#342#353#384#399
+;~F#337#342#353#384#399#3B2#3E0#3EE#3FD#40E#41B#427#44F#45E
 ;~C#Blitz3D

@@ -176,7 +176,9 @@ Select Loading_State
 			;[End Block]
 			
 			;[Block] Environmental Objects
-			LoadMeshAsset("Assets\3D\Environment\Hangar.3DS")
+			LoadMeshAsset("Assets\3D\Environment\Hangar_Mesh.3DS")
+			LoadTextureAsset("Assets\3D\Environment\Hangar_Color.jpg",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Hangar_Glow.jpg",1+2)
 			LoadMeshAsset("Assets\3D\Environment\Flare.3DS")
 			LoadTextureAsset("Assets\3D\Environment\Flare.png",1+2)
 			;[End Block]
@@ -1596,5 +1598,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#170#17D#180#18E#1C2#27D#286#28F#2A9#2B6#3D0#4D8#50E#5D9#5DE
+;~F#172#17F#182#190#1C4#27F#288#291#2AB#2B8#3D2#4DA#510#5DB#5E0
 ;~C#Blitz3D

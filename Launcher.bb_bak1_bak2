@@ -5,8 +5,6 @@ For t = 1 To intModes
 DebugLog GfxModeWidth(t) + "x" + GfxModeHeight(t) +" at " + GfxModeDepth(t) +"bits depth"
 Next 
 
-Global ResolutionX, ResolutionY, ResolutionMode
-
 menu=WindowMenu(WinHandle) 
 Game=CreateMenu("Game",0,menu) ; main menu 
 CreateMenu "Open Game Folder",1, Game ; child menu 
@@ -21,9 +19,7 @@ CreateMenu "1600 x 900",43,Resolution
 CreateMenu "1920 x 1080",44,Resolution
 CreateMenu "2560 x 1440 (Experimental)",45,Resolution
 
-WinMode=CreateMenu("Window Mode",0,menu) ; main menu 
-CreateMenu "Fullscreen",50,WinMode
-CreateMenu "Windowed",51,WinMode
+
 
 UpdateWindowMenu WinHandle
 
@@ -35,13 +31,9 @@ Repeat
 	Select EID 
 					; Events in Case of Game Menu
 		Case 1
-			ExecFile "explorer.exe ./"
+			ExecFile "explorer.exe \"
 		
 					; Events in Case of Resolution Menu
-		
-		
-					; Events in Case of Resolution Menu
-
 
 					; Events in Case of Game Ending
 		Case 99

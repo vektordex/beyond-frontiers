@@ -750,7 +750,7 @@ Function Asset_DockCube_Create(x,y,z,rot,sizecase,offsetx=0,offsety=0,offsetz=0,
 End Function
 
 Function Asset_DockCube_Update()
-	For Cube.DockPort = Each DockPort		If EntityInOBB(Cube\OBB,pvShip) Then
+	For Cube.DockPort = Each DockPort		If EntityInOBB(Cube\OBB,pvShip) And Timer_Dock < 1 Then
 			Station_Owner = Cube\Owner
 			Station_Name$ = Cube\Name$
 			Station_WareImport = Cube\WareBuy

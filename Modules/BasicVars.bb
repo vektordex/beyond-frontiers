@@ -161,10 +161,6 @@ Global Station_Owner, Station_Services, Station_WareImport, Station_WareExport, 
 
 ;[End Block]
 
-;[Block] Timer
-Global Timer_Gatejump
-;[End Block]
-
 ;[Block] Ship Movement Identifiers
 Global ShipStrafeX#, ShipStrafeY#, ShipSpeedZ#, ShipRollZ#, Player_Value_Inertia_Modifier#
 Global Weapon_Target_Cube, ShipPosXYZ, Ship_Shield_Reload_Tick, Ship_Shield_Reload_Amount, Ship_Shield_Reload_Tick_Timer
@@ -201,7 +197,7 @@ Global Camera_Zoom_Speed#
 
 ;[Block] Timers
 Global Timer_Update, Timer_Texture#, Weapon_Maxtimer, Timer_HitRegister, Timer_MoveTexture#, Timer_Scanwave, Respawn_Timer
-Global WorldClock$, Timer_Dock
+Global WorldClock$, Timer_Dock, Timer_Gatejump
 ;[End Block]
 
 ;[Block] Various <- Sort THIS
@@ -906,5 +902,5 @@ Global AIFleetSpd#, AIFleetSpdRel#
 
 
 ;~IDEal Editor Parameters:
-;~F#AD#B2#B6#BC#DF#190#214#222#2A5
+;~F#A9#AE#B2#B8#DB#18C#210#21E#2A1
 ;~C#Blitz3D

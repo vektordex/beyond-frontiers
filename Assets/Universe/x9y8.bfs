@@ -21,7 +21,7 @@ BeltPosY=0
 BeltPosZ=100000
 BeltResource=0
 BeltRange=280000
-BeltAmount=1000
+BeltAmount=500
 StationSetup
 StationName=Miner's Respite
 StationPosX=10000

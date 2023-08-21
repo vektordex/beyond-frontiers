@@ -1,8 +1,8 @@
 Function Prepare_Graphics()
-	;If Settings_Graphics_Size[0]>1920 And Settings_Graphics_Size[1]>1080 Then 
-	Settings_Graphics_Size[0]=1360
-	Settings_Graphics_Size[1]=768
-	;EndIf
+	If Settings_Graphics_Size[0]>1920 And Settings_Graphics_Size[1]>1080 Then 
+		Settings_Graphics_Size[0]=1920
+		Settings_Graphics_Size[1]=1080
+	EndIf
 	
 	Settings_Scaling = (Settings_Graphics_Size[1]/(1080/100))/100
 	
