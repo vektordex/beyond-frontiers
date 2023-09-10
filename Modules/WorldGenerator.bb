@@ -122,6 +122,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		FastTravel(TravelPosX,TravelPosY,TravelPosZ)
 		Player_GlobalX = SystemPosX
 		Player_GlobalY = SystemPosY
+		UpdateMapScale(4)
 	EndIf
 End Function
 
@@ -763,5 +764,5 @@ Function Asset_DockCube_Update()
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#132#143#157#1B0#1BA#218#225#22C#241#254#267#2AD
+;~F#133#144#158#1B1#1BB#219#226#22D#242#255#268#2AE
 ;~C#Blitz3D

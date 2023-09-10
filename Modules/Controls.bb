@@ -148,5 +148,93 @@ Function HandleMouse()
 	
 End Function
 
+Function WipeKeyEx()
+	If InputEx_KeyDown(KEY_SHIFT_LEFT) = True
+		If InputEx_KeyHit(KEY_A) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_B) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_C) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_D) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_E) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_F) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_G) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_H) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_I) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_J) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_K) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_L) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_M) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_N) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_O) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_P) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Q) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_R) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_S) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_T) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_U) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_V) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_W) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_X) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Y) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Z) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_1) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_2) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_3) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_4) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_5) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_6) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_7) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_8) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_9) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_0) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_DASH) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_PERIOD) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_PLUS) Then DoNothing = 0
+	Else
+		If InputEx_KeyHit(KEY_A) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_B) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_C) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_D) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_E) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_F) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_G) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_H) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_I) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_J) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_K) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_L) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_M) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_N) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_O) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_P) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Q) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_R) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_S) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_T) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_U) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_V) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_W) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_X) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Y) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_Z) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_1) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_2) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_3) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_4) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_5) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_6) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_7) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_8) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_9) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_0) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_DASH) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_PERIOD) Then DoNothing = 0
+		If InputEx_KeyHit(KEY_PLUS) Then DoNothing = 0
+		
+;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
+;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
+	EndIf	
+End Function
+
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

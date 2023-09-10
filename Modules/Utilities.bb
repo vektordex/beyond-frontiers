@@ -539,8 +539,70 @@ End Function
 
 
 ;------------------------------------------------------------------------------
-;! Planets
+;! Chat
 ;------------------------------------------------------------------------------
+
+Function Chat_Connect()
+	ChatStream = OpenTCPStream(ChatServer$, ChatPort) 
+	
+	If Not ChatStream Then RuntimeError "Failed to connect to Libera.chat"
+	
+	WriteLine ChatStream, "USER " + ChatNickName$ + " " + ChatHostName$ + " " + ChatServer$ + " :" + ChatNickName$ 
+	WriteLine ChatStream, "NICK " + ChatNickName$ 
+	WriteLine ChatStream, "PONG "
+	WriteLine ChatStream, "JOIN #beyondfrontiers"
+	
+	AddChat ("Successfully Connected","[Libera.Chat API] ")
+End Function
+
+Function AddChat(Message$,from$)
+	Local TotalMessage$=from$+Message$
+	Local MessageLen=Len(TotalMessage$)
+	
+	For Chat.Messages = Each Messages
+		Chat\ID=Chat\ID+1
+		If Chat\ID>13 Then
+			Delete Chat
+		EndIf
+	Next
+	Chat.Messages=New Messages
+	Chat\Message$=TotalMessage$
+	Chat\ID=1
+End Function
+
+Function Chat_GetData()
+	Bytes = ReadAvail(ChatStream) 
+	
+;	RuntimeError Bytes$
+	If Bytes <> 0 
+		
+		Local ChatData$ = ReadLine(ChatStream)
+;		AddChat(ChatData$,CurrentTime()+" [Debug]: ")
+		
+		If Left$(ChatData$, 4) = "PING" Then 
+			
+            WriteLine ChatStream, "PONG " + Mid$(Daten$, 7, Len(Daten$) - 6) 
+		 	AddChat ("Replying to PING from Chat Server.",CurrentTime()+" [SYSTEM]: ")
+			
+		ElseIf Instr(ChatData$, "PRIVMSG") Then
+;			AddChat("Instr Found","Debug: ")
+			; Message Handling and Filtering
+			Local FindUserName = Instr(ChatData$,"!~")
+			IRCChatName$=Mid$(ChatData$,2,FindUserName-2)
+			
+			Local ChatDatenPos = Instr(ChatData$, " :")
+			IRCChatData$ = Right(ChatData$,(Len(ChatData$)-ChatDatenPos-1))
+			
+			AddChat(IRCChatData$,"["+IRCChatName$+"]: ")
+;		Else
+			
+		EndIf
+		
+		Bytes = ReadAvail(ChatStream) 
+	EndIf
+	
+	
+End Function
 
 Function Util_InitTimer()
 	util_lastmsc = MilliSecs()
@@ -951,7 +1013,7 @@ Function Music_Update()
 			
 		Case 1
 			If ChannelPlaying(Channel_Music)=False
-				Randomsong(Rand(1,8))
+				Randomsong(Rand(2,8))
 				ChannelVolume Channel_Music,Music_Volume#
 			EndIf
 			If Music_Aggro_Timer > 0 Then Music_Theme=2
@@ -965,7 +1027,7 @@ Function Music_Update()
 			EndIf
 		Case 3
 			If ChannelPlaying(Channel_Music)=False
-				Randomsong(Rand(9,12))
+				Randomsong(Rand(9,11))
 				ChannelVolume Channel_Music,Music_Volume#
 				EndIf
 			If Music_Aggro_Timer < 1 Then Music_Theme=4
@@ -1036,19 +1098,6 @@ Function Inventory_Add(ItemID, Amount)
 	EndIf
 End Function
 
-Function Inventory_List()
-	Local X = 0
-	Local Y = 0
-	For Item.Inventory = Each Inventory
-		DrawImage3D(GUI_Items[1],X,Y,0,0,0.5)
-		X = X + 33
-		If X >  (10*X) Then 
-			Y = Y +33
-			X= 0
-		EndIf
-	Next
-End Function
-
 Function Inventory_Remove(ItemID, Amount)
 	Local ItemRemoved = 0
 	For Item.Inventory = Each Inventory
@@ -1061,19 +1110,20 @@ Function Inventory_Remove(ItemID, Amount)
 	Next
 End Function
 
-Function Inventory_Debug_Show()
-;	Local X = 0
-;	Local Y = 0
-;	
-;	For Item.inventory = Each Inventory
-;		If HUD = 1 Then Text3D(Text_Font[6],X,Y,"Item ID: "+Item\ItemID + " (Amount: "+Item\Amount+"x)",1)
-;		Y = Y - 18
-;	Next
+Function Inventory_Show(Mode)
 	If HUD = 1 And InventoryShow = 1 Then
-		Text3D(Text_Font[6],D3DOL+32, 175 ,"Inventory")
-		DrawImage3D(GUI_Windows[31],D3DOL+253,+28,0,0,2)
-		Local X = D3DOL + 64
-		Local Y =  0 + ( 2 * 65 )
+		Select Mode
+			Case 1
+				Local BaseX = D3DOL + 64
+				Local BaseY = 0 + ( 2 * 65 )
+			Case 2
+				BaseX = D3DOL + 64
+				BaseY = D3DOD + ( 5 * 65 )+32
+		End Select
+		Text3D(Text_Font[6],D3DOL+48, BaseY+48 ,"Inventory")
+		DrawImage3D(GUI_Windows[31],D3DOL+253,BaseY-96,0,0,2)
+		Local X = BaseX
+		Local Y = BaseY
 		For A = 1 To 50
 			DrawImage3D(GUI_Game[24],X,Y,0,0,0.85)
 			X = X + 50
@@ -1083,8 +1133,8 @@ Function Inventory_Debug_Show()
 			EndIf
 		Next
 		
-		X = D3DOL + 64
-		Y =  0 + ( 2 * 65 )
+		X = BaseX
+		Y = BaseY
 		For Item.Inventory = Each Inventory
 			DrawImage3D(GUI_Items[Item\ItemID],X,Y,0,0,0.8)
 			If MouseX3D > X - 30 And MouseX3D < X + 30 And MouseY3D < Y +30 And MouseY3D > Y - 30 Then
@@ -1111,7 +1161,7 @@ Function Container_Create(x,y,z,contentID, ContentAmount)
 	ScaleEntity Loot\Mesh,6,6,6
 	Loot\ItemID = contentID
 	Loot\Amount = ContentAmount
-	Local NameString$ = "Item "+ItemName[Loot\ItemID]+" ("+Loot\Amount+"m³)"
+	Local NameString$ = ItemName[Loot\ItemID]+" ("+Loot\Amount+"m³)"
 	NameEntity Loot\Mesh, NameString$
 	EntityAutoFade Loot\Mesh, 5000,15000
 End Function
@@ -1165,6 +1215,6 @@ End Function
 
 
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#220#224#22B#2DE#2EC#328#330
-;~F#337#342#353#384#399#3B2#3E0#3EE#3FD#40E#41B#427#44F#45E
+;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#25E#262#269#31C#32A#366#36E
+;~F#375#380#391#3C2#41E#42C#43B#44C#458#481#490
 ;~C#Blitz3D

@@ -2,6 +2,21 @@ Function UpdateGraphics()
 	;General UI Overlay
 	
 	If HUD = 1 Then
+		
+		
+		Local ChatBase=14
+		For Chat.Messages = Each Messages
+			ChatBase=ChatBase-1
+			Local TchatX=D3DOL + 20
+			Local TchatY=D3DOD+25+(ChatBase*15)
+			If Instr(Chat\message$,"DBStudios") Then
+				Text3D(Text_Font[2],TchatX,TchatY,Chat\Message$)
+			Else
+				Text3D(Text_Font[6],TchatX,TchatY,Chat\Message$)
+			EndIf
+			If ChatBase=1 Then Exit
+		Next
+		
 		If Force_UI_Mode = 0 Then	
 			Local MapOX =GraphicsWidth()/2-(16+128)
 			Local MapOZ =GraphicsHeight()/2-(16+128)
@@ -16,17 +31,6 @@ Function UpdateGraphics()
 			
 			Text3D(Text_Font[6],0, D3DOU-45,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
 			Text3D(Text_Font[6],0, D3DOU-62,Player_Environment_CurrentCargo+"m³ / "+Player_Environment_FullCargo+"m³",1)
-			
-			
-;			Text3D(Text_Font[6],0, D3DOU-70 ,"Armor: "+Player_Environment_BaseArmor+" mm",1)
-	;		Text3D(Text_Font[6],0, D3DOU-85 ,"Shield: "+Player_Environment_BaseShield+" MJ",1)
-	;		Text3D(Text_Font[6],0, D3DOU-100,"Max Speed: "+(Player_Environment_BaseMSpeed*6)+" m/s (Accel: "+Player_Environment_BaseAccel+")",1)
-	;		Text3D(Text_Font[6],0, D3DOU-115,"TurnRate: "+Player_Environment_BaseTurn#+" °/sec",1)
-	;		Text3D(Text_Font[6],0, D3DOU-130,"Energy Supply: "+Player_Environment_BaseEnergy+" Wh",1)
-	;		Text3D(Text_Font[6],0, D3DOU-145,Zoffset + "Camera Z Offset",1)
-		;	Text3D(Text_Font[6],0, D3DOU-160,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
-		;	Text3D(Text_Font[6],0, D3DOU-175,Player_Environment_Shipname$+" ("+Player_Environment_ShipClass$+")",1)
-		;	
 			
 			Select System_Security
 				Case 0
@@ -66,7 +70,7 @@ Function UpdateGraphics()
 					DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
 			End Select
 		ElseIf Force_UI_Mode= 1 Then
-			FlushMouse()
+;			FlushMouse()
 			Player_Value_Speed_Current = 0
 			
 			DrawImage3D(GUI_Game[11],MouseX3D,MouseY3D)
@@ -102,44 +106,109 @@ Function UpdateGraphics()
 			If MouseX3D>D3DOR-144-64 And MouseX3D<D3DOR-144+64 And MouseY3D>D3DOD+128-64 And MouseY3D<D3DOD+128+64 Then
 				If MouseHit(1) Then 
 					Camera_Zoom_Speed#=5
+					State_Docked_Submenu = 0
 					World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
 					Timer_Dock = 10
 					Force_UI_Mode = 0
 				EndIf
-			EndIf
-			If MouseHit(1) Then
-				
 			EndIf
 			
 			;Sidebar Left
 			DrawImage3D(GUI_Windows[30],D3DOL-420,0,0,0,3)
 			DrawImage3D(GUI_Windows[21],D3DOL-270,0,0,0,3.8)
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-34,GUI_Game[21]) ; Hangar
-			Text3D(Text_Font[9], D3DOL+68,D3DOU-34,"Hangar")
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOU-27,GUI_Game[21],0,0.75) ; Hangar
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-98,GUI_Game[21]) ; Bar/Food Court
-			Text3D(Text_Font[9], D3DOL+68,D3DOU-98,"Bartender")
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-162,GUI_Game[21]) ; Trader
-			DrawImage3D(GUI_Game[22],D3DOL+33,D3DOU-162)
-			Text3D(Text_Font[9], D3DOL+68,D3DOU-162,"Trading Shop")
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOU-72,GUI_Game[21],0,0.75) ; Bar/Food Court
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-226,GUI_Game[21]) ; Equipment Dock
-			DrawImage3D(GUI_Game[23],D3DOL+33,D3DOU-226)
-			Text3D(Text_Font[9], D3DOL+68,D3DOU-226,"Equipment Workshop")
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOU-290,GUI_Game[21]) ; Shipyard
-			Text3D(Text_Font[9], D3DOL+68,D3DOU-290,"Internal Shipyard")
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOU-117,GUI_Game[21],0,0.75) ; Trader
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOD+98,GUI_Game[21])
-			Text3D(Text_Font[9], D3DOL+68,D3DOD+98,"Ship Information")
 			
-			DrawImage3D(GUI_Game[20],D3DOL+33,D3DOD+34,GUI_Game[21])
-			Text3D(Text_Font[9], D3DOL+68,D3DOD+34,"Chat")
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOU-162,GUI_Game[21],0,0.75) ; Equipment Dock
+			
+			
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOU-207,GUI_Game[21],0,0.75) ; Shipyard
+			
+			
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOD+72,GUI_Game[21],0,0.75)
+			
+			
+			DrawImage3D(GUI_Game[20],D3DOL+27,D3DOD+27,GUI_Game[21],0,0.75)
+			
+			
+			If MouseX3D > D3DOL+5 And MouseX3D<D3DOL+50 Then 
+				If MouseY3D < D3DOU -5 And MouseY3D > D3DOU -49 Then
+					If MouseHit(1) Then State_Docked_Submenu = 0
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Hangar")
+				EndIf
+				
+				If MouseY3D < D3DOU -51 And MouseY3D > D3DOU -96 
+					If MouseHit(1) Then State_Docked_Submenu = 1
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Bartender")
+				EndIf
+				
+				If MouseY3D < D3DOU -98 And MouseY3D > D3DOU -144 
+					If MouseHit(1) Then State_Docked_Submenu = 2
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Trading Shop")
+				EndIf
+				
+				If MouseY3D < D3DOU -146 And MouseY3D > D3DOU -190 
+					If MouseHit(1) Then State_Docked_Submenu = 3
+					Text3D(Text_Font[6],MouseX3D+15, MouseY3D,"Equipment Workshop")
+				EndIf
+				
+				If MouseY3D < D3DOU -192 And MouseY3D > D3DOU -236
+					If MouseHit(1) Then State_Docked_Submenu = 4
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Internal Shipyard")	
+				EndIf
+				
+				If MouseY3D > D3DOD +51 And MouseY3D < D3DOD +96
+					If MouseHit(1) Then State_Docked_Submenu = 5
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Ship Cargo")	
+				EndIf
+				
+				If MouseY3D > D3DOD +5 And MouseY3D < D3DOD +49 
+					If MouseHit(1) Then State_Docked_Submenu = 6
+					Text3D(Text_Font[6], MouseX3D+15, MouseY3D,"Options")	
+				EndIf
+			End If
 			
 			;Sidebar Right
 			DrawImage3D(GUI_Windows[21],D3DOR-6,-50,0,0,3.8)
+			
+			;Main Station Services
+			Select State_Docked_Submenu
+				Case 0
+					; Hangar View
+					
+				Case 1
+					; Bartender for Jobs
+;					End
+				Case 2
+					; Trader
+					DrawImage3D(GUI_Windows[30],D3DOL+63,0,0,0,1.3)
+					DrawImage3D(GUI_Windows[30],D3DOL-53,0,0,0,1.3)
+					DrawImage3D(GUI_Windows[31],D3DOL+600,0,0,0,3.65)
+;					End
+				Case 3
+					; Equipment Vendor / Workshop
+;					End
+				Case 4
+					; Shipyard
+;					End
+				Case 5
+					; Inventory
+					InventoryShow = 1
+;					End
+				Case 6
+					End
+					; Options
+			End Select
+			
+			If MouseHit(1) Then
+			EndIf
 			
 		EndIf
 	EndIf
@@ -180,11 +249,12 @@ End Function
 
 Function UI_Draw_Options()
 	eCameraMode = MODE_DOCKED
+	State_Docked_Submenu = 0	InventoryShow = 0
+	HUD = 1
+;	DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,1.3)
+;	Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
 	
-	DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
-	Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
-	
-	DrawImage3D(GUI_Windows[29],140,0)
+	DrawImage3D(GUI_Windows[29],140,0,0,0,2)
 	DrawImage3D(GUI_Windows[21],-420,0,0,0,1.47)
 	
 	DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)

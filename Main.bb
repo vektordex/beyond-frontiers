@@ -600,8 +600,8 @@ CloseFile Creditsfile
 .MainMenu
 Game_End = 0
 ;[Block] Character Loading
-LoopSound Music_ID[9]
-Channel_Music = PlaySound(Music_ID[9])
+LoopSound Music_ID[1]
+Channel_Music = PlaySound(Music_ID[1])
 ChannelVolume Channel_Music,0.0
 Music_Volume = 0.0
 
@@ -627,6 +627,7 @@ Repeat
 	
 	Select State_Menu_Subcontext
 		Case 1 ; >> Menu Main Window
+			WipeKeyEx()
 			
 			DrawImage3D	(GUI_Windows[2],0,0)
 			
@@ -698,12 +699,16 @@ Repeat
 			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
 			
-			DrawImage3D(GUI_Windows[29],140,0)
+			DrawImage3D(GUI_Windows[29],140,0,0,0,2)
 			DrawImage3D(GUI_Windows[21],-420,0,0,0,1.47)
 ;			DrawImage3D(GUI_Windows[23],0,0)
 			
 			Select State_Menu_Subcontext_Settings
 				Case 1 ; >> Graphics
+					
+					
+					WipeKeyEx()
+					
 					DrawImage3D(GUI_Windows[16],-420,210,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
@@ -714,6 +719,9 @@ Repeat
 					
 					Text3D(Text_Font[7],-210,210,"S e t   u p   g r a p h i c s   o p t i o n s   h e r e .")					
 				Case 2 ; >> Audio
+					
+					WipeKeyEx()
+					
 					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
 					DrawImage3D(GUI_Windows[16],-420,170,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
@@ -723,6 +731,9 @@ Repeat
 					Text3D(Text_Font[7],-210,210,"S e t   u p   a u d i o   o p t i o n s   h e r e .")
 					
 				Case 3 ; >> Music
+					
+					WipeKeyEx()
+					
 					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
 					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
 					DrawImage3D(GUI_Windows[16],-420,130,0,0,1.8)
@@ -832,6 +843,7 @@ Repeat
 				Case 1
 					;[Block] Faction Selection
 					Local BaseX = -432
+					WipeKeyEx()
 					
 					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
 					Text3D(Text_Font[7],BaseX,400,"T e r r a n   C o n g l o m e r a t e",1)
@@ -958,7 +970,7 @@ Repeat
 					Text3D(Text_Font[3], 200, 20,"Your Starting Money",1)
 					Text3D(Text_Font[4], 200, 0,Newchar_Money+" Cr.",1)
 					
-					Text3D(Text_Font[1],0, -110,"I hereby pledge my loyalty to "+NewCharacter_Faction$+" and will do my best to adhere to their values,",1)
+					Text3D(Text_Font[1],0, -110,"I hereby pledge my loyalty to "+NewChar_Faction$+" and will do my best to adhere to their values,",1)
 					Text3D(Text_Font[1],0, -170,"(supported letters and characters are a-z, A-Z, 0-9 and !-_.:)",1)
 					
 					DrawImage3D(GUI_Windows[23],0,-140,0,0,2.2)
@@ -1082,6 +1094,9 @@ Repeat
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-24,"N e w   G a m e",1)
 		Case 5 ; >> Credits
 			;[Block]
+			
+			WipeKeyEx()
+			
 			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
 			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			DrawImage3D(GUI_Windows[37], D3DOL+256,D3DOD+64,0,0,0.5)
@@ -1123,6 +1138,9 @@ Until CharDataLoaded=1
 
 StopChannel Channel_Music
 
+ChatNickName$ = "bfgame_"+Character_NewName$
+Chat_Connect()
+
 Music_Volume#=.2
 
 ;UserDataLoad(State_Character_To_Load)
@@ -1141,7 +1159,7 @@ Environment_Dust_Create()
 
 Global nearestdist#,nearestscale#,nearestname%,nearestglowscale# 
 
-PlayerSwitchShip(10)
+PlayerSwitchShip(9)
 ;GetPlayerShipValues(1)
 
 ;[Block]
@@ -1160,7 +1178,6 @@ Global PlayerChannel = EmitSound(Sound3D_ID[1],pvShip)
 Global OldMS, NewMS, TDFMS, MaxMS, MinMS=10000
 Global DebugInfo_Enabled
 
-;!Todo: Find out why this doesn't call itself earlier.
 ;[End Block]
 
 World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
@@ -1188,6 +1205,8 @@ Repeat
 	
 	;[Block] Networking
 	Local ms_Performance_Update_Network = MilliSecs()
+	
+	Chat_GetData()
 	
 	If KeyHit(1) Then 
 		Game_Menu_Open=1-Game_Menu_Open
@@ -1535,7 +1554,11 @@ Repeat
 	Environment_FastTravel_Update()
 	Environment_NavMesh_Update()
 	
-	Inventory_Debug_Show()
+	If Force_UI_Mode = 0
+		Inventory_Show(1)
+	Else
+		Inventory_Show(2)
+	EndIf
 	
 	If Game_Menu_Open = 1 Then UI_Draw_Options()
 	
@@ -1598,5 +1621,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#172#17F#182#190#1C4#27F#288#291#2AB#2B8#3D2#4DA#510#5DB#5E0
+;~F#172#17F#182#190#1C4#280#289#292#29B#2A3#2AC#2B9#3DE#4ED#523#5EE#5F3
 ;~C#Blitz3D
