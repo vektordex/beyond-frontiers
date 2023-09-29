@@ -85,6 +85,10 @@ Type Container
 	Field Amount, ItemID, Mesh, Pivot
 End Type
 
+Type Obj
+	Field Mesh, ID
+End Type
+
 ;[End Block]
 
 Type GFXModes

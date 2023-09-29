@@ -20,19 +20,18 @@ BeltPosX=-100000
 BeltPosY=0
 BeltPosZ=100000
 BeltResource=0
-BeltRange=280000
-BeltAmount=500
-StationSetup
-StationName=Miner's Respite
+BeltRange=100000
+BeltAmount=1500
+SpecialSetup
+SpecialType=13
+SpecialName=Ruins: Mining Station
 StationPosX=10000
 StationPosY=0
 StationPosZ=-40000
-StationType=3
-StationRotation=0
-StationBuy=1
-StationSell=1
-StationService=0
-StationOwner=33
+SpecialRotX=-5
+SpecialRotY=5
+SpecialRotZ=0
+SpecialScale=1
 GateSetup
 SystemX=14
 SystemY=7
@@ -73,3 +72,13 @@ GateRotation=0
 GateAimX=0
 GateAimY=0
 GateAimZ=-75000
+SpecialSetup
+SpecialType=17
+SpecialName=
+SpecialPosX=0
+SpecialPosY=0
+SpecialPosZ=-40000
+SpecialRotX=7
+SpecialRotY=-5
+SpecialRotZ=10
+SpecialScale=15

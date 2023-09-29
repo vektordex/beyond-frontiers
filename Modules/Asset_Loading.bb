@@ -97,6 +97,11 @@ End Function
 Function PreloadMesh()
 	
 	;[Block] Preload Spaceships
+	
+	Text_Ship[0] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Ships\Rust_Surface.png",1+2)
+	ScaleTexture Text_Ship[0],0.5,0.5
+	TextureBlend Text_Ship[0],2
+	
 	Local LoadOrder = OpenFile("Assets\Manifest\LoadShips.lof")
 	Local LoadCounter = 1
 	Repeat
@@ -141,6 +146,16 @@ Function PreloadMesh()
 	CloseFile LoadOrder
 	;[End Block]
 	
+	;[Block] Preload Decor
+	Mesh_Decor[1]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Decor\Capital_Ship.3DS")
+	Text_Decor[1]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Decor\Capital_Ship_Color.jpg",1+2)
+	Text_Decor_FX[1]	=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Decor\Capital_Ship_Glow.jpg",1+2)
+	TextureBlend Text_Decor_FX[1],3
+	EntityTexture Mesh_Decor[1],Text_Decor[1],0,1
+	EntityTexture Mesh_Decor[1],Text_Decor_FX[1],0,2
+	HideEntity Mesh_Decor[1]
+	;[End Block]
+	
 	;[Block] Preload Planets
 	LoadOrder = OpenFile("Assets\Manifest\LoadPlanets.lof")
 	LoadCounter = 1
@@ -172,6 +187,11 @@ Function PreloadMesh()
 	EntityTexture Mesh_Environment[2],Text_Environment[2]
 	HideEntity Mesh_Environment[2]
 	RotateMesh Mesh_Environment[2],180,0,0
+	
+	Text_Environment[5] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Smoke_01.png",1+2)
+	Text_Environment[6] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Smoke_02.png",1+2)
+	Text_Environment[7] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Smoke_03.png",1+2)
+	Text_Environment[8] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Flash.png",1+2)
 	;[End Block]
 	
 	;[Block] Gate

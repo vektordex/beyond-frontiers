@@ -221,7 +221,7 @@ Function UpdateGraphics()
 		If Music_Volume#>Desired_MVolume# Then Music_Volume# = Music_Volume# - 0.005
 	EndIf
 	
-	ChannelPitch PlayerChannel,880*Player_Value_Speed_Current
+	ChannelPitch PlayerChannel,8000+250*Player_Value_Speed_Current
 	
 End Function
 
@@ -272,6 +272,50 @@ Function UI_Draw_Options()
 ;					Text X -250, Y - 230
 			
 			Text3D(Text_Font[7],-210,210,"S e t   u p   g r a p h i c s   o p t i o n s   h e r e .")
+			
+			Text3D(Text_Font[7],-210,160,"A m b i e n t   L i g h t")
+			
+			DrawImage3D(GUI_Windows[22],+170,160,0,90,1.5)
+			DrawImage3D(GUI_Windows[22],+205,160,0,-90,1.5)
+			
+			DrawImage3D(GUI_Windows[23],+340,160,0,0,1.5)
+			
+			Local AmbientLevel = 10 + (11 - Settings_GFX_Ambience)*-1
+			Text3D(Text_Font[7],+380,160,AmbientLevel,1)
+			
+			If Settings_GFX_Ambience > 11 Then Settings_GFX_Ambience = 11
+			If Settings_GFX_Ambience < 1 Then Settings_GFX_Ambience = 1
+			
+			If MouseY()>GhBy2-170 And MouseY()<GhBy2-140
+				If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+					If MouseHit(1) And Settings_GFX_Ambience > 1 Then Settings_GFX_Ambience = Settings_GFX_Ambience - 1: PlaySound(Sound_ID[1]): Ambient_Update(System_SunR,System_SunG,System_SunB)
+				EndIf
+				If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+					If MouseHit(1) And Settings_GFX_Ambience < 10 Then Settings_GFX_Ambience = Settings_GFX_Ambience + 1: PlaySound(Sound_ID[1]): Ambient_Update(System_SunR,System_SunG,System_SunB)
+				EndIf
+			EndIf
+			
+			Text3D(Text_Font[7],-210,130,"O b j e c t   A m o u n t")
+			
+			DrawImage3D(GUI_Windows[22],+170,130,0,90,1.5)
+			DrawImage3D(GUI_Windows[22],+205,130,0,-90,1.5)
+			
+			DrawImage3D(GUI_Windows[23],+340,130,0,0,1.5)
+			
+			Local ObjectLevel = (Settings_GFX_Objects# * 100)
+			Text3D(Text_Font[7],+380,130,ObjectLevel+"%",1)
+			
+			If Settings_GFX_Objects# > 2 Then Settings_GFX_Objects# = 2
+			If Settings_GFX_Objects# < .2 Then Settings_GFX_Objects# = .2
+			
+			If MouseY()>GhBy2-140 And MouseY()<GhBy2-110
+				If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+					If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# - .1: PlaySound(Sound_ID[1])
+				EndIf
+				If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+					If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# + .1: PlaySound(Sound_ID[1])
+				EndIf
+			EndIf
 			
 		Case 2 ; >> Audio
 			
@@ -381,4 +425,5 @@ Function UI_Draw_Options()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#0#E7#EF
 ;~C#Blitz3D

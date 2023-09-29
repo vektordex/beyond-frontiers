@@ -1,14 +1,10 @@
 ; DST_Dust-Engine V1.0
 
-
-
 Function DST_Create_Dust(dst_cam, dst_count, dst_typ=0, Parent=0)
 	If DST_TempPivot=0 Then DST_TempPivot=CreatePivot(Parent)
-;	VirtualScene_Register(Scene, DST_TempPivot)
 	dst_dust.DST_Dustobject = New DST_Dustobject
 	dst_dust\camera=dst_cam
 	dst_dust\pivot=CreatePivot(Parent)
-;	VirtualScene_Register(Scene, dst_dust\pivot)
 	dst_dust\campivot=CreatePivot(dst_dust\camera)
 ; PositionEntity dst_dust\campivot,0,0,0 : RotateEntity dst_dust\campivot,0,0,0
 	EntityParent dst_dust\campivot,dst_dust\pivot

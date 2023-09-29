@@ -552,7 +552,12 @@ Function Chat_Connect()
 	WriteLine ChatStream, "PONG "
 	WriteLine ChatStream, "JOIN #beyondfrontiers"
 	
-	AddChat ("Successfully Connected","[Libera.Chat API] ")
+;	AddChat ("Successfully Connected","[Libera.Chat API] ")
+	WriteLine ChatStream, "PRIVMSG #beyondfrontiers :"+Character_NewName$+" has joined the game. Say hi!" 
+End Function
+
+Function Chat_Output()
+	
 End Function
 
 Function AddChat(Message$,from$)
@@ -582,18 +587,23 @@ Function Chat_GetData()
 		If Left$(ChatData$, 4) = "PING" Then 
 			
             WriteLine ChatStream, "PONG " + Mid$(Daten$, 7, Len(Daten$) - 6) 
-		 	AddChat ("Replying to PING from Chat Server.",CurrentTime()+" [SYSTEM]: ")
+;		 	AddChat ("Replying to PING from Chat Server.",CurrentTime()+" [SYSTEM]: ")
 			
 		ElseIf Instr(ChatData$, "PRIVMSG") Then
-;			AddChat("Instr Found","Debug: ")
-			; Message Handling and Filtering
-			Local FindUserName = Instr(ChatData$,"!~")
-			IRCChatName$=Mid$(ChatData$,2,FindUserName-2)
-			
-			Local ChatDatenPos = Instr(ChatData$, " :")
-			IRCChatData$ = Right(ChatData$,(Len(ChatData$)-ChatDatenPos-1))
-			
-			AddChat(IRCChatData$,"["+IRCChatName$+"]: ")
+			If Instr(ChatData$, "TARGMAX=NAMES") Then
+					
+			Else
+					
+	;			AddChat("Instr Found","Debug: ")
+				; Message Handling and Filtering
+				Local FindUserName = Instr(ChatData$,"!~")
+				IRCChatName$=Mid$(ChatData$,2,FindUserName-2)
+				IRCChatName$=Replace(IRCChatName$,"bfgame_","")
+				Local ChatDatenPos = Instr(ChatData$, " :")
+				IRCChatData$ = Right(ChatData$,(Len(ChatData$)-ChatDatenPos-1))
+				
+				AddChat(IRCChatData$,"["+IRCChatName$+"]: ")
+			EndIf
 ;		Else
 			
 		EndIf
@@ -983,27 +993,7 @@ End Function
 
 Function Randomsong(number)
 	StopChannel Channel_Music
-	Select number
-		Case 1
-			Channel_Music = PlaySound(Music_ID[1])
-			Music_Description$="Wolfgang Miakoda - Through the Void"
-		Case 2
-			Channel_Music = PlaySound(Music_ID[2])
-			Music_Description$="Track 2"
-		Case 3
-			Channel_Music = PlaySound(Music_ID[3])
-			Music_Description$="Track 3"
-		Case 4
-			Channel_Music = PlaySound(Music_ID[4])
-			Music_Description$="Track 4"
-		Case 5
-			Channel_Music = PlaySound(Music_ID[5])
-			Music_Description$="Elv - Into the Abyss"
-		Case 6
-			Channel_Music = PlaySound(Music_ID[6])
-			Music_Description$="Elv - The Thrill of War"
-	End Select		
-	
+	Channel_Music = PlaySound(Music_ID[number])
 End Function
 
 Function Music_Update()
@@ -1194,27 +1184,14 @@ Function Container_Update()
 	Next
 End Function
 
-Type Emitter
-	Field X, Y, Z, Pitch, Roll, Yaw
-	Field Mesh, Subtype
-End Type
-
-Function Emitter_Create()
-	
+Function Mechanic_Weapon_Update()
+	PositionEntity Player_Weapon_Cube, EntityX(pvShip), EntityY(pvShip), EntityZ(pvShip)
+	RotateEntity Player_Weapon_Cube  , EntityPitch(pvShip), EntityYaw(pvShip), EntityRoll(pvShip)
+	TurnEntity Player_Weapon_Cube  , EntityPitch(eShipBody), EntityYaw(eShipBody), EntityRoll(eShipBody)
+	MoveEntity Player_Weapon_Cube, 0,0,1000
 End Function
-
-Function Emitter_Update()
-	
-End Function
-
-Function Particle_Create()	End Function
-
-Function Particle_Update()
-	
-End Function
-
 
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#E5#F7#107#11A#1D0#1F6#25E#262#269#31C#32A#366#36E
-;~F#375#380#391#3C2#41E#42C#43B#44C#458#481#490
+;~F#5#46#86#94#9C#AC#C6#F7#107#11A#1D0#1F6#232#268#26C#273#326#32A#334#370
+;~F#378#37F#38A#39B#3CC#3E1#3E6#414#422#431#442#44E#477#486#4A3
 ;~C#Blitz3D

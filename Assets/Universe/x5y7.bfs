@@ -50,3 +50,13 @@ BeltPosZ=0
 BeltResource=0
 BeltRange=20000
 BeltAmount=40
+SpecialSetup
+SpecialType=14
+SpecialName=Fleet Headquarters Brexiteer
+SpecialPosX=65000
+SpecialPosY=0
+SpecialPosZ=0
+SpecialRotX=0
+SpecialRotY=35
+SpecialRotZ=0
+SpecialScale=15

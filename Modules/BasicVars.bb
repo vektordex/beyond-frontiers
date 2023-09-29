@@ -17,7 +17,8 @@ Global D3DMouseX, D3DMouseY
 ;[Block] Basics
 Global Player_Effect_Drift_X, Player_Effect_Drift_Y, PlayerX, PlayerY, PlayerZ
 Global Player_Value_Speed_Target#, Player_Value_Speed_Main#, SpeedY#, SpeedX#
-Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boost_State, Player_Value_Speed_Maximum#=80
+Global Player_Value_Movement_State, Player_Value_Speed_Current#,Player_Value_Boost_State, Player_Value_Speed_Maximum#
+Global Player_Weapon_Cube
 
 Global Effect_Camera_Zoom# = 1
 
@@ -79,6 +80,7 @@ Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 Global Text_Effects[5]
 Global Mesh_Environment[5]
 Global Mesh_Loot
+Global Mesh_Decor[1]
 ;[End Block]
 
 ;[Block] Objects
@@ -92,11 +94,12 @@ Global Text_Ship[11]
 Global Text_Ship_FX[11]
 Global Text_Station[10]
 Global Text_Station_FX[10]
-
 Global Text_Gate[2]
 Global Text_Gate_FX[2]
 Global Text_Asteroid[4]
 Global Text_Asteroid_FX[4]
+Global Text_Decor[1]
+Global Text_Decor_FX[1]
 
 Global Text_SkyBK[8]
 Global Text_SkyDN[8]
@@ -107,7 +110,7 @@ Global Text_SkyUP[8]
 Global Text_SkyCM[8]
 Global Text_Font[35]
 
-Global Text_Environment[5]
+Global Text_Environment[8]
 
 Global Text_Loot, Text_Loot_FX
 ;[End Block]
@@ -138,7 +141,7 @@ Global GUI_Windows[50]
 Global GUI_Game[50]
 Global GUI_Company[33]
 Global GUI_Items[20]
-Global HUD, InventoryShow
+Global HUD, InventoryShow, Chat_Active, Chat_Message$, Chat_Counter
 ;[End Block]
 
 ;[Block] Character Values
@@ -173,7 +176,7 @@ Global Player_GlobalX, Player_GlobalY
 
 ;[Block] Globalized System Vars
 Global Station_Owner, Station_Services, Station_WareImport, Station_WareExport, Station_Rumors, Station_Name$
-
+Global Settings_GFX_Ambience=5, Settings_GFX_Objects#=1
 ;[End Block]
 
 ;[Block] Ship Movement Identifiers
@@ -207,7 +210,7 @@ String_Status[1]="+"
 ;[Block] Environment
 Global Zone_Dust_Base, Zone_Dust_Handle, Zone_Dust_External[15], Zone_Dust_Created=0
 Global Light_Pivot, Weapon_Maxdistance, System_TextID, RaceTrack_BaseID=0, RaceTrack_Pivot, RandRot, RaceTrack_Active=1, Racetrack_Max
-Global Camera_Zoom_Speed#
+Global Camera_Zoom_Speed#, System_SunR, System_SunG, System_SunB
 ;[End Block]
 
 ;[Block] Timers
@@ -216,19 +219,7 @@ Global WorldClock$, Timer_Dock, Timer_Gatejump
 ;[End Block]
 
 ;[Block] Various <- Sort THIS
-Global Existing_Terran = 0
-Global Existing_Sirian = 0
-Global Existing_Pirate = 0
-Global Existing_Total = 0
-Global Existing_POI = 0
-Global State_System_Ownership = 0
-Global Existing_Ratio_Terran = 0.0
-Global Existing_Ratio_Sirian = 0.0
-Global Existing_Ratio_Total = 0 
-Global Level_XP_Needed, Level_Progress
-
 Global Trigger_Map_Scaling=1
-Global Spawn_MaxRank = 4
 ;[End Block]
 
 Local LinePick_Message
@@ -305,29 +296,6 @@ Global MyAU, RealAU, AUTime, AUConversion
 
 RealAU=149597870.7
 
-Global Counter_Siphon#, SiphonSine#
-
-;Ship Utilities
-Global Ship_Rad_Resistance#, Ship_TD_Boost#, Ship_Heal_Boost#, Ship_Loot_Boost, TotalBots
-
-Global ShoppingCategory, ShoppingOre, ShoppingShip, ShoppingImplant, OreTradeAmount, CountUpBuy, CountUpSell
-Global ShoppedShipID, TotalDiscoveries, TLxMSH, TLxMSX, TLxENT, TLxENT2, TLxTEX, CARGOxLEFT, Tcounter, Tlan, TradeInRange
-
-Const MinRoids=7
-Const MaxRoids=10
-
-Global Lim1, Lim2, Lim3, Lim4, Lim5, Lim6
-
-Global AllowFlush=0, CargBoost#, Limiter#, Suicided, AdTimer
-
-Global MESH_CONTAINER[3]
-
-Global Target_Active, Target_Active_Timer
-;Temporary, REmove After Use
-Global AIFleetSpd#, AIFleetSpdRel#
-;End of Temp Part
-
-
 ;~IDEal Editor Parameters:
-;~F#B8#BD#C1#C7
+;~F#21#BB#C0#C4#CA
 ;~C#Blitz3D

@@ -21,7 +21,7 @@ BeltPosY=0
 BeltPosZ=0
 BeltResource=0
 BeltRange=200000
-BeltAmount=3000
+BeltAmount=2000
 StationSetup
 StationName=Serena Harvesting Point
 StationPosX=100000

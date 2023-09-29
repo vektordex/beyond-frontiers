@@ -105,8 +105,6 @@ CameraRange CameraScene, CAMERA_NEAR, CAMERA_FAR
 CameraZoom CameraScene, 1.0 / Tan(90 / 2.0)
 DrawInit3D(CameraScene)
 
-; Collisions
-
 ;----------------------------------------------------------------
 ;! Game - Loading Screen
 ;----------------------------------------------------------------
@@ -181,6 +179,13 @@ Select Loading_State
 			LoadTextureAsset("Assets\3D\Environment\Hangar_Glow.jpg",1+2)
 			LoadMeshAsset("Assets\3D\Environment\Flare.3DS")
 			LoadTextureAsset("Assets\3D\Environment\Flare.png",1+2)
+			LoadMeshAsset("Assets\3D\Decor\Capital_Ship.3DS")
+			LoadTextureAsset("Assets\3D\Decor\Capital_Ship_Glow.jpg",1+2)
+			LoadTextureAsset("Assets\3D\Decor\Capital_Ship_Color.jpg",1+2)
+			;[End Block]
+			
+			;[Block] Special Textures
+			LoadTextureAsset("Assets\3D\Ships\Rust_Surface.png",1+2)
 			;[End Block]
 			
 			;[Block] Planets
@@ -221,6 +226,10 @@ Select Loading_State
 			CloseFile LoadOrder
 			
 			LoadTextureAsset("Assets\3D\Environment\sun.png",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Smoke_01.png",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Smoke_02.png",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Smoke_03.png",1+2)
+			LoadTextureAsset("Assets\3D\Environment\Flash.png",1+2)
 			;[End Block]
 			
 			;[Block] Loot
@@ -718,6 +727,50 @@ Repeat
 ;					Text X -250, Y - 230
 					
 					Text3D(Text_Font[7],-210,210,"S e t   u p   g r a p h i c s   o p t i o n s   h e r e .")					
+					Text3D(Text_Font[7],-210,160,"A m b i e n t   L i g h t")
+					
+					DrawImage3D(GUI_Windows[22],+170,160,0,90,1.5)
+					DrawImage3D(GUI_Windows[22],+205,160,0,-90,1.5)
+					
+					DrawImage3D(GUI_Windows[23],+340,160,0,0,1.5)
+					
+					Local AmbientLevel = 10 + (11 - Settings_GFX_Ambience)*-1
+					Text3D(Text_Font[7],+380,160,AmbientLevel,1)
+					
+					If Settings_GFX_Ambience > 11 Then Settings_GFX_Ambience = 11
+					If Settings_GFX_Ambience < 1 Then Settings_GFX_Ambience = 1
+					
+					If MouseY()>GhBy2-170 And MouseY()<GhBy2-140
+						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+							If MouseHit(1) Then Settings_GFX_Ambience = Settings_GFX_Ambience - 1: PlaySound(Sound_ID[1])
+						EndIf
+						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+							If MouseHit(1) Then Settings_GFX_Ambience = Settings_GFX_Ambience + 1: PlaySound(Sound_ID[1])
+						EndIf
+					EndIf
+					
+					Text3D(Text_Font[7],-210,130,"O b j e c t   A m o u n t")
+					
+					DrawImage3D(GUI_Windows[22],+170,130,0,90,1.5)
+					DrawImage3D(GUI_Windows[22],+205,130,0,-90,1.5)
+					
+					DrawImage3D(GUI_Windows[23],+340,130,0,0,1.5)
+					
+					Local ObjectLevel = (Settings_GFX_Objects# * 100)
+					Text3D(Text_Font[7],+380,130,ObjectLevel+"%",1)
+					
+					If Settings_GFX_Objects# > 2 Then Settings_GFX_Objects# = 2
+					If Settings_GFX_Objects# < .2 Then Settings_GFX_Objects# = .2
+					
+					If MouseY()>GhBy2-140 And MouseY()<GhBy2-110
+						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+							If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# - .1: PlaySound(Sound_ID[1])
+						EndIf
+						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+							If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# + .1: PlaySound(Sound_ID[1])
+						EndIf
+					EndIf
+					
 				Case 2 ; >> Audio
 					
 					WipeKeyEx()
@@ -1069,9 +1122,6 @@ Repeat
 						If InputEx_KeyHit(KEY_DASH) Then Character_NewName$=Character_NewName$+"-": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_PERIOD) Then Character_NewName$=Character_NewName$+".": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_PLUS) Then Character_NewName$=Character_NewName$+"+": PlaySound(Sound_ID[1])
-						
-;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
-;						If InputEx_KeyHit(KEY_L) Then Character_NewName$=Character_NewName$+"L"
 					EndIf
 					
 					If InputEx_KeyDown(KEY_BACKSPACE) And Character_NewName$>"" Then 
@@ -1162,8 +1212,6 @@ Global nearestdist#,nearestscale#,nearestname%,nearestglowscale#
 PlayerSwitchShip(9)
 ;GetPlayerShipValues(1)
 
-;[Block]
-
 Yoffset=55
 Zoffset=110
 
@@ -1178,7 +1226,9 @@ Global PlayerChannel = EmitSound(Sound3D_ID[1],pvShip)
 Global OldMS, NewMS, TDFMS, MaxMS, MinMS=10000
 Global DebugInfo_Enabled
 
-;[End Block]
+Player_Weapon_Cube = CreateCube()
+EntityFX Player_Weapon_Cube,1
+ScaleEntity Player_Weapon_Cube,5,5,5
 
 World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
 
@@ -1191,6 +1241,7 @@ HidePointer
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
 
 UpdateMapScale(4)
+
 
 HUD = 1
 
@@ -1217,7 +1268,7 @@ Repeat
 	; Measure Time
 	Performance_Update_Network = MilliSecs() - ms_Performance_Update_Network
 	;[End Block]
-	
+	WBuffer True
 	;[Block] Players
 	Local ms_Performance_Update_Players = MilliSecs()
 	
@@ -1548,11 +1599,19 @@ Repeat
 	Asset_DockCube_Update()
 	Asset_Planet_Update()
 	Asset_Gate_Update()
+	Asset_Special_Update()
+	Asset_Emitter_Update()
+	
+	Emitter_Particle_Update()
+	
+	Mechanic_Weapon_Update()
 	
 	Container_Update()
 	
 	Environment_FastTravel_Update()
 	Environment_NavMesh_Update()
+	
+	Chat_Output()
 	
 	If Force_UI_Mode = 0
 		Inventory_Show(1)
@@ -1621,5 +1680,5 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#172#17F#182#190#1C4#280#289#292#29B#2A3#2AC#2B9#3DE#4ED#523#5EE#5F3
+;~F#17B#188#18B#199#1CD#289#292#29B#2A4#2AC#2B5#413#47B#520#621#626
 ;~C#Blitz3D

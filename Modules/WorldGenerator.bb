@@ -26,10 +26,10 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
 		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$, StationOwner
 		Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
+		Local Specialtype, RotX, RotY, RotZ
 		Asset_Clear_All()
 	
 		Modify_Fog(0,0,0,0,0,0)
-		AmbientLight 30,30,30
 		
 		Repeat
 			Local SystemRead$ = ReadLine(SystemFile)
@@ -50,6 +50,9 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorG=",""): ColorG = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SunColorB=",""): ColorB = Int(SystemReadSub$)
 				Lighting_Initialize(TiltX,TiltY,Scale,ColorR,ColorG,ColorB)
+				System_SunR = ColorR 
+				System_SunG = ColorG
+				System_SunB = ColorB
 			EndIf
 		;-> System Foggyness
 			If Instr(SystemRead$,"FogSector") Then 
@@ -76,6 +79,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltRange=",""): Scale = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltAmount=",""): Amount = Int(SystemReadSub$)
+				Amount = Amount * Settings_GFX_Objects#
 				Asset_Belt_Create(Amount,Resource,PosX,PosY,PosZ,Scale)
 			EndIf
 		;-> Gates
@@ -105,11 +109,25 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationOwner=",""): StationOwner = Int(SystemReadSub$)
 				Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService, StationOwner)
 			EndIf
+			If Instr(SystemRead$,"SpecialSetup") Then 
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialType=",""): Specialtype = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialName=",""): SName$ = SystemReadSub$
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialPosX=",""): PosX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialPosY=",""): PosY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialPosZ=",""): PosZ = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialRotX=",""): RotX = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialRotY=",""): RotY = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialRotZ=",""): RotZ = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialScale=",""): Scale = Int(SystemReadSub$)
+				Asset_Special_Create(PosX, PosY, PosZ, RotX, RotY, RotZ, Specialtype, SName$, Scale)
+			EndIf
 		;-> RandomBelt
 			If Instr(SystemRead$,"RandomBelt") Then
 				SeedRnd MilliSecs()
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"BeltResource=",""): Resource = Int(SystemReadSub$)
-				Asset_Belt_Create(Rand(1000,15000),Resource,Rand(-500000,500000),Rand(-1000,1000),Rand(-500000,500000),Rand(15000,500000))
+				Local MinRoid# = 1000*Settings_GFX_Objects#
+				Local MaxRoid# = 2500*Settings_GFX_Objects#
+				Asset_Belt_Create(Rand(1000,2500),Resource,Rand(-500000,500000),Rand(-1000,1000),Rand(-500000,500000),Rand(15000,500000))
 				SeedRnd SystemSeed
 			EndIf
 			
@@ -131,6 +149,7 @@ Function Asset_Clear_All()
 ;	FreeEntity Object_Zero
 	
 	For Cube.DockPort = Each DockPort
+		FreeEntity Cube\OBB
 		FreeEntity Cube\mesh
 		Delete Cube
 	Next
@@ -170,6 +189,22 @@ Function Asset_Clear_All()
 		FreeEntity Item\Mesh
 		FreeEntity Item\Pivot
 		Delete Item
+	Next
+	
+	For Part.Emitter = Each Emitter
+		FreeEntity Part\Mesh
+		Delete Part
+	Next
+	
+	For Emit.Particle = Each Particle
+		FreeEntity Emit\Pivot
+		FreeEntity Emit\Mesh
+		Delete Emit
+	Next
+	
+	For Special.Obj = Each Obj
+		FreeEntity Special\Mesh
+		Delete Special
 	Next
 	
 	; Skybox
@@ -213,6 +248,7 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	Local ConnectedSystem$=ReadLine(TSystemName):ConnectedSystem$ = Replace$(ConnectedSystem$,"SystemName=","")
 	NameEntity Portal\Mesh,ConnectedSystem$
 	CloseFile TSystemName
+	EntityAlpha Portal\Mesh_Effect,0.5
 	
 	Portal\Target_SystemX = Target_SystemX
 	Portal\Target_SystemY = Target_SystemY
@@ -319,6 +355,11 @@ Function Asset_Belt_Update()
 		EndIf
 		
 		MoveEntity Roid\mesh,0,Sin((MilliSecs()/50)),0
+		If EntityInView(Roid\Mesh,WorldCamera) = True Then
+			ShowEntity Roid\Mesh
+		Else
+			HideEntity Roid\Mesh
+		EndIf
 	Next
 End Function
 
@@ -418,17 +459,22 @@ Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
 	MoveEntity Object_Environment[1],0,0,-600000
 	
 	RotateEntity Object_Environment[0], RotX, RotY, 0, True
-	ScaleSprite Object_Environment[1], Scale, Scale
+	ScaleSprite Object_Environment[1], Scale*4, Scale*4
 	
 	PointEntity Object_Environment[1], WorldCamera
 	
 	LightColor Object_Light[0], SunR, SunG, SunB
-	AmbientLight SunR/7, SunG/7, SunB/7
+;	AddChat("Sun Red: "+SunR+" | SunG: "+SunG+" | SunB: "+SunB, "[System]")
+;	AddChat("Sun Red Ambient: "+SunR/pusher+" | SunG Ambient: "+SunG/pusher+" | SunB Ambient: "+SunB/pusher, "[System]")
+	AmbientLight SunR/Settings_GFX_Ambience, SunG/Settings_GFX_Ambience, SunB/Settings_GFX_Ambience
+	
 	
 	EntityColor Object_Environment[1],SunR, SunG, SunB
 	
-	
-	AmbientLight 10,10,10
+End Function
+
+Function Ambient_Update(SunR, SunG, SunB)
+	AmbientLight SunR/Settings_GFX_Ambience, SunG/Settings_GFX_Ambience, SunB/Settings_GFX_Ambience
 End Function
 
 Function Modify_Fog(Enable, RangeNear, RangeFar, R, G, B)
@@ -532,6 +578,12 @@ Function Asset_Station_Update()
 			Case 2
 				TurnEntity da\utility,0,0,0.15
 		End Select
+		
+		If EntityInView(da\Mesh,WorldCamera) = True Then
+			ShowEntity da\Mesh
+		Else
+			HideEntity da\Mesh
+		EndIf
 	Next
 End Function
 
@@ -763,6 +815,333 @@ Function Asset_DockCube_Update()
 		EndIf
 	Next
 End Function
+
+Function Asset_Special_Create(x,y,z,rotx,roty,rotz,id,name$="", scale=1)
+	Special.Obj = New Obj
+	Select id
+		Case 0
+			Special\Mesh = CopyEntity(Mesh_Asteroid[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			ScaleEntity special\Mesh,scale, scale, scale
+		Case 1
+			Special\Mesh = CopyEntity(Mesh_Ship[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 2
+			Special\Mesh = CopyEntity(Mesh_Ship[2])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 3
+			Special\Mesh = CopyEntity(Mesh_Ship[3])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 4
+			Special\Mesh = CopyEntity(Mesh_Ship[4])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 5
+			Special\Mesh = CopyEntity(Mesh_Ship[5])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 6
+			Special\Mesh = CopyEntity(Mesh_Ship[6])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 7
+			Special\Mesh = CopyEntity(Mesh_Ship[7])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 8
+			Special\Mesh = CopyEntity(Mesh_Ship[8])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 9
+			Special\Mesh = CopyEntity(Mesh_Ship[9])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 10
+			Special\Mesh = CopyEntity(Mesh_Ship[10])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 11
+			Special\Mesh = CopyEntity(Mesh_Ship[11])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+		Case 12
+			Special\Mesh = CopyEntity(Mesh_Ship[12])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			
+		Case 13
+			Special\Mesh = CopyEntity(Mesh_Station[3])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+			ScaleEntity Special\Mesh, 35,35,35
+		Case 14
+			Special\Mesh = CopyEntity(Mesh_Decor[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			ScaleEntity Special\Mesh, 45,45,55
+			
+		Case 16
+			Special\Mesh = CopyEntity(Mesh_Gate[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			ScaleEntity Special\Mesh, 40,40,40
+		Case 17
+			Special\Mesh = CopyEntity(Mesh_Gate[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+			ScaleEntity Special\Mesh, 40,40,40
+			
+		Case 21
+			Special\Mesh = CopyEntity(Mesh_Ship[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 22
+			Special\Mesh = CopyEntity(Mesh_Ship[2])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 23
+			Special\Mesh = CopyEntity(Mesh_Ship[3])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 24
+			Special\Mesh = CopyEntity(Mesh_Ship[4])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 25
+			Special\Mesh = CopyEntity(Mesh_Ship[5])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 26
+			Special\Mesh = CopyEntity(Mesh_Ship[6])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 27
+			Special\Mesh = CopyEntity(Mesh_Ship[7])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 28
+			Special\Mesh = CopyEntity(Mesh_Ship[8])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 29
+			Special\Mesh = CopyEntity(Mesh_Ship[9])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 30
+			Special\Mesh = CopyEntity(Mesh_Ship[10])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 31
+			Special\Mesh = CopyEntity(Mesh_Ship[11])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case 32
+			Special\Mesh = CopyEntity(Mesh_Ship[12])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+	End Select
+	EntityType Special\Mesh,Collision_Object
+End Function
+
+Function Asset_Special_Update()
+	For Special.Obj = Each Obj
+		If Special\ID > 20 And Special\ID < 31 Then
+			TurnEntity Special\mesh, 0.02,0,0.1
+		EndIf
+		If EntityDistance(WorldCamera,Special\Mesh)< 2500 And EntityInView(Special\Mesh,WorldCamera)=True And HUD = 1 And Force_UI_Mode = 0 Then
+;			Text3D(Text_Font[6],0,275,"- Location entered -",1)
+			Text3D(Text_Font[9],0,256,EntityName(Special\Mesh),1)
+		EndIf
+		If EntityInView(Special\Mesh,WorldCamera) = True Then
+			ShowEntity special\Mesh
+		Else
+			HideEntity Special\Mesh
+		EndIf
+	Next
+End Function
+
+Type Emitter
+	Field Mesh, Subtype, Lifetime, Counter, MaxCounter
+End Type
+
+Function Asset_Emitter_Create(PosX, PosY, PosZ, RotX, RotY, RotZ, SubType, Lifetime)
+	Part.Emitter = New Emitter
+	Part\Mesh = CreateCone(12,False)
+	PositionEntity Part\mesh,PosX,PosY,PosZ
+	RotateEntity Part\Mesh,RotX,RotY,RotZ
+	Part\Subtype = SubType
+	Part\Lifetime = Lifetime
+	Select SubType
+		Case 0
+			Part\Counter = 0
+			Part\maxCounter = 1
+		Case 1
+			Part\Counter = 0
+			Part\maxCounter = 240
+	End Select
+	ScaleEntity Part\Mesh,3,3,5
+End Function
+
+Function Asset_Emitter_Update()
+	For Part.Emitter = Each Emitter
+		Part\Counter = Part\Counter - 1
+		If Part\Counter < 1 Then
+			Part\Counter = Part\MaxCounter
+			Emitter_Particle_Create(EntityX(Part\mesh),EntityY(Part\mesh),EntityZ(Part\mesh),EntityPitch(Part\mesh),EntityYaw(Part\mesh),EntityRoll(Part\mesh),Part\SubType)
+			
+		EndIf
+		If Part\Lifetime < -100 Then
+			Part\Lifetime = -101
+		Else If Part\LifeTime > 0 Then
+			Part\LifeTime = Part\Lifetime - 1
+		Else If Part\LifeTime < 1 And Part\LifeTime > -50 Then
+			FreeEntity Part\Mesh
+			Delete Part
+		EndIf
+	Next
+End Function
+
+Type Particle
+	Field SpeedX#, SpeedY#, SpeedZ#, ColorR#, ColorG#, ColorB#
+	Field Mesh, Pivot, SubType, Lifetime
+End Type
+
+Function Emitter_Particle_Create(PosX, PosY, PosZ, RotX, RotY, RotZ, SubType)
+	Emit.Particle = New Particle
+	Emit\Pivot = CreatePivot()
+	Emit\Mesh = CreateSprite(Emit\Pivot)
+	SpriteViewMode Emit\Mesh, 3
+	PositionEntity Emit\Pivot,PosX,PosY,PosZ
+	RotateEntity Emit\Pivot,RotX,RotY,RotZ
+	Local RandomTex = Rand(5,7)
+	
+	Emit\Subtype = SubType
+	Select SubType
+		Case 0
+			EntityTexture Emit\mesh,Text_Environment[RandomTex]
+			Emit\SpeedX#=Rnd(-.1,.1)
+			Emit\SpeedY#=1
+			Emit\SpeedZ#=Rnd(-.1,.1)
+			Emit\ColorR#=255
+			Emit\ColorG#=255
+			Emit\ColorB#=255
+			Emit\Lifetime = 510
+			ScaleSprite Emit\Mesh,25,25
+		Case 1
+			EntityTexture Emit\mesh,Text_Environment[8]
+			Emit\SpeedX#=0
+			Emit\SpeedY#=0
+			Emit\SpeedZ#=0
+			RotateEntity Emit\Pivot,Rand(180,-180),Rand(180,-180),Rand(180,-180)
+			Emit\ColorR#=255
+			Emit\ColorG#=255
+			Emit\ColorB#=255
+			Emit\Lifetime = 10
+			Local Fullscale = Rand(250,4500)
+			ScaleSprite Emit\Mesh, Fullscale, Fullscale
+	End Select
+;	PointEntity Emit\Mesh,WorldCamera
+End Function
+
+Function Emitter_Particle_Update()
+	For Emit.Particle = Each Particle
+		Emit\Lifetime = Emit\Lifetime - 1
+		MoveEntity Emit\Pivot, Emit\SpeedX#, Emit\SpeedY#, Emit\SpeedZ#
+		EntityColor Emit\Mesh, Emit\ColorR#, Emit\ColorG#, Emit\ColorB#
+		Select Emit\SubType
+			Case 0
+				Emit\ColorR# = Emit\ColorR# - .5
+				Emit\ColorG# = Emit\ColorG# - .5
+				Emit\ColorB# = Emit\ColorB# - .5
+			Case 1
+				Emit\ColorR# = Emit\ColorR# - 5
+				Emit\ColorG# = Emit\ColorG# - 5
+				Emit\ColorB# = Emit\ColorB# - 5
+		End Select
+		If Emit\Lifetime < 1 Then
+			FreeEntity Emit\Mesh
+;			FreeEntity Emit\Pivot
+			Delete Emit
+		EndIf
+	Next
+End Function
 ;~IDEal Editor Parameters:
-;~F#133#144#158#1B1#1BB#219#226#22D#242#255#268#2AE
+;~F#92#106#122#157#16D#176#181#1BD#1DF#1E9#1F8#235#24D#25A#261#276#289#29C#2E2#2FE
+;~F#324#333#3FE#413#425#43D#462
 ;~C#Blitz3D
