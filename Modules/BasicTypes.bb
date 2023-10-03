@@ -8,7 +8,7 @@ End Type
 ;----------------------------------------------------------------
 
 Const CAMERA_NEAR#	= 1.0
-Const CAMERA_FAR#	= Float(2 Shl 21) ; 23 bits is maximum representable depth value.
+Const CAMERA_FAR#	= Float(2 Shl 24) ; 23 bits is maximum representable depth value.
 
 ;----------------------------------------------------------------
 ;! Types
@@ -30,24 +30,8 @@ Type Belt
 	Field yamount, homepiv, momentum#, spin#, touchedtrg, touchedcnt, retrievecnt, retrievetrg
 End Type
 
-Type SpcObj
-	Field mesh
-	Field fxmesh
-	Field x,y,z
-End Type
-
-Type Spotmark
-	Field X#,y#,z#, tpar, showdist
-	Field mesh, TOfSpot, ruby
-End Type
-
 Type Planet
 	Field Pivot, SubType, Sprite, Distance, Scale, RotX, RotY, RotZ
-End Type
-
-Type MainZone
-	Field x,y,z
-	Field range,name$,pha
 End Type
 
 Type Info
@@ -113,6 +97,7 @@ Type DST_Dustobject
 	Field dist_akt#  ; positionsdifferenz zw. camera und campivot seit letztem durchlauf
 	Field part_count ; zahl der momentan aktiven partikel
 End Type
+
 .dustzone
 Type DST_Dustzone
 	Field pivot  ; Referenzobjekt für Entfernungsmessung

@@ -26,7 +26,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 		Local SystemFile = OpenFile("Assets/Universe\x"+SystemPosX+"y"+SystemPosY+".bfs")
 		Local TiltX, TiltY, Scale, ColorR, ColorG, ColorB, SystemReadSub$, SName$, StationOwner
 		Local PlanetType, Resource, Amount, PosX, PosY, PosZ, TargetX, TargetY, Rotation, AimX, AimY, AimZ, StationType, InventoryOut, InventoryIn, InventoryService
-		Local Specialtype, RotX, RotY, RotZ
+		Local Specialtype$, RotX, RotY, RotZ
 		Asset_Clear_All()
 	
 		Modify_Fog(0,0,0,0,0,0)
@@ -109,8 +109,9 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"StationOwner=",""): StationOwner = Int(SystemReadSub$)
 				Asset_Station_Create(SName$, PosX, PosY, PosZ, StationType, Rotation, InventoryIn, InventoryOut, InventoryService, StationOwner)
 			EndIf
+		;-> Special Objects
 			If Instr(SystemRead$,"SpecialSetup") Then 
-				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialType=",""): Specialtype = Int(SystemReadSub$)
+				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialType=",""): Specialtype$ = SystemReadSub$
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialName=",""): SName$ = SystemReadSub$
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialPosX=",""): PosX = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialPosY=",""): PosY = Int(SystemReadSub$)
@@ -119,7 +120,7 @@ Function World_Generate(SystemPosX, SystemPosY, TravelPosX, TravelPosY, TravelPo
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialRotY=",""): RotY = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialRotZ=",""): RotZ = Int(SystemReadSub$)
 				SystemReadSub$ = ReadLine(SystemFile): SystemReadSub$ = Replace$(SystemReadSub$,"SpecialScale=",""): Scale = Int(SystemReadSub$)
-				Asset_Special_Create(PosX, PosY, PosZ, RotX, RotY, RotZ, Specialtype, SName$, Scale)
+				Asset_Special_Create(PosX, PosY, PosZ, RotX, RotY, RotZ, Specialtype$, SName$, Scale)
 			EndIf
 		;-> RandomBelt
 			If Instr(SystemRead$,"RandomBelt") Then
@@ -269,7 +270,7 @@ Function Asset_Gate_Update()
 			Text3D(Text_Font[9],0,256,"Gate: "+EntityName(Portal\mesh),1)
 		EndIf
 		
-		If EntityInOBB(Portal\JumpOBB, eShip) Then
+		If EntityInOBB(Portal\JumpOBB, eShipBody) Then
 ;			RuntimeError "Jumped"
 			Local Future_SystemX = Portal\Target_SystemX
 			Local Future_SystemY = Portal\Target_SystemY
@@ -464,8 +465,6 @@ Function Lighting_Initialize(RotX,RotY,Scale, SunR, SunG, SunB)
 	PointEntity Object_Environment[1], WorldCamera
 	
 	LightColor Object_Light[0], SunR, SunG, SunB
-;	AddChat("Sun Red: "+SunR+" | SunG: "+SunG+" | SunB: "+SunB, "[System]")
-;	AddChat("Sun Red Ambient: "+SunR/pusher+" | SunG Ambient: "+SunG/pusher+" | SunB Ambient: "+SunB/pusher, "[System]")
 	AmbientLight SunR/Settings_GFX_Ambience, SunG/Settings_GFX_Ambience, SunB/Settings_GFX_Ambience
 	
 	
@@ -816,90 +815,96 @@ Function Asset_DockCube_Update()
 	Next
 End Function
 
-Function Asset_Special_Create(x,y,z,rotx,roty,rotz,id,name$="", scale=1)
+Function Asset_Special_Create(x,y,z,rotx,roty,rotz,id$,name$="", scale=1)
 	Special.Obj = New Obj
 	Select id
-		Case 0
+		Case "0", "AsteroidLarge"
 			Special\Mesh = CopyEntity(Mesh_Asteroid[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			ScaleEntity special\Mesh,scale, scale, scale
-		Case 1
+		Case "1", "HerculesIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 2
+		Case "2", "DemeterIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[2])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 3
+		Case "3", "CrusaderIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[3])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 4
+		Case "4", "EclipseIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[4])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 5
+		Case "5", "FuryIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[5])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 6
+		Case "6", "HammerheadIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[6])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 7
+		Case "7", "HorizonIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[7])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 8
+		Case "8", "KeonIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[8])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 9
+		Case "9", "StarlightIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[9])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 10
+		Case "10", "MatsuhimaIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[10])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 11
+		Case "11", "GaiusIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[11])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
-		Case 12
+		Case "12", "YthirIntact"
 			Special\Mesh = CopyEntity(Mesh_Ship[12])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
+		Case "13", "CobaltIntact"
+			Special\Mesh = CopyEntity(Mesh_Ship[13])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
 			
-		Case 13
+		Case "14", "MiningStationBroken"
 			Special\Mesh = CopyEntity(Mesh_Station[3])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
@@ -907,22 +912,30 @@ Function Asset_Special_Create(x,y,z,rotx,roty,rotz,id,name$="", scale=1)
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
 			ScaleEntity Special\Mesh, 35,35,35
-		Case 14
+		Case "15", "CapitalIntact"
 			Special\Mesh = CopyEntity(Mesh_Decor[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			ScaleEntity Special\Mesh, 45,45,55
+		Case "16", "CapitalDestroyed"
+			Special\Mesh = CopyEntity(Mesh_Decor[1])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			ScaleEntity Special\Mesh, 45,45,55
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
 			
-		Case 16
+		Case "17", "GateDisabled"
 			Special\Mesh = CopyEntity(Mesh_Gate[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			ScaleEntity Special\Mesh, 40,40,40
-		Case 17
+		Case "18", "GateDestroyed"
 			Special\Mesh = CopyEntity(Mesh_Gate[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
@@ -931,85 +944,107 @@ Function Asset_Special_Create(x,y,z,rotx,roty,rotz,id,name$="", scale=1)
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
 			ScaleEntity Special\Mesh, 40,40,40
 			
-		Case 21
+		Case "19", "Maxwell"
+			Special\Mesh = CopyEntity(Mesh_Decor[2])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			
+		Case "20", "AsteroidHollow"
+			Special\Mesh = CopyEntity(Mesh_Asteroid[5])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			ScaleEntity special\Mesh,scale, scale, scale
+			
+		Case "21", "HerculesWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[1])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 22
+		Case "22", "DemeterWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[2])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 23
+		Case "23", "CrusaderWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[3])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 24
+		Case "24", "EclipseWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[4])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 25
+		Case "25", "FuryWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[5])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 26
+		Case "26", "HammerheadWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[6])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 27
+		Case "27", "HorizonWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[7])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 28
+		Case "28", "KeonWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[8])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 29
+		Case "29", "StarlightWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[9])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 30
+		Case "30", "MatsuhimaWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[10])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 31
+		Case "31", "GaiusWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[11])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
 			NameEntity Special\Mesh, name$
 			EntityTexture Special\Mesh, Text_Ship[0],0,2
-		Case 32
+		Case "32", "YthirWreck"
 			Special\Mesh = CopyEntity(Mesh_Ship[12])
+			Special\ID = id
+			PositionEntity Special\Mesh, x,y,z
+			TurnEntity Special\Mesh, rotx, roty, rotz
+			NameEntity Special\Mesh, name$
+			EntityTexture Special\Mesh, Text_Ship[0],0,2
+		Case "33", "CobaltWreck"
+			Special\Mesh = CopyEntity(Mesh_Ship[13])
 			Special\ID = id
 			PositionEntity Special\Mesh, x,y,z
 			TurnEntity Special\Mesh, rotx, roty, rotz
@@ -1023,6 +1058,8 @@ Function Asset_Special_Update()
 	For Special.Obj = Each Obj
 		If Special\ID > 20 And Special\ID < 31 Then
 			TurnEntity Special\mesh, 0.02,0,0.1
+		ElseIf special\ID = 19 Then
+			TurnEntity Special\Mesh,0,2,0
 		EndIf
 		If EntityDistance(WorldCamera,Special\Mesh)< 2500 And EntityInView(Special\Mesh,WorldCamera)=True And HUD = 1 And Force_UI_Mode = 0 Then
 ;			Text3D(Text_Font[6],0,275,"- Location entered -",1)
@@ -1142,6 +1179,6 @@ Function Emitter_Particle_Update()
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#92#106#122#157#16D#176#181#1BD#1DF#1E9#1F8#235#24D#25A#261#276#289#29C#2E2#2FE
-;~F#324#333#3FE#413#425#43D#462
+;~F#0#93#E2#158#16E#182#1DE#1E8#1F7#234#24C#259#260#275#288#29B#2E1#2FD#323#438
+;~F#44A#45D#462#487
 ;~C#Blitz3D

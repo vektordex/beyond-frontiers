@@ -103,6 +103,7 @@ Function ThreadPool_Create(ThreadCount%, bIsSuspended%=True)
 	
 	Return Handle(TP)
 End Function
+
 Function ThreadPool_Destroy(hTP%)
 	Local Thread
 	
@@ -374,5 +375,5 @@ Function z_Internal_ThreadPoolLoop(TM.ThreadMemory)
 	Return 0
 End Function:z_Internal_ThreadPoolLoop(Null)
 ;~IDEal Editor Parameters:
-;~F#C0#D1#E3#F1#105#119#12E#13B#14C
+;~F#C1#D2#E4#F2#106#11A#12F#13C#14D
 ;~C#Blitz3D

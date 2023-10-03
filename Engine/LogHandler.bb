@@ -33,15 +33,12 @@ Function LogHandler_Initialize(Path$)
 	If LogHandler_Stream = 0 Then
 		RuntimeError "Failed to create log file '" + Path + "\" + tNowS + "'."
 	EndIf
-	
-	LogHandler_Mutex = Mutex_Create()
 End Function
 
 Function LogMessage(Level%, Message$)
 	If LogHandler_Stream = 0 Then
 		;RuntimeError "LogHandler: Message logged before initialization!"
 	Else
-		Mutex_Wait(LogHandler_Mutex)
 		
 		Local LevelStr$ = ""
 		If Level >= LOG_DEBUG Then
@@ -71,9 +68,7 @@ Function LogMessage(Level%, Message$)
 ;		BU_FileSystem_FlushFile LogHandler_Stream
 		
 		BU_Kernel32_FlushFileBuffers(LogHandler_Stream)
-		Mutex_Release(LogHandler_Mutex)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#15#27
 ;~C#Blitz3D

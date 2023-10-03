@@ -552,7 +552,7 @@ Function Chat_Connect()
 	WriteLine ChatStream, "PONG "
 	WriteLine ChatStream, "JOIN #beyondfrontiers"
 	
-;	AddChat ("Successfully Connected","[Libera.Chat API] ")
+	AddChat ("Joined the Chat. Say Hi!","["+Character_NewName+"]")
 	WriteLine ChatStream, "PRIVMSG #beyondfrontiers :"+Character_NewName$+" has joined the game. Say hi!" 
 End Function
 
@@ -594,15 +594,13 @@ Function Chat_GetData()
 					
 			Else
 					
-	;			AddChat("Instr Found","Debug: ")
-				; Message Handling and Filtering
 				Local FindUserName = Instr(ChatData$,"!~")
 				IRCChatName$=Mid$(ChatData$,2,FindUserName-2)
 				IRCChatName$=Replace(IRCChatName$,"bfgame_","")
 				Local ChatDatenPos = Instr(ChatData$, " :")
 				IRCChatData$ = Right(ChatData$,(Len(ChatData$)-ChatDatenPos-1))
 				
-				AddChat(IRCChatData$,"["+IRCChatName$+"]: ")
+				AddChat(IRCChatData$,"["+IRCChatName$+"]: "):PlaySound(Sound_ID[1])
 			EndIf
 ;		Else
 			
@@ -810,8 +808,7 @@ End Function
 
 Function PlayerSwitchShip(sid)
 	FreeEntity eShipBody
-	
-	eShipBody = CopyEntity (Mesh_Ship[sid],eShip)
+	eShipBody = CopyEntity (Mesh_Ship[sid],pvShip)
 	GetPlayerShipValues(sid)
 	
 	EntityType pvShip,Collision_Player
@@ -1052,7 +1049,7 @@ Function Asset_Flare_Create(x,y,z,scalex#,scaley#,rotation,weight=33,r=255,b=255
 	Engine\ScaleY# = scaley#
 	Engine\Rotation = rotation
 	Engine\Weight = weight
-	PositionEntity Engine\Mesh,EntityX(ShipPosXYZ)+engine\x, EntityY(ShipPosXYZ)+engine\y, EntityZ(ShipPosXYZ)+Engine\z
+	PositionEntity Engine\Mesh,EntityX(eShipBody)+engine\x, EntityY(eShipBody)+engine\y, EntityZ(eShipBody)+Engine\z
 	EntityColor Engine\Mesh,r,g,b
 End Function
 
@@ -1160,11 +1157,6 @@ Function Container_Update()
 	For Loot.Container = Each Container
 		PositionEntity Loot\Mesh, EntityX(Loot\Pivot), EntityY(loot\pivot), EntityZ(loot\pivot)
 		
-		If EntityDistance(Loot\Mesh, pvShip) < 1500 And EntityInView(Loot\Mesh,WorldCamera)
-			CameraProject WorldCamera, EntityX(loot\mesh), EntityY(Loot\Mesh), EntityZ(loot\Mesh)
-			If HUD = 1 Then Text3D(Text_Font[6],D3DOL+ProjectedX(),D3DOU-ProjectedY(),EntityName$(Loot\Mesh),1)
-		EndIf
-			
 		If EntityDistance(Loot\pivot, pvShip) < 700 And EntityDistance(Loot\pivot, pvShip) > 49 Then
 			If Player_Environment_FullCargo + 1 > Player_Environment_CurrentCargo + Loot\Amount Then
 				PointEntity(loot\pivot, pvShip)
@@ -1184,14 +1176,37 @@ Function Container_Update()
 	Next
 End Function
 
-Function Mechanic_Weapon_Update()
-	PositionEntity Player_Weapon_Cube, EntityX(pvShip), EntityY(pvShip), EntityZ(pvShip)
-	RotateEntity Player_Weapon_Cube  , EntityPitch(pvShip), EntityYaw(pvShip), EntityRoll(pvShip)
-	TurnEntity Player_Weapon_Cube  , EntityPitch(eShipBody), EntityYaw(eShipBody), EntityRoll(eShipBody)
-	MoveEntity Player_Weapon_Cube, 0,0,1000
+Function Interface_Container_Display()
+	For Loot.Container = Each Container
+		If EntityDistance(Loot\Mesh, pvShip) < 1500 And EntityInView(Loot\Mesh,WorldCamera)
+			CameraProject WorldCamera, EntityX(loot\mesh), EntityY(Loot\Mesh), EntityZ(loot\Mesh)
+			If HUD = 1 Then Text3D(Text_Font[6],D3DOL+ProjectedX(),D3DOU-ProjectedY(),EntityName$(Loot\Mesh),1)
+		EndIf
+	Next
 End Function
 
+Function Mechanic_Weapon_Update()
+;	PositionEntity Player_Weapon_Cube, EntityX(pvShip), EntityY(pvShip), EntityZ(pvShip)
+;	RotateEntity Player_Weapon_Cube  , EntityPitch(pvShip), EntityYaw(pvShip), EntityRoll(pvShip)
+;	TurnEntity Player_Weapon_Cube  , EntityPitch(eShipBody), EntityYaw(eShipBody), EntityRoll(eShipBody)
+;	MoveEntity Player_Weapon_Cube, 0,0,1000
+End Function
+
+Function WordWrap3D(LongString$, XStart, YStart, MaxLength, Spacing, Text_Align, Font_ID)
+	Local CutString$ = LongString$
+	Local LenString  = Len(LongString$)
+	Local AmoString  = LenString Mod MaxLength
+	Local NewString$, SetLen
+	SetLen = MaxLength
+	For A = 0 To AmoString+1
+;		Local SpacePos = Instr(CutString$," ",MaxLength-5)
+		NewString$ = Left(CutString$,SetLen)		SetLen = MaxLength
+		Text3D(Text_Font[Font_ID],XStart,YStart,NewString$,Text_Align)
+		CutString$ = Replace(CutString$, NewString$,"")
+		YStart = YStart - Spacing		
+	Next
+End Function
 ;~IDEal Editor Parameters:
-;~F#5#46#86#94#9C#AC#C6#F7#107#11A#1D0#1F6#232#268#26C#273#326#32A#334#370
-;~F#378#37F#38A#39B#3CC#3E1#3E6#414#422#431#442#44E#477#486#4A3
+;~F#5#46#86#94#9C#AC#C6#F7#107#11A#1D0#1F6#220#232#241#266#26A#271#324#328
+;~F#331#36D#375#37C#387#398#3C9#3DE#3E3#411#41F#42E#43F#44B#474#483#49B
 ;~C#Blitz3D

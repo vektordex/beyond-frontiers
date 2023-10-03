@@ -30,7 +30,6 @@ Type Asset
 	Field z_Internal_Counter%
 	Field z_Internal_Lock%, z_Internal_GlobalLock%
 End Type
-Global z_Asset_Mutex = Mutex_Create()
 
 ;----------------------------------------------------------------
 ;! Globals
@@ -46,82 +45,82 @@ Global z_AssetManager_IsSuspended
 ;! Functions
 ;----------------------------------------------------------------
 Function AssetManager_Initialize()
-	If (AssetManager_ThreadPool = 0) Then
-		AssetManager_ThreadPool = ThreadPool_Create(3, True)
-		AssetManager_Mutex_Texture = Mutex_Create(True)
-		AssetManager_Mutex_Model = Mutex_Create(True)
-		AssetManager_Mutex_Sound = Mutex_Create(True)
+;	If (AssetManager_ThreadPool = 0) Then
+;		AssetManager_ThreadPool = ThreadPool_Create(3, True)
+;		AssetManager_Mutex_Texture = Mutex_Create(True)
+;		AssetManager_Mutex_Model = Mutex_Create(True)
+;		AssetManager_Mutex_Sound = Mutex_Create(True)
 		z_AssetManager_IsSuspended = True
-		
+;		
 		LogMessage(LOG_DEBUG, "AssetManager: Initialized.")
-	EndIf
+;	EndIf
 End Function
 
 Function AssetManager_Shutdown()
-	If (AssetManager_ThreadPool <> 0) Then
-		ThreadPool_Destroy(AssetManager_ThreadPool)
-		AssetManager_ThreadPool = 0
-		
-		Mutex_Destroy(AssetManager_Mutex_Texture)
-		Mutex_Destroy(AssetManager_Mutex_Model)
-		Mutex_Destroy(AssetManager_Mutex_Sound)
-		
+;	If (AssetManager_ThreadPool <> 0) Then
+;		ThreadPool_Destroy(AssetManager_ThreadPool)
+;		AssetManager_ThreadPool = 0
+;		
+;		Mutex_Destroy(AssetManager_Mutex_Texture)
+;		Mutex_Destroy(AssetManager_Mutex_Model)
+;		Mutex_Destroy(AssetManager_Mutex_Sound)
+;		
 		LogMessage(LOG_DEBUG, "AssetManager: Deinitialized.")
-	EndIf
+;	EndIf
 End Function
 
 Function AssetManager_Suspend(bForce%=True)
-	If AssetManager_ThreadPool = 0 Then
+;	If AssetManager_ThreadPool = 0 Then
+;		Return True
+;	EndIf
+;	If z_AssetManager_IsSuspended = True Then
 		Return True
-	EndIf
-	If z_AssetManager_IsSuspended = True Then
-		Return True
-	EndIf
-	
-	If bForce Then
-		Mutex_Lock(AssetManager_Mutex_Texture)
-		Mutex_Lock(AssetManager_Mutex_Model)
-		Mutex_Lock(AssetManager_Mutex_Sound)
-		ThreadPool_Suspend(AssetManager_ThreadPool)
-		z_AssetManager_IsSuspended = True
-		Return True
-	Else	
-		If Mutex_Lock(AssetManager_Mutex_Texture) = MUTEX_WAIT_OK Then
-			If Mutex_Lock(AssetManager_Mutex_Model) = MUTEX_WAIT_OK Then
-				If Mutex_Lock(AssetManager_Mutex_Sound) = MUTEX_WAIT_OK Then
-					ThreadPool_Suspend(AssetManager_ThreadPool)
-					z_AssetManager_IsSuspended = True
-					Return True
-				EndIf
-				Mutex_Release(AssetManager_Mutex_Model)
-			EndIf
-			Mutex_Release(AssetManager_Mutex_Texture)
-		EndIf
-	EndIf
+;	EndIf
+;	
+;	If bForce Then
+;		Mutex_Lock(AssetManager_Mutex_Texture)
+;		Mutex_Lock(AssetManager_Mutex_Model)
+;		Mutex_Lock(AssetManager_Mutex_Sound)
+;		ThreadPool_Suspend(AssetManager_ThreadPool)
+;		z_AssetManager_IsSuspended = True
+;		Return True
+;	Else	
+;		If Mutex_Lock(AssetManager_Mutex_Texture) = MUTEX_WAIT_OK Then
+;			If Mutex_Lock(AssetManager_Mutex_Model) = MUTEX_WAIT_OK Then
+;				If Mutex_Lock(AssetManager_Mutex_Sound) = MUTEX_WAIT_OK Then
+;					ThreadPool_Suspend(AssetManager_ThreadPool)
+;					z_AssetManager_IsSuspended = True
+;					Return True
+;				EndIf
+;				Mutex_Release(AssetManager_Mutex_Model)
+;			EndIf
+;			Mutex_Release(AssetManager_Mutex_Texture)
+;		EndIf
+;	EndIf
 End Function
 
 Function AssetManager_Resume()
-	If AssetManager_ThreadPool = 0 Then
-		Return True
-	EndIf
-	If z_AssetManager_IsSuspended = False Then
-		Return True
-	EndIf
-	
-	ThreadPool_Resume(AssetManager_ThreadPool)
-	Mutex_Release(AssetManager_Mutex_Sound)
-	Mutex_Release(AssetManager_Mutex_Model)
-	Mutex_Release(AssetManager_Mutex_Texture)
-	z_AssetManager_IsSuspended = False
-	
-	ThreadPool_Update(AssetManager_ThreadPool)
+;	If AssetManager_ThreadPool = 0 Then
+;		Return True
+;	EndIf
+;	If z_AssetManager_IsSuspended = False Then
+;		Return True
+;	EndIf
+;	
+;	ThreadPool_Resume(AssetManager_ThreadPool)
+;	Mutex_Release(AssetManager_Mutex_Sound)
+;	Mutex_Release(AssetManager_Mutex_Model)
+;	Mutex_Release(AssetManager_Mutex_Texture)
+;	z_AssetManager_IsSuspended = False
+;	
+;	ThreadPool_Update(AssetManager_ThreadPool)
 End Function
 
 Function AssetManager_Load.Asset(EAssetType%, Path$, Param1%=0, Param2%=0, Param3%=0, Param4%=0, t_TargetValuePtr%=0)
 	Local t_Ass.Asset = AssetManager_Find(EAssetType, Path$, Param1, Param2, Param3, Param4)
 	
 	; Not found, so create a new one.
-	Mutex_Wait(z_Asset_Mutex)
+;	Mutex_Wait(z_Asset_Mutex)
 	If (t_Ass = Null) Then
 		t_Ass = New Asset
 		t_Ass\EAssetStatus = EAssetStatus_Unknown
@@ -132,31 +131,33 @@ Function AssetManager_Load.Asset(EAssetType%, Path$, Param1%=0, Param2%=0, Param
 		t_Ass\Param3 = Param3
 		t_Ass\Param4 = Param4
 		
-		Select EAssetType
-			Case EAssetType_Image, EAssetType_Texture, EAssetType_Font
-				t_Ass\z_Internal_Lock = AssetManager_Mutex_Texture
-			Case EAssetType_Model, EAssetType_AnimModel
-				t_Ass\z_Internal_Lock = AssetManager_Mutex_Model
-			Case EAssetType_Sound, EAssetType_Music, EAssetType_3DSound
-				t_Ass\z_Internal_Lock = AssetManager_Mutex_Sound
-		End Select
-		t_Ass\z_Internal_GlobalLock = z_Asset_Mutex
+;		Select EAssetType
+;			Case EAssetType_Image, EAssetType_Texture, EAssetType_Font
+;				t_Ass\z_Internal_Lock = AssetManager_Mutex_Texture
+;			Case EAssetType_Model, EAssetType_AnimModel
+;				t_Ass\z_Internal_Lock = AssetManager_Mutex_Model
+;			Case EAssetType_Sound, EAssetType_Music, EAssetType_3DSound
+;				t_Ass\z_Internal_Lock = AssetManager_Mutex_Sound
+;		End Select
+;		t_Ass\z_Internal_GlobalLock = z_Asset_Mutex
 	EndIf
 	t_Ass\z_Internal_Counter = t_Ass\z_Internal_Counter + 1
 	t_Ass\t_TargetValuePtr = t_TargetValuePtr
 	
-	ThreadPool_QueueTask(AssetManager_ThreadPool, z_Internal_AssetManager_Task_p, Int(t_Ass))
-	Mutex_Release(z_Asset_Mutex)
+;	ThreadPool_QueueTask(AssetManager_ThreadPool, z_Internal_AssetManager_Task_p, Int(t_Ass))
+;	Mutex_Release(z_Asset_Mutex)
 	
 	LogMessage(LOG_DEBUG, "AssetManager: Queued Asset '" + t_Ass\Path + "' ("+t_Ass\Param1+"/"+t_Ass\Param2+"/"+t_Ass\Param3+"/"+t_Ass\Param4+").")
+	z_Internal_AssetManager_Task(t_Ass)
 	
 	Return t_Ass
 End Function
+
 Function AssetManager_Unload(t_Ass.Asset)
-	Mutex_Wait(z_Asset_Mutex)
+	;Mutex_Wait(z_Asset_Mutex)
 	t_Ass\z_Internal_Counter = t_Ass\z_Internal_Counter - 1
 	If (t_Ass\z_Internal_Counter <= 0) Then
-		Mutex_Wait(t_Ass\z_Internal_Lock) ; We might be loading it right now.
+		;Mutex_Wait(t_Ass\z_Internal_Lock) ; We might be loading it right now.
 		If t_Ass\EAssetStatus = EAssetStatus_Loaded
 			Select t_Ass\EAssetType
 				Case EAssetType_Texture
@@ -173,43 +174,43 @@ Function AssetManager_Unload(t_Ass.Asset)
 					StopChannel(t_Ass\Resource)
 			End Select
 		EndIf
-		Mutex_Release(t_Ass\z_Internal_Lock)
+		;Mutex_Release(t_Ass\z_Internal_Lock)
 		
 		Delete t_Ass
 	EndIf
-	Mutex_Release(z_Asset_Mutex)
+	;Mutex_Release(z_Asset_Mutex)
 End Function
 
 Function AssetManager_Find.Asset(EAssetType%, Path$, Param1%=0, Param2%=0, Param3%=0, Param4%=0)
 	Local t_Ass.Asset, rt_Ass.Asset
 	
-	Mutex_Wait(z_Asset_Mutex)
+	;Mutex_Wait(z_Asset_Mutex)
 	For t_Ass = Each Asset
 		If t_Ass\EAssetType = EAssetType And Lower(t_Ass\Path) = Lower(Path) And t_Ass\Param1 = Param1 And t_Ass\Param2 = Param2 And t_Ass\Param3 = Param3 And t_Ass\Param4 = Param4
 			rt_Ass = t_Ass
 		EndIf
 	Next
-	Mutex_Release(z_Asset_Mutex)
+	;Mutex_Release(z_Asset_Mutex)
 	
 	Return rt_Ass
 End Function
 Function AssetManager_FindByResource.Asset(Resource%)
 	Local t_Ass.Asset, rt_Ass.Asset
 	
-	Mutex_Wait(z_Asset_Mutex)
+	;Mutex_Wait(z_Asset_Mutex)
 	For t_Ass = Each Asset
 		If t_Ass\Resource = Resource
 			rt_Ass = t_Ass
 		EndIf
 	Next
-	Mutex_Release(z_Asset_Mutex)
+	;Mutex_Release(z_Asset_Mutex)
 	
 	Return rt_Ass
 End Function
 
 Function AssetManager_Count%(EAssetStatus%=$FFFFFFFF)
 	Local Cnt%, t_Ass.Asset
-	Mutex_Wait(z_Asset_Mutex)
+	;Mutex_Wait(z_Asset_Mutex)
 	If EAssetStatus <> $FFFFFFFF Then
 		For t_Ass = Each Asset
 			If t_Ass\EAssetStatus = EAssetStatus
@@ -221,7 +222,7 @@ Function AssetManager_Count%(EAssetStatus%=$FFFFFFFF)
 			Cnt = Cnt + 1
 		Next
 	EndIf
-	Mutex_Release(z_Asset_Mutex)
+	;Mutex_Release(z_Asset_Mutex)
 	Return Cnt
 End Function
 
@@ -287,12 +288,12 @@ Function AssetManager_GetAsset(EAssetType%, Path$, Param1%=0, Param2%=0, Param3%
 End Function
 
 Function z_Internal_AssetManager_Task(Ass.Asset)
-	If z_Internal_AssetManager_Task_p = 0 And Int(Ass) = 0 Then
-		z_Internal_AssetManager_Task_p = BP_GetFunctionPointer()
-		Return
-	EndIf
+	;If z_Internal_AssetManager_Task_p = 0 And Int(Ass) = 0 Then
+	;	z_Internal_AssetManager_Task_p = BP_GetFunctionPointer()
+	;	Return
+	;EndIf
 	
-	If Mutex_Wait(Ass\z_Internal_Lock, 1) = MUTEX_WAIT_OK Then
+;	If Mutex_Wait(Ass\z_Internal_Lock, 1) = MUTEX_WAIT_OK Then
 		Ass\EAssetStatus = EAssetStatus_Loading
 		Select Ass\EAssetType
 			Case EAssetType_Texture
@@ -312,7 +313,7 @@ Function z_Internal_AssetManager_Task(Ass.Asset)
 			Case EAssetType_Music
 				Ass\Resource = PlayMusic(Ass\Path)
 		End Select
-		Mutex_Release(Ass\z_Internal_Lock)
+		;Mutex_Release(Ass\z_Internal_Lock)
 		
 		If Ass\Resource = 0 Then
 			LogMessage(LOG_ERROR, "AssetManager: Failed to load '" + Ass\Path + "'!")
@@ -321,12 +322,10 @@ Function z_Internal_AssetManager_Task(Ass.Asset)
 			LogMessage(LOG_DEBUG, "AssetManager: Loaded Asset '" + Ass\Path + "'.")
 			Ass\EAssetStatus = EAssetStatus_Loaded
 		EndIf
-	Else
-		Return True
-	EndIf
-End Function:z_Internal_AssetManager_Task(Null)
-
+;	Else
+;		Return True
+;	EndIf
+End Function;:z_Internal_AssetManager_Task(Null)
 ;~IDEal Editor Parameters:
-;~F#14#2F#3B#48#66#77#9A#B6#C3#D1#E3#E6#E9#EC#EF#F2#F5#F8#FC#103
-;~F#120
+;~F#14#2E#3A#47#65
 ;~C#Blitz3D

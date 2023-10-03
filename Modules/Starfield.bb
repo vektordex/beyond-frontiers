@@ -28,10 +28,14 @@ Function DST_Create_Dust(dst_cam, dst_count, dst_typ=0, Parent=0)
 End Function
 
 Function DST_Create_Dustzone(dst_dust_handle,dst_clamp=0)
-	dst_zone.DST_Dustzone = New DST_Dustzone
+	
+	Local dst_zone.DST_Dustzone = New DST_Dustzone
+	;nutzloser kommetar
 	dst_zone\pivot=CreatePivot()
+	
 	If dst_clamp>0 Then EntityParent dst_zone\pivot,dst_dust_handle
 	dst_zone\brush=CreateBrush()
+	
 	For dst_dust.DST_Dustobject = Each DST_Dustobject
 		If dst_dust\pivot=dst_dust_handle
 			dst_zone\dust_handle=Handle(dst_dust.DST_Dustobject)

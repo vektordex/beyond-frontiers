@@ -67,20 +67,20 @@ Global Performance_Render_UI, Performance_Render_UI_Tris
 Global Performance_Flip
 Global Performance_Wait
 Global Settings_Scaling
+Global FPS# = 60
 ;[End Block]
 
 ;[Block] Meshes
-Global Mesh_Roid[5]
 Global Mesh_Ship[20]
 Global Mesh_Gate[4]
 Global Mesh_Station[10]
-Global Mesh_Asteroid[4]
+Global Mesh_Asteroid[5]
 Global Mesh_Planets[25]
 Global Planet_Surface_Exist = 0, Planet_Surface_Distance = 0
 Global Text_Effects[5]
 Global Mesh_Environment[5]
 Global Mesh_Loot
-Global Mesh_Decor[1]
+Global Mesh_Decor[2]
 ;[End Block]
 
 ;[Block] Objects
@@ -90,16 +90,15 @@ Global Object_Zero
 ;[End Block]
 
 ;[Block] Textures
-Global Text_Ship[11]
-Global Text_Ship_FX[11]
+Global Text_Ship[14]
+Global Text_Ship_FX[14]
 Global Text_Station[10]
 Global Text_Station_FX[10]
 Global Text_Gate[2]
 Global Text_Gate_FX[2]
-Global Text_Asteroid[4]
-Global Text_Asteroid_FX[4]
-Global Text_Decor[1]
-Global Text_Decor_FX[1]
+Global Text_Asteroid[5]
+Global Text_Decor[2]
+Global Text_Decor_FX[2]
 
 Global Text_SkyBK[8]
 Global Text_SkyDN[8]
@@ -181,7 +180,7 @@ Global Settings_GFX_Ambience=5, Settings_GFX_Objects#=1
 
 ;[Block] Ship Movement Identifiers
 Global ShipStrafeX#, ShipStrafeY#, ShipSpeedZ#, ShipRollZ#, Player_Value_Inertia_Modifier#
-Global Weapon_Target_Cube, ShipPosXYZ, Ship_Shield_Reload_Tick, Ship_Shield_Reload_Amount, Ship_Shield_Reload_Tick_Timer
+Global Weapon_Target_Cube, Ship_Shield_Reload_Tick, Ship_Shield_Reload_Amount, Ship_Shield_Reload_Tick_Timer
 Global Ship_Value_ScanningStrength
 ;[End Block]
 
@@ -297,5 +296,5 @@ Global MyAU, RealAU, AUTime, AUConversion
 RealAU=149597870.7
 
 ;~IDEal Editor Parameters:
-;~F#21#BB#C0#C4#CA
+;~F#21#BA#BF#C3
 ;~C#Blitz3D

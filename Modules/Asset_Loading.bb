@@ -15,7 +15,7 @@ Function PreloadAudio()
 	Local LoadCounter = 1
 	Repeat
 		Local LoadData$ = ReadLine(LoadOrder)
-		Sound_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Sounds\"+LoadData$+".ogg")
+		Sound_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Sounds\"+LoadData$+".mp3")
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -26,7 +26,7 @@ Function PreloadAudio()
 	LoadCounter = 1
 	Repeat
 		LoadData$ = ReadLine(LoadOrder)
-		Sound3D_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_3DSound, "Assets\Sounds\"+LoadData$+".ogg")
+		Sound3D_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_3DSound, "Assets\Sounds\"+LoadData$+".mp3")
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -38,7 +38,7 @@ Function PreloadAudio()
 	LoadCounter = 1
 	Repeat
 		LoadData$ = ReadLine(LoadOrder)
-		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".ogg")
+		Music_ID[LoadCounter] = AssetManager_GetAsset(EAssetType_Sound, "Assets\Music\"+LoadData$+".mp3")
 		LoadCounter = LoadCounter + 1
 	Until Eof(LoadOrder)
 	CloseFile LoadOrder
@@ -154,6 +154,10 @@ Function PreloadMesh()
 	EntityTexture Mesh_Decor[1],Text_Decor[1],0,1
 	EntityTexture Mesh_Decor[1],Text_Decor_FX[1],0,2
 	HideEntity Mesh_Decor[1]
+	Mesh_Decor[2]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Environment\Dingus_Mesh.3DS")
+	Text_Decor[2]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Dingus_Color.png",1+2)
+	EntityTexture Mesh_Decor[2],Text_Decor[2],0,1
+	HideEntity Mesh_Decor[2]
 	;[End Block]
 	
 	;[Block] Preload Planets
@@ -179,7 +183,7 @@ Function PreloadMesh()
 	EntityTexture Mesh_Environment[1],Text_Environment[3],0,1
 	EntityTexture Mesh_Environment[1],Text_Environment[4],0,2
 	HideEntity Mesh_Environment[1]
-	ScaleEntity Mesh_Environment[1],350,350,350
+	ScaleEntity Mesh_Environment[1],25,25,25
 	EntityColor Mesh_Environment[1],65,65,65
 	Mesh_Environment[2]= AssetManager_GetAsset(EAssetType_Model,"Assets\3D\Environment\Flare.3ds")
 	Text_Environment[2] = AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Environment\Flare.png",1+2)
@@ -212,7 +216,7 @@ Function PreloadMesh()
 	;[End Block]
 	
 	;[Block] Asteroids
-	For A = 1 To 4
+	For A = 1 To 5
 		Mesh_Asteroid[a]		=	AssetManager_GetAsset(EAssetType_Model, "Assets\3D\Asteroids\Asteroid"+a+"_Mesh.3DS")
 		Text_Asteroid[a]		=	AssetManager_GetAsset(EAssetType_Texture,"Assets\3D\Asteroids\Asteroid"+a+"_Color.jpg")
 		EntityTexture Mesh_Asteroid[a],Text_Asteroid[a],0,1
