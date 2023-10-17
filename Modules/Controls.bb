@@ -208,10 +208,10 @@ Function HandleInput()
 		If InputEx_KeyHit(KEY_SPACE) Then Chat_Message$=Chat_Message$+" ": PlaySound(Sound_ID[1])
 		
 		If InputEx_KeyDown(KEY_BACKSPACE) And Chat_Message$>"" Then 
-			Tcounter=Tcounter+1
-			If Tcounter>7 Then 
+			Chat_Usage_Counter=Chat_Usage_Counter+1
+			If Chat_Usage_Counter>7 Then 
 				Chat_Message$=Mid(Chat_Message$,1,Len(Chat_Message$)-1) 
-				Tcounter=0
+				Chat_Usage_Counter=0
 				PlaySound(Sound_ID[1])
 			EndIf
 		EndIf

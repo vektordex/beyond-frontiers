@@ -147,7 +147,7 @@ Function AssetManager_Load.Asset(EAssetType%, Path$, Param1%=0, Param2%=0, Param
 ;	ThreadPool_QueueTask(AssetManager_ThreadPool, z_Internal_AssetManager_Task_p, Int(t_Ass))
 ;	Mutex_Release(z_Asset_Mutex)
 	
-	LogMessage(LOG_DEBUG, "AssetManager: Queued Asset '" + t_Ass\Path + "' ("+t_Ass\Param1+"/"+t_Ass\Param2+"/"+t_Ass\Param3+"/"+t_Ass\Param4+").")
+;	LogMessage(LOG_DEBUG, "AssetManager: Queued Asset '" + t_Ass\Path + "' ("+t_Ass\Param1+"/"+t_Ass\Param2+"/"+t_Ass\Param3+"/"+t_Ass\Param4+").")
 	z_Internal_AssetManager_Task(t_Ass)
 	
 	Return t_Ass

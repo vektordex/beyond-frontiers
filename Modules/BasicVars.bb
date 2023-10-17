@@ -5,7 +5,7 @@ Const VERSION_BUILD% = 100026
 Const VERSION_STRING$ = VERSION_MAJOR+"."+VERSION_MINOR+"."+VERSION_PATCH+"."+VERSION_BUILD
 
 Global System_Flashlight
-Global Object_Charge, KeyMode
+Global Object_Charge, KeyMode, Chat_Enabled = 1
 
 Global Testentity
 
@@ -175,7 +175,7 @@ Global Player_GlobalX, Player_GlobalY
 
 ;[Block] Globalized System Vars
 Global Station_Owner, Station_Services, Station_WareImport, Station_WareExport, Station_Rumors, Station_Name$
-Global Settings_GFX_Ambience=5, Settings_GFX_Objects#=1
+Global Settings_GFX_Ambience=5, Settings_GFX_Objects#=1, Settings_GFX_Range#=1, WBuffer_Enabled, Chat_Usage_Counter
 ;[End Block]
 
 ;[Block] Ship Movement Identifiers

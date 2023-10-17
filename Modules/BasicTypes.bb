@@ -8,7 +8,7 @@ End Type
 ;----------------------------------------------------------------
 
 Const CAMERA_NEAR#	= 1.0
-Const CAMERA_FAR#	= Float(2 Shl 24) ; 23 bits is maximum representable depth value.
+Const CAMERA_FAR#	= Float(2 Shl 20) ; 23 bits is maximum representable depth value.
 
 ;----------------------------------------------------------------
 ;! Types

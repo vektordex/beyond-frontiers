@@ -1033,12 +1033,6 @@ Function Music_Update()
 	End Select
 End Function
 
-Function Storyline_Update()
-End Function
-
-Function GenAudio_Update()
-End Function
-
 Function Asset_Flare_Create(x,y,z,scalex#,scaley#,rotation,weight=33,r=255,b=255,g=255)
 	Engine.Flare = New Flare
 	Engine\Mesh = CopyEntity(Mesh_Environment[2])
@@ -1192,21 +1186,99 @@ Function Mechanic_Weapon_Update()
 ;	MoveEntity Player_Weapon_Cube, 0,0,1000
 End Function
 
-Function WordWrap3D(LongString$, XStart, YStart, MaxLength, Spacing, Text_Align, Font_ID)
+Function WordWrap3D(XStart, YStart, MaxLength, Spacing, Text_Align, Font_ID, LongString$)
+	
 	Local CutString$ = LongString$
 	Local LenString  = Len(LongString$)
 	Local AmoString  = LenString Mod MaxLength
 	Local NewString$, SetLen
 	SetLen = MaxLength
 	For A = 0 To AmoString+1
-;		Local SpacePos = Instr(CutString$," ",MaxLength-5)
 		NewString$ = Left(CutString$,SetLen)		SetLen = MaxLength
 		Text3D(Text_Font[Font_ID],XStart,YStart,NewString$,Text_Align)
 		CutString$ = Replace(CutString$, NewString$,"")
-		YStart = YStart - Spacing		
+		YStart = YStart - Spacing
 	Next
+End Function
+
+Function DrawUI3D(Index$,X,Y,Scale#=1,Angle#=0)
+	
+	Select Index$
+			;;; -> Big Windows
+		Case "SelectionPanel"
+			DrawRect3D(GUI_Windows[5],X,Y,0,0,162,342,0,Angle#, Scale#)
+		Case "SelectionDivider"
+			DrawRect3D(GUI_Windows[5],X,Y,0,342,162,342,0,Angle#, Scale#)
+		Case "WidePanelTitle"
+			DrawRect3D(GUI_Windows[5],X,Y,162,0,464,342,0,Angle#, Scale#)
+		Case "WidePanel"
+			DrawRect3D(GUI_Windows[5],X,Y,162,342,464,342,0,Angle#, Scale#)
+		Case "LongBarDark"
+			DrawRect3D(GUI_Windows[5],X,Y,626,0,42,684,0,Angle#, Scale#)
+		Case "LongBar"
+			DrawRect3D(GUI_Windows[5],X,Y,668,0,42,684,0,Angle#, Scale#)
+		Case "ConfirmWindow"
+			DrawRect3D(GUI_Windows[5],X,Y,708,0,316,154,0,Angle#, Scale#)
+		Case "InfoCard"
+			DrawRect3D(GUI_Windows[5],X,Y,708,154,316,414,0,Angle#, Scale#)
+		Case "ItemTooltip"
+			DrawRect3D(GUI_Windows[5],X,Y,708,568,316,264,0,Angle#, Scale#)
+		Case "SmallWindowDark"
+			DrawRect3D(GUI_Windows[5],X,Y,708,832,316,188,0,Angle#, Scale#)			
+			;;; -> Buttons Main Menu
+			
+		Case "MenuButton1"
+			DrawRect3D(GUI_Windows[3],X,Y,0,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton2"
+			DrawRect3D(GUI_Windows[3],X,Y,160,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton3"
+			DrawRect3D(GUI_Windows[3],X,Y,322,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton4"
+			DrawRect3D(GUI_Windows[3],X,Y,322,50,160,50,0,Angle#, Scale#)
+		Case "MenuButton5"
+			DrawRect3D(GUI_Windows[3],X,Y,160,50,160,50,0,Angle#, Scale#)
+		Case "MenuButton6"
+			DrawRect3D(GUI_Windows[3],X,Y,0,50,160,50,0,Angle#, Scale#)
+			
+		Case "MenuButton1A"
+			DrawRect3D(GUI_Windows[4],X,Y,0,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton2A"
+			DrawRect3D(GUI_Windows[4],X,Y,160,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton3A"
+			DrawRect3D(GUI_Windows[4],X,Y,322,0,160,50,0,Angle#, Scale#)
+		Case "MenuButton4A"
+			DrawRect3D(GUI_Windows[4],X,Y,322,50,160,50,0,Angle#, Scale#)
+		Case "MenuButton5A"
+			DrawRect3D(GUI_Windows[4],X,Y,160,50,160,50,0,Angle#, Scale#)
+		Case "MenuButton6A"
+			DrawRect3D(GUI_Windows[4],X,Y,0,50,160,50,0,Angle#, Scale#)
+			
+		Case "BaseButtonGrey"
+			DrawRect3D(GUI_Windows[3],X,Y,0,100,114,31,0,Angle#, Scale#)
+		Case "BaseButtonGreen"
+			DrawRect3D(GUI_Windows[3],X,Y,0,131,114,31,0,Angle#, Scale#)
+		Case "BaseButtonBlue"
+			DrawRect3D(GUI_Windows[3],X,Y,0,160,114,31,0,Angle#, Scale#)
+		Case "BaseButtonRed"
+			DrawRect3D(GUI_Windows[3],X,Y,0,188,114,31,0,Angle#, Scale#)
+			
+		Case "Slider"
+			DrawRect3D(GUI_Windows[3],X,Y,114,100,256,31,0,Angle#, Scale#)
+			
+		Case "SwitchNeutral"
+			DrawRect3D(GUI_Windows[4],X,Y,0,102,78,36,0,Angle#, Scale#)
+		Case "SwitchRed"
+			DrawRect3D(GUI_Windows[4],X,Y,78,102,78,36,0,Angle#, Scale#)
+		Case "SwitchGreen"
+			DrawRect3D(GUI_Windows[4],X,Y,156,102,78,36,0,Angle#, Scale#)
+		Case "SliderArrow"
+			DrawRect3D(GUI_Windows[3],X,Y,114,131,32,44,0,Angle#, Scale#)
+		Case "SliderArrowA"
+			DrawRect3D(GUI_Windows[4],X,Y,234,102,32,44,0,Angle#, Scale#)	
+			
+	End Select
 End Function
 ;~IDEal Editor Parameters:
 ;~F#5#46#86#94#9C#AC#C6#F7#107#11A#1D0#1F6#220#232#241#266#26A#271#324#328
-;~F#331#36D#375#37C#387#398#3C9#3DE#3E3#411#41F#42E#43F#44B#474#483#49B
+;~F#331#36D#375#37C#387#398#3C9#3DE#3E3#40B#419#428#439#445#46E#47D#495#49E
 ;~C#Blitz3D

@@ -1,32 +1,32 @@
 SystemSeed=37589162
-SystemName=Scire
+SystemName=Kurai
 SystemSecurity=3
-OwnerRace=Orionid Council
+OwnerRace=Sirius Dominion
 BackgroundIndex=6
 SunSetup
 SunTiltX=15
 SunTiltY=195
 SunScale=30000
-SunColorR=200
+SunColorR=170
 SunColorG=255
-SunColorB=180
+SunColorB=255
 GateSetup
-SystemX=5
-SystemY=8
-GatePosX=0
+SystemX=6
+SystemY=16
+GatePosX=100000
 GatePosY=0
-GatePosZ=-100000
-GateRotation=180
-GateAimX=0
+GatePosZ=0
+GateRotation=90
+GateAimX=-100000
 GateAimY=0
-GateAimZ=100000
+GateAimZ=0
 PlanetSetup
 PlanetTiltX=-15
 PlanetTiltY=150
-PlanetScale=8400
-PlanetType=7
+PlanetScale=1900
+PlanetType=3
 StationSetup
-StationName=Orionic Pilot Academy
+StationName=Kurai Academy of Flight
 StationPosX=0
 StationPosY=0
 StationPosZ=40000
@@ -50,13 +50,3 @@ BeltPosZ=0
 BeltResource=0
 BeltRange=20000
 BeltAmount=40
-SpecialSetup
-SpecialType=19
-SpecialName=
-SpecialPosX=0
-SpecialPosY=0
-SpecialPosZ=0
-SpecialRotX=0
-SpecialRotY=35
-SpecialRotZ=0
-SpecialScale=40

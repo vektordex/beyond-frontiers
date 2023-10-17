@@ -6,7 +6,7 @@ Function Prepare_Graphics()
 	
 	Settings_Scaling = (Settings_Graphics_Size[1]/(1080/100))/100
 	
-	Settings_Graphics_Mode=GRAPHICS_MODE_WINDOWED
+	Settings_Graphics_Mode=GRAPHICS_MODE_BORDERLESS
 	; Parse Command Line
 	LogMessage(LOG_INFO, "Parsing CommandLine...")
 	ParseCmdLine(CommandLine())
@@ -37,7 +37,7 @@ Function Prepare_Graphics()
 			;[End Block]
 		Case GRAPHICS_MODE_FULLSCREEN ;[Block] FullScreen
 			LogMessage(LOG_INFO, "Initializing Graphics at "+Settings_Graphics_Size[0]+"x"+Settings_Graphics_Size[1]+" in Fullscreen mode...")
-			Graphics3D Settings_Graphics_Size[0], Settings_Graphics_Size[1], 32, 1
+			Graphics3D Settings_Graphics_Size[0], Settings_Graphics_Size[1], 16, 1
 			;[End Block]
 	End Select
 	SetBuffer BackBuffer()

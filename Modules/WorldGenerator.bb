@@ -241,15 +241,15 @@ Function Asset_Gate_Create(Target_SystemX, Target_SystemY, PosX, PosY, PosZ, Rot
 	
 	EntityType Portal\Mesh,Collision_Object
 	
-	EntityAutoFade Portal\mesh,200000,250000
-	EntityAutoFade Portal\mesh_Effect,500000,550000
+	EntityAutoFade Portal\mesh,220000*Settings_GFX_Objects#,250000*Settings_GFX_Objects#
+	EntityAutoFade Portal\mesh_Effect,525000*Settings_GFX_Objects#,550000*Settings_GFX_Objects#
 	
 	Local TSystemName = OpenFile("Assets/Universe/x"+Target_SystemX+"y"+Target_SystemY+".bfs")
 	Empty$=ReadLine(TSystemName)
 	Local ConnectedSystem$=ReadLine(TSystemName):ConnectedSystem$ = Replace$(ConnectedSystem$,"SystemName=","")
 	NameEntity Portal\Mesh,ConnectedSystem$
 	CloseFile TSystemName
-	EntityAlpha Portal\Mesh_Effect,0.5
+;	EntityAlpha Portal\Mesh_Effect,0.5
 	
 	Portal\Target_SystemX = Target_SystemX
 	Portal\Target_SystemY = Target_SystemY
@@ -334,7 +334,7 @@ Function Asset_Belt_Create(NumberOfRoids, TypeOfYield, BeltX, BeltY, BeltZ, Belt
 		
 		Environment_NavMesh_Create(EntityX(Roid\Mesh), EntityY(Roid\mesh), EntityZ(roid\Mesh), 1)
 		
-		EntityAutoFade roid\mesh,90000,115000
+		EntityAutoFade roid\mesh,90000*Settings_GFX_Objects#*Settings_GFX_Objects#,115000
 		EntityType roid\mesh,Collision_Object,True
 		
 	Next
@@ -511,6 +511,7 @@ Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, Invento
 			da\tables = CopyEntity(Mesh_Station[4],da\mesh)
 			ScaleEntity da\tables,2,2,2
 			MoveEntity da\tables,0,-17.5,1
+			EntityFX da\tables,1+16
 			da\effect = CopyEntity(Mesh_Asteroid[1], da\mesh)
 			da\Utility = CopyEntity(Mesh_Asteroid[2], da\mesh)
 		Case 2
@@ -555,7 +556,7 @@ Function Asset_Station_Create(Name$, x,y,z, Station_Subtype, Rotation=0, Invento
 	RotateEntity da\mesh,0,Rotation,0
 	
 	EntityType da\mesh,Collision_Object,True
-	EntityAutoFade da\mesh,200000,250000
+	EntityAutoFade da\mesh,240000*Settings_GFX_Objects#,250000*Settings_GFX_Objects#
 	
 	NameEntity da\Mesh,Name$
 	
@@ -1059,7 +1060,7 @@ Function Asset_Special_Update()
 		If Special\ID > 20 And Special\ID < 31 Then
 			TurnEntity Special\mesh, 0.02,0,0.1
 		ElseIf special\ID = 19 Then
-			TurnEntity Special\Mesh,0,2,0
+			TurnEntity Special\Mesh,0,-1,0
 		EndIf
 		If EntityDistance(WorldCamera,Special\Mesh)< 2500 And EntityInView(Special\Mesh,WorldCamera)=True And HUD = 1 And Force_UI_Mode = 0 Then
 ;			Text3D(Text_Font[6],0,275,"- Location entered -",1)
@@ -1179,6 +1180,6 @@ Function Emitter_Particle_Update()
 	Next
 End Function
 ;~IDEal Editor Parameters:
-;~F#0#93#E2#158#16E#182#1DE#1E8#1F7#234#24C#259#260#275#288#29B#2E1#2FD#323#438
-;~F#44A#45D#462#487
+;~F#0#93#107#123#158#16E#182#1BE#1DE#1E8#1F7#235#24D#25A#261#276#289#29C#2E2#2FE
+;~F#324#333#439#44B#45E#463#488
 ;~C#Blitz3D

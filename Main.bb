@@ -402,7 +402,7 @@ Select Loading_State
 			Loading_State_Next = LOADING_STATE_SERVERLIST
 			;[End Block]
 		Case LOADING_STATE_SERVERLIST ;[Block]
-			Loading_State_Next = LOADING_STATE_CONNECTING
+			Loading_State_Next = LOADING_STATE_COMPLETE
 			;[End Block]
 		Case LOADING_STATE_CONNECTING ;[Block]
 			
@@ -419,55 +419,10 @@ Select Loading_State
 	;[End Block]
 	
 	;[Block] Visual Update
-	AssetManager_Suspend()
-	DrawImage Loading_BG, GwBy2, GhBy2 ; Background
+;	AssetManager_Suspend()
 	
-;	Color 0, 0, 0:Rect 0, Gh - 45, Gw, 45, 1 ; Bottom Bar
-	Color 220,220,220:Text GwBy2, Gh - 15, Loading_Quote, True, True ; Quote
-	
-	Select Loading_State
-		Case LOADING_STATE_LOADING ;[Block]
-			Local ls_loading_barY = Gh - 30
-			
-			Local ls_resources_loaded_prc# = ls_Count_Loaded / Float(ls_Count_Total)
-			Local ls_resources_loading_prc# = ls_Count_Loading / Float(ls_Count_Total) + ls_resources_loaded_prc
-			Local ls_resources_error_prc# = ls_Count_Error / Float(ls_Count_Total) + ls_resources_loading_prc
-			
-			Local ls_t = 15, ls_n
-			For ls_n = 0 To ls_t
-				Local ls_p# = ls_n / Float(ls_t)
-				
-				; GFX: Bar
-;				Color ls_p * 51, ls_p * 51, ls_p * 51
-;				Line 0, ls_loading_barY - ls_n, Gw, ls_loading_barY - ls_n
-				
-				; GFX: Error
-				Color 204 + ls_p * 51, ls_p * 51, ls_p * 51
-				Line GwBy2 * (1.0 - ls_resources_error_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_error_prc), ls_loading_barY - ls_n
-				
-				; GFX: Loading
-				Color 204 + ls_p * 51, ls_p * 51, 102 + ls_p * 51
-				Line GwBy2 * (1.0 - ls_resources_loading_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_loading_prc), ls_loading_barY - ls_n
-				
-				; GFX: Complete
-				Color 51 + ls_p * 51, 204 + ls_p * 51, 204 + ls_p * 51
-				Line GwBy2 * (1.0 - ls_resources_loaded_prc), ls_loading_barY - ls_n, GwBy2 + (GwBy2 * ls_resources_loaded_prc), ls_loading_barY - ls_n
-			Next
-			
-			Color 0,0,0
-			Text GwBy2, ls_loading_barY - 8, Int(Floor(ls_resources_loaded_prc * 1000) / 10) + "% done", 1, 1
-			
-			;[End Block]
-		Case LOADING_STATE_SERVERLIST ;[Block]
-			Loading_State_Next = LOADING_STATE_CONNECTING
-			;[End Block]
-		Case LOADING_STATE_CONNECTING ;[Block]
-			
-			;[End Block]
-	End Select
-	
-	Flip 0:Cls
-	AssetManager_Resume()
+	Flip
+;	AssetManager_Resume()
 	;[End Block]
 	
 	;[Block] State Update
@@ -605,8 +560,6 @@ Music_Volume = 0.0
 
 Repeat
 	
-;	WordWrap3D("", 10, 10, 128, 16, 1, 6)
-	
 	ChannelVolume Channel_Music,Music_Volume#
 	If Music_Enabled = 1 Then
 		If Music_Volume#<Desired_MVolume# Then Music_Volume# = Music_Volume# + 0.005
@@ -617,12 +570,15 @@ Repeat
 	
 	DrawImage3D	(GUI_Windows[1],Sin(MilliSecs()/10)*.1,Sin(MilliSecs()/10)*0.1,0,0,1)
 	
-	DrawImage3D	(GUI_Windows[9],D3DOR-64,D3DOU-64)
+	DrawImage3D	(GUI_Windows[10],D3DOR-64,D3DOU-64)
 	
 	Text3D(Text_Font[6],D3DOL+10, D3DOD+10, "beyond.frontiers by DUALITYBEYOND Studios, Version 0.1.4")
 	
 	Util_Timer
 	InputEx_Update
+	
+	
+	
 	
 	tmx = MouseX()-(GraphicsWidth()/2)
 	tmy = MouseY()-(GraphicsHeight()/2)
@@ -633,134 +589,165 @@ Repeat
 			
 			DrawImage3D	(GUI_Windows[2],0,0)
 			
-			DrawImage3D	(GUI_Windows[3],-376,-250)
-			DrawImage3D	(GUI_Windows[4],-228,-250)
-			DrawImage3D	(GUI_Windows[5],-80,-250)
-			DrawImage3D	(GUI_Windows[6],80,-250)
-			DrawImage3D	(GUI_Windows[7],228,-250)
-			DrawImage3D	(GUI_Windows[8],376,-250)
+			DrawUI3D("MenuButton1",-376,-250): Text3D (Text_Font[7],-376,-250,"D i s c o r d",1)
+			DrawUI3D("MenuButton2",-228,-250): Text3D (Text_Font[7],-228,-250,"C r e d i t s",1)
+			DrawUI3D("MenuButton3", -80,-250): Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)
+			DrawUI3D("MenuButton4",  80,-250): Text3D (Text_Font[7],  80,-250,"C o n t i n u e",1)
+			DrawUI3D("MenuButton5", 228,-250): Text3D (Text_Font[7], 228,-250,"O p t i o n s",1);DrawImage3D	(GUI_Windows[7],228,-250)
+			DrawUI3D("MenuButton6", 376,-250): Text3D (Text_Font[7], 376,-250,"E x i t",1)	;DrawImage3D	(GUI_Windows[8],376,-250)
 			
 			;[Block] Discord
 			If MouseX()>(GraphicsWidth()/2-440) And MouseX()<(GraphicsWidth()/2-305) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Discord Button
-				Text3D (Text_Font[8],-376,-250,"D i s c o r d",1)
+				DrawUI3D("MenuButton1A",-376,-250)
 				If MouseHit(1) Then ExecFile("https://discord.gg/D5e5qRtQkb"): PlaySound(Sound_ID[1])
-			Else
-				Text3D (Text_Font[7],-376,-250,"D i s c o r d",1)
 			EndIf
 			;[End Block]
 			
 			;[Block] Credits
 			If MouseX()>(GraphicsWidth()/2-290) And MouseX()<(GraphicsWidth()/2-155) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Credits Button
-				Text3D (Text_Font[8],-228,-250,"C r e d i t s",1)
+				DrawUI3D("MenuButton2A",-228,-250)
 				If MouseHit(1) Then State_Menu_Subcontext = 5: PlaySound(Sound_ID[1])
-			Else
-				Text3D (Text_Font[7],-228,-250,"C r e d i t s",1)
 			EndIf
 			;[End Block]
 			
 			;[Block] Create New Game / Character
 			If MouseX()>(GraphicsWidth()/2-150) And MouseX()<(GraphicsWidth()/2-5) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;New Game Button
-				Text3D (Text_Font[8], -80,-250,"N e w   G a m e",1)		
+				DrawUI3D("MenuButton3A", -80,-250)
 				If MouseHit(1) Then State_Menu_Subcontext_Character=1: State_Menu_Subcontext = 3: PlaySound(Sound_ID[1])
-			Else
-				Text3D (Text_Font[7], -80,-250,"N e w   G a m e",1)			
 			EndIf
 			;[End Block]
 			
 			;[Block] Go to Character Overview
 			If MouseX()>(GraphicsWidth()/2+5) And MouseX()<(GraphicsWidth()/2+150) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Continue Button
-				Text3D (Text_Font[8],  80,-250,"C o n t i n u e",1)
-			Else
-				Text3D (Text_Font[7],  80,-250,"C o n t i n u e",1)
+				DrawUI3D("MenuButton4A",  80,-250);
 			EndIf
 			;[End Block]
 			
 			;[Block] Options Window
 			If MouseX()>(GraphicsWidth()/2+155) And MouseX()<(GraphicsWidth()/2+290) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270  ;Options Button
-				Text3D (Text_Font[8], 228,-250,"O p t i o n s",1)
-				If MouseHit(1) Then State_Menu_Subcontext = 2: PlaySound(Sound_ID[1])
-			Else
-				Text3D (Text_Font[7], 228,-250,"O p t i o n s",1)	
+				DrawUI3D("MenuButton5A", 228,-250)
+				If MouseHit(1) Then State_Menu_Subcontext = 2: PlaySound(Sound_ID[1])	
 			EndIf
 			;[End Block]
 			
 			;[Block] Exit Button
 			If MouseX()>(GraphicsWidth()/2+305) And MouseX()<(GraphicsWidth()/2+440) And MouseY()>(GraphicsHeight()/2)+230 And MouseY()<(GraphicsHeight()/2)+270 ;Exit Button
-				Text3D (Text_Font[8], 376,-250,"E x i t",1)	
+				DrawUI3D("MenuButton6A", 376,-250)
 				If MouseHit(1) Then
 					ClearWorld
 					End
 				EndIf
-			Else
-				Text3D (Text_Font[7], 376,-250,"E x i t",1)	
 			EndIf
 			;[End Block]
 			
 		Case 2 ; >> Options
 			;[Block] Options
-			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,2)
+			DrawUI3D("LongBarDark",0,GraphicsHeight()/2-16,2,-90)
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-16,"S e t t i n g s",1)
 			
-			DrawImage3D(GUI_Windows[29],140,0,0,0,2)
-			DrawImage3D(GUI_Windows[21],-420,0,0,0,1.47)
-;			DrawImage3D(GUI_Windows[23],0,0)
-			
+			DrawUI3D("WidePanelTitle",90,0,1.5)
+			DrawUI3D("SelectionDivider",-370,0,1.5)
 			Select State_Menu_Subcontext_Settings
 				Case 1 ; >> Graphics
 					
 					
 					WipeKeyEx()
 					
-					DrawImage3D(GUI_Windows[16],-420,210,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
-					Text3D(Text_Font[6],140,252,"G r a p h i c s",1)
+					DrawUI3D("BaseButtonGreen",-370,210,1.8)
+					DrawUI3D("BaseButtonGrey",-370,170,1.8)
+					DrawUI3D("BaseButtonGrey",-370,130,1.8)
+					DrawUI3D("BaseButtonGrey",-370, 90,1.8)
+					Text3D(Text_Font[6],-180,235,"G r a p h i c s",1)
 					
 ;					Text X -250, Y - 230
 					
-					Text3D(Text_Font[7],-210,210,"S e t   u p   g r a p h i c s   o p t i o n s   h e r e .")					
-					Text3D(Text_Font[7],-210,160,"A m b i e n t   L i g h t")
+					Text3D(Text_Font[7],-230,200,"Shader Passes")
 					
-					DrawImage3D(GUI_Windows[22],+170,160,0,90,1.5)
-					DrawImage3D(GUI_Windows[22],+205,160,0,-90,1.5)
+					DrawUI3D("SliderArrow", 60,200,1, 90)
+					DrawUI3D("SliderArrow", 95,200,1,-90)
 					
-					DrawImage3D(GUI_Windows[23],+340,160,0,0,1.5)
+					DrawUI3D("Slider",+230,200,1.5)
 					
 					Local AmbientLevel = 10 + (11 - Settings_GFX_Ambience)*-1
-					Text3D(Text_Font[7],+380,160,AmbientLevel,1)
+					Text3D(Text_Font[7],+400,200,AmbientLevel+"x",2)
 					
 					If Settings_GFX_Ambience > 11 Then Settings_GFX_Ambience = 11
 					If Settings_GFX_Ambience < 1 Then Settings_GFX_Ambience = 1
 					
-					If MouseY()>GhBy2-170 And MouseY()<GhBy2-140
-						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+					If MouseY()>GhBy2-214 And MouseY()<GhBy2-186
+						If MouseX()>GwBy2+39 And MouseX()<GwBy2+81
+							DrawUI3D("SliderArrowA", 60,200,1, 90)
 							If MouseHit(1) Then Settings_GFX_Ambience = Settings_GFX_Ambience - 1: PlaySound(Sound_ID[1])
 						EndIf
-						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+						If MouseX()>GwBy2+74 And MouseX()<GwBy2+126
+							DrawUI3D("SliderArrowA", 95,200,1,-90)
 							If MouseHit(1) Then Settings_GFX_Ambience = Settings_GFX_Ambience + 1: PlaySound(Sound_ID[1])
 						EndIf
 					EndIf
 					
-					Text3D(Text_Font[7],-210,130,"O b j e c t   A m o u n t")
+					Text3D(Text_Font[7],-230,170,"Object Amount")
 					
-					DrawImage3D(GUI_Windows[22],+170,130,0,90,1.5)
-					DrawImage3D(GUI_Windows[22],+205,130,0,-90,1.5)
+					DrawUI3D("SliderArrow", 60,170,1, 90)
+					DrawUI3D("SliderArrow", 95,170,1,-90)
 					
-					DrawImage3D(GUI_Windows[23],+340,130,0,0,1.5)
+					DrawUI3D("Slider",+230,170,1.5)
 					
 					Local ObjectLevel = (Settings_GFX_Objects# * 100)
-					Text3D(Text_Font[7],+380,130,ObjectLevel+"%",1)
+					Text3D(Text_Font[7],+400,170,ObjectLevel+" %",2)
 					
 					If Settings_GFX_Objects# > 2 Then Settings_GFX_Objects# = 2
 					If Settings_GFX_Objects# < .2 Then Settings_GFX_Objects# = .2
 					
-					If MouseY()>GhBy2-140 And MouseY()<GhBy2-110
-						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
+					If MouseY()>GhBy2-186 And MouseY()<GhBy2-154
+						If MouseX()>GwBy2+39 And MouseX()<GwBy2+81
+							DrawUI3D("SliderArrowA", 60,170,1, 90)
 							If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# - .1: PlaySound(Sound_ID[1])
 						EndIf
-						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
+						If MouseX()>GwBy2+74 And MouseX()<GwBy2+126
+							DrawUI3D("SliderArrowA", 95,170,1,-90)
 							If MouseHit(1) Then Settings_GFX_Objects# = Settings_GFX_Objects# + .1: PlaySound(Sound_ID[1])
+						EndIf
+					EndIf
+					
+					
+					Text3D(Text_Font[7],-230,140,"Viewing Range")
+					
+					DrawUI3D("SliderArrow", 60,140,1, 90)
+					DrawUI3D("SliderArrow", 95,140,1,-90)
+					
+					DrawUI3D("Slider",+230,140,1.5)
+					
+					Local ViewLevel = (Settings_GFX_Range# * 100)
+					Text3D(Text_Font[7],+400,140,ViewLevel+" %",2)
+					
+					If Settings_GFX_Range# > 2 Then Settings_GFX_Range# = 2
+					If Settings_GFX_Range# < .2 Then Settings_GFX_Range# = .2
+					
+					If MouseY()>GhBy2-156 And MouseY()<GhBy2-124
+						If MouseX()>GwBy2+39 And MouseX()<GwBy2+81
+							DrawUI3D("SliderArrowA", 60,140,1, 90)
+							If MouseHit(1) Then Settings_GFX_Range# = Settings_GFX_Range# - .1: PlaySound(Sound_ID[1])
+						EndIf
+						If MouseX()>GwBy2+74 And MouseX()<GwBy2+126
+							DrawUI3D("SliderArrowA", 95,140,1,-90)
+							If MouseHit(1) Then Settings_GFX_Range# = Settings_GFX_Range# + .1: PlaySound(Sound_ID[1])
+						EndIf
+					EndIf
+					
+					Text3D(Text_Font[7],-230,110,"WBuffer")
+					
+					If WBuffer_Enabled = 1 Then
+						DrawUI3D("SwitchGreen",+77,110)
+						Text3D(Text_Font[7],+77,110,"On",1)
+					Else
+						DrawUI3D("SwitchRed",+77,110,1,180)
+						Text3D(Text_Font[7],+77,110,"Off",1)
+					EndIf
+					If MouseY()>GhBy2-126 And MouseY()<GhBy2-94
+						If MouseX()>GwBy2+38 And MouseX()<GwBy2+126
+							If MouseHit(1)
+								WBuffer_Enabled = 1-WBuffer_Enabled: PlaySound(Sound_ID[4])
+							EndIf
 						EndIf
 					EndIf
 					
@@ -768,63 +755,42 @@ Repeat
 					
 					WipeKeyEx()
 					
-					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
-					DrawImage3D(GUI_Windows[16],-420,170,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
-					Text3D(Text_Font[6],140,252,"S o u n d",1)
-					
-					Text3D(Text_Font[7],-210,210,"S e t   u p   a u d i o   o p t i o n s   h e r e .")
+					DrawUI3D("BaseButtonGrey",-370,210,1.8)
+					DrawUI3D("BaseButtonGreen",-370,170,1.8)
+					DrawUI3D("BaseButtonGrey",-370,130,1.8)
+					DrawUI3D("BaseButtonGrey",-370, 90,1.8)
+					Text3D(Text_Font[6],-180,235,"S o u n d",1)
 					
 				Case 3 ; >> Music
 					
 					WipeKeyEx()
 					
-					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
-					DrawImage3D(GUI_Windows[16],-420,130,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420, 90,0,0,1.8)
-					Text3D(Text_Font[6],140,252,"M u s i c",1)
+					DrawUI3D("BaseButtonGrey",-370,210,1.8)
+					DrawUI3D("BaseButtonGrey",-370,170,1.8)
+					DrawUI3D("BaseButtonGreen",-370,130,1.8)
+					DrawUI3D("BaseButtonGrey",-370, 90,1.8)
+					Text3D(Text_Font[6],-180,235,"M u s i c",1)
 					
-					Text3D(Text_Font[7],-210,210,"S e t   u p   m u s i c   o p t i o n s   h e r e .")
+					Text3D(Text_Font[7],-230,200,"Music Volume")
 					
-					Text3D(Text_Font[7],-210,160,"M u s i c")
-					Text3D(Text_Font[7],-210,130,"V o l u m e")
+					DrawUI3D("SliderArrow", 60,200,1, 90)
+					DrawUI3D("SliderArrow", 95,200,1,-90)
 					
-					If Music_Enabled = 1 Then
-						DrawImage3D(GUI_Windows[24],+490,160)
-						Text3D(Text_Font[7],+410,160,"O n",1)
-					Else
-						DrawImage3D(GUI_Windows[25],+490,160,0,180)
-						Text3D(Text_Font[7],+410,160,"O f f",1)
-					EndIf
-					If MouseY()>GhBy2-170 And MouseY()<GhBy2-150
-						If MouseX()>GwBy2+470 And MouseX()<GwBy2+510
-							If MouseHit(1)
-								If Music_Enabled = 1 Then
-									Music_Enabled = 0
-									Music_Volume = 0: PlaySound(Sound_ID[4])
-								ElseIf Music_Enabled = 0 Then
-									Music_Enabled = 1: PlaySound(Sound_ID[4])
-								EndIf
-							EndIf
+					DrawUI3D("Slider",+230,200,1.5)
+					
+					Text3D(Text_Font[7],+400,200,(Desired_MVolume*100)+"%",2)
+					
+					If Settings_GFX_Ambience > 11 Then Settings_GFX_Ambience = 11
+					If Settings_GFX_Ambience < 1 Then Settings_GFX_Ambience = 1
+					
+					If MouseY()>GhBy2-214 And MouseY()<GhBy2-186
+						If MouseX()>GwBy2+39 And MouseX()<GwBy2+81
+							DrawUI3D("SliderArrowA", 60,200,1, 90)
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume - .05: PlaySound(Sound_ID[1])
 						EndIf
-					EndIf
-					
-					DrawImage3D(GUI_Windows[22],+170,130,0,90,1.5)
-					DrawImage3D(GUI_Windows[22],+205,130,0,-90,1.5)
-					
-					DrawImage3D(GUI_Windows[23],+340,130,0,0,1.5)
-					
-					Local MusicVol = Desired_MVolume#*100
-					Text3D(Text_Font[7],+380,130,MusicVol+" %",1)
-					
-					If MouseY()>GhBy2-140 And MouseY()<GhBy2-120
-						If MouseX()>GwBy2+160 And MouseX()<GwBy2+180
-							If MouseHit(1) Then Desired_MVolume = Desired_MVolume - 0.05: PlaySound(Sound_ID[1])
-						EndIf
-						If MouseX()>GwBy2+195 And MouseX()<GwBy2+215
-							If MouseHit(1) Then Desired_MVolume = Desired_MVolume + 0.05: PlaySound(Sound_ID[1])
+						If MouseX()>GwBy2+74 And MouseX()<GwBy2+126
+							DrawUI3D("SliderArrowA", 95,200,1,-90)
+							If MouseHit(1) Then Desired_MVolume = Desired_MVolume + .05: PlaySound(Sound_ID[1])
 						EndIf
 					EndIf
 					
@@ -832,52 +798,48 @@ Repeat
 					If Desired_MVolume < 0 Then Desired_MVolume = 0
 						
 				Case 4 ; >> Other
-					DrawImage3D(GUI_Windows[19],-420,210,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,170,0,0,1.8)
-					DrawImage3D(GUI_Windows[19],-420,130,0,0,1.8)
-					DrawImage3D(GUI_Windows[16],-420, 90,0,0,1.8)
-					Text3D(Text_Font[6],140,252,"O t h e r",1)
-					
-					Text3D(Text_Font[7],-210,210,"S e t   u p   o t h e r   o p t i o n s   h e r e .")
+					DrawUI3D("BaseButtonGrey",-370,210,1.8)
+					DrawUI3D("BaseButtonGrey",-370,170,1.8)
+					DrawUI3D("BaseButtonGrey",-370,130,1.8)
+					DrawUI3D("BaseButtonGreen",-370, 90,1.8)
+					Text3D(Text_Font[6],-180,235,"O t h e r",1)
 					
 			End Select
 			
-			DrawImage3D(GUI_Windows[19],-420,-220,0,0,1.8)
+			DrawUI3D("BaseButtonGrey",-370,-220,1.8)
 			
-			If MouseX()>GraphicsWidth()/2-515 And MouseX()<GraphicsWidth()/2-330
+			If MouseX()>GraphicsWidth()/2-465 And MouseX()<GraphicsWidth()/2-280
 				If MouseY()>(GraphicsHeight()/2)-228 And MouseY()<(GraphicsHeight()/2)-192
-					DrawImage3D(GUI_Windows[17],-420,210,0,0,1.8)
+					DrawUI3D("BaseButtonBlue",-370,210,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext_Settings = 1: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-190 And MouseY()<(GraphicsHeight()/2)-154
-					DrawImage3D(GUI_Windows[17],-420,170,0,0,1.8)
+					DrawUI3D("BaseButtonBlue",-370,170,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext_Settings = 2: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-152 And MouseY()<(GraphicsHeight()/2)-116
-					DrawImage3D(GUI_Windows[17],-420,130,0,0,1.8)
+					DrawUI3D("BaseButtonBlue",-370,130,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext_Settings = 3: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)-114 And MouseY()<(GraphicsHeight()/2)-78
-					DrawImage3D(GUI_Windows[17],-420, 90,0,0,1.8)
+					DrawUI3D("BaseButtonBlue",-370, 90,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext_Settings = 4: PlaySound(Sound_ID[1])
 				ElseIf  MouseY()>(GraphicsHeight()/2)+202 And MouseY()<(GraphicsHeight()/2)+238
-					DrawImage3D(GUI_Windows[16],-420,-220,0,0,1.8)
+					DrawUI3D("BaseButtonRed",-370,-220,1.8)
 					If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[3])
 				EndIf
 			EndIf
 			
 			
 			
-			Text3D(Text_Font[7],-420,210,"G r a p h i c s",1)
-			Text3D(Text_Font[7],-420,170,"S o u n d s",1)
-			Text3D(Text_Font[7],-420,130,"M u s i c",1)
-			Text3D(Text_Font[7],-420, 90,"O t h e r",1)
+			Text3D(Text_Font[7],-370,210,"G r a p h i c s",1)
+			Text3D(Text_Font[7],-370,170,"S o u n d s",1)
+			Text3D(Text_Font[7],-370,130,"M u s i c",1)
+			Text3D(Text_Font[7],-370, 90,"O t h e r",1)
 			
-			Text3D(Text_Font[7],-420,-220,"C o n f i r m",1)
+			Text3D(Text_Font[7],-370,-220,"C o n f i r m",1)
 			
 			
 			;[End Block]
 			
 		Case 3 ; >> New Game
-			
-			
 			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
 				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
 				If MouseHit(1) Then State_Menu_Subcontext = 1: PlaySound(Sound_ID[1])
@@ -891,102 +853,91 @@ Repeat
 					Local BaseX = -432
 					WipeKeyEx()
 					
-					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					DrawUI3D("SelectionDivider",BaseX,-50,2)
 					Text3D(Text_Font[7],BaseX,400,"T e r r a n   C o n g l o m e r a t e",1)
 					Text3D(Text_Font[10],BaseX,370,"Money is Power",1)
 					
-					WordWrap3D("A capitalist society composed of and ruled by various corporations, with a strong focus on  financial and military power. The Conglomerate seeks to expand its influence throughout the galaxy both through monetary and military     conquest. ",-432,260,46,16,1,6)
+					WordWrap3D(-432,260,46,16,1,6,"A capitalist society composed of and ruled by various corporations, with a strong focus on  financial and military power. The Conglomerate seeks to expand its influence throughout the galaxy both through monetary and military     conquest. ")
 					
-					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					Text3D(Text_Font[6],BaseX,140,"Starting System:",1)
 					Text3D(Text_Font[2],BaseX,120,"Luna",1)
 ;					Text3D(Text_Font[1],BaseX,120,"3",1)
-					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[6],BaseX, 80,"Starting Money:",1)
 					Text3D(Text_Font[3],BaseX, 60,"25.000 Cr.",1)
 ;					Text3D(Text_Font[1],BaseX, 60,"6",1)
 ;					Text3D(Text_Font[1],BaseX, 40,"7",1)
-					Text3D(Text_Font[1],BaseX, 20,"Terrans have the biggest Empire, but are only connected to the rest",1)
-					Text3D(Text_Font[1],BaseX,  0,"of the Network on two chokepoint systems. An abundance of stations",1)
-					Text3D(Text_Font[1],BaseX,-20,"accelerates every Traders aspirations",1)
+					Text3D(Text_Font[6],BaseX, 20,"Terrans have the biggest Empire, but are only connected to the rest",1)
+					Text3D(Text_Font[6],BaseX,  0,"of the Network on two chokepoint systems. An abundance of stations",1)
+					Text3D(Text_Font[6],BaseX,-20,"accelerates every Traders aspirations",1)
 					
-					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					DrawUI3D("BaseButtonGrey", BaseX,-350,2)
 					
 					BaseX = 0
 					
-					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					DrawUI3D("SelectionDivider",BaseX,-50,2)
 					Text3D(Text_Font[7],BaseX,400,"S i r i u s   D o m i n i o n",1)
 					Text3D(Text_Font[10],BaseX,370,"Freedom and Liberty",1)
 					
-					Text3D(Text_Font[1],BaseX,260,"A liberal democracy with a strong emphasis on personal freedom and",1)
-					Text3D(Text_Font[1],BaseX,240,"exploration, governed by a president, chancellor, and seven chambers",1)
-					Text3D(Text_Font[1],BaseX,220,"of advisors. The Dominion has a mixed economy, with both private",1)
-					Text3D(Text_Font[1],BaseX,200,"enterprise and government control, and prioritizes the well-being",1)
-					Text3D(Text_Font[1],BaseX,180,"of its citizens.",1)
+					WordWrap3D(0,260,46,16,1,6,"A liberal democracy with a strong emphasis on personal freedom and exploration, governed by a president, chancellor, and seven chambers of advisors. The Dominion has a mixed economy, with both private enterprise and government control, and prioritizes the well-being of its citizens.")
 					
-					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					Text3D(Text_Font[6],BaseX,140,"Starting System:",1)
 					Text3D(Text_Font[2],BaseX,120,"Kurai",1)
 ;					Text3D(Text_Font[1],BaseX,120,"3",1)
-					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[6],BaseX, 80,"Starting Money:",1)
 					Text3D(Text_Font[3],BaseX, 60,"9.000 Cr.",1)
 ;					Text3D(Text_Font[1],BaseX, 60,"6",1)
 ;					Text3D(Text_Font[1],BaseX, 40,"7",1)
-					Text3D(Text_Font[1],BaseX, 20,"The Dominion is the first independent Empire and has the most open",1)
-					Text3D(Text_Font[1],BaseX,  0,"battlefield sectors in the Network, a good chance for budding",1)
-					Text3D(Text_Font[1],BaseX,-20,"privateers.",1)
+					Text3D(Text_Font[6],BaseX, 20,"The Dominion is the first independent Empire and has the most open",1)
+					Text3D(Text_Font[6],BaseX,  0,"battlefield sectors in the Network, a good chance for budding",1)
+					Text3D(Text_Font[6],BaseX,-20,"privateers.",1)
 					
-					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					DrawUI3D("BaseButtonGrey", BaseX,-350,2)
 					
 					BaseX = 428
 					
-					DrawImage3D(GUI_Windows[21],BaseX,-50,0,0,2)
+					DrawUI3D("SelectionDivider",BaseX,-50,2)
 					Text3D(Text_Font[7],BaseX,400,"O r i o n   C o u n c i l",1)
 					Text3D(Text_Font[10],BaseX,370,"Better Oneself",1)
 					
-					Text3D(Text_Font[1],BaseX,260,"A meritocratic society of highly enducated people, with each member",1)
-					Text3D(Text_Font[1],BaseX,240,"of the Council representing a different region of the Orionic",1)
-					Text3D(Text_Font[1],BaseX,220,"Empire. The Council is responsible for making major decisions regarding",1)
-					Text3D(Text_Font[1],BaseX,200,"the empire, with the goal of maintaining a strong and stable society",1)
-					Text3D(Text_Font[1],BaseX,180,"based on tradition and order.",1)
-					Text3D(Text_Font[1],BaseX,140,"Starting System:",1)
+					WordWrap3D(428,260,46,16,1,6,"A meritocratic society of highly enducated people, with each member of the Council representing a different region of the Orionic Empire. The Council is responsible for making major decisions regarding the empire, with the goal of maintaining a strong and stable society based on tradition and order.")
+					Text3D(Text_Font[6],BaseX,140,"Starting System:",1)
 					Text3D(Text_Font[2],BaseX,120,"Maia",1)
 ;					Text3D(Text_Font[1],BaseX,120,"3",1)
-					Text3D(Text_Font[1],BaseX, 80,"Starting Money:",1)
+					Text3D(Text_Font[6],BaseX, 80,"Starting Money:",1)
 					Text3D(Text_Font[3],BaseX, 60,"10.000 Cr.",1)
 ;					Text3D(Text_Font[1],BaseX, 60,"6",1)
 ;					Text3D(Text_Font[1],BaseX, 40,"7",1)
-					Text3D(Text_Font[1],BaseX, 20,"As the smallest and newest Empire, the council has many bordering",1)
-					Text3D(Text_Font[1],BaseX,  0,"unexplored sectors and can provide many opportunities for",1)
-					Text3D(Text_Font[1],BaseX,-20,"adventurers.",1)
+					Text3D(Text_Font[6],BaseX, 20,"As the smallest and newest Empire, the council has many bordering",1)
+					Text3D(Text_Font[6],BaseX,  0,"unexplored sectors and can provide many opportunities for",1)
+					Text3D(Text_Font[6],BaseX,-20,"adventurers.",1)
 					
-					DrawImage3D(GUI_Windows[19], BaseX,-350,0,0,2)
+					DrawUI3D("BaseButtonGrey", BaseX,-350,2)
 					
 					
 					
-					DrawImage3D(GUI_Windows[36],0,0,0,0,1.25)
+					DrawImage3D(GUI_Windows[6],0,0,0,0,1.25)
 					If MouseX()>GwBy2-638 And MouseX()<GwBy2-215 Then
-						DrawRect3D(GUI_Windows[33],-426,Sin(MilliSecs()/50)*15,6,0,333,1024,0,0,1.25)
-;						DrawImage3D(GUI_Windows[32],-427,0,0,0,1.25)
+						DrawRect3D(GUI_Windows[7],-426,Sin(MilliSecs()/50)*15,6,0,333,1024,0,0,1.25)
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
-							DrawImage3D(GUI_Windows[16],-428,-350,0,0,2)
+							DrawUI3D("BaseButtonGreen",-428,-350,2)
 							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Terran Conglomerate": NewChar_Money=12000:NewChar_System$="Luna":State_Menu_Subcontext_Character=2:Player_GlobalX=14 :Player_GlobalY=6
 						EndIf
 						
 					ElseIf MouseX()>GwBy2-215 And MouseX()<GwBy2+205 Then
-						DrawRect3D(GUI_Windows[33],0,Sin(MilliSecs()/50)*15,345,0,333,1024,0,0,1.25)
-;						DrawImage3D(GUI_Windows[32],0,0,0,0,1.25)
+						DrawRect3D(GUI_Windows[7],0,Sin(MilliSecs()/50)*15,345,0,333,1024,0,0,1.25)
 						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
-							DrawImage3D(GUI_Windows[16],0,-350,0,0,2)
+							DrawUI3D("BaseButtonGreen",0,-350,2)
 							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Sirius Dominion": NewChar_Money=8000:NewChar_System$="Kurai":State_Menu_Subcontext_Character=2:Player_GlobalX=5 :Player_GlobalY=16
 						EndIf
 						
 						
 					ElseIf MouseX()>GwBy2+205 And MouseX()<GwBy2+605 Then
-						DrawRect3D(GUI_Windows[33],426,Sin(MilliSecs()/50)*15,685,0,333,1024,0,0,1.25)
-;						DrawImage3D(GUI_Windows[32],428,0,0,0,1.27)
-						
+						DrawRect3D(GUI_Windows[7],426,Sin(MilliSecs()/50)*15,685,0,333,1024,0,0,1.25)
+;						
 						If MouseY()>GhBy2+330 And MouseY()<GhBy2+370 Then
-							DrawImage3D(GUI_Windows[16],428,-350,0,0,2)
+							DrawUI3D("BaseButtonGreen",428,-350,2)
 							If MouseHit(1) Then PlaySound(Sound_ID[1]):NewChar_Faction$="Orionic Council Republic": NewChar_Money=10000:NewChar_System$="Maia":State_Menu_Subcontext_Character=2:Player_GlobalX=5 :Player_GlobalY=7
 						EndIf
 						
@@ -1023,10 +974,10 @@ Repeat
 					Text3D(Text_Font[7],0,-300,"Confirm and Play!",1)
 					
 					If MouseX()>GwBy2-100 And MouseX()<GwBy2+100 And MouseY()>GhBy2+250 And MouseY()<GhBy2+350 Then
-						DrawImage3D(GUI_Windows[16], 0,-300,0,0,2)	
+						DrawUI3D("BaseButtonGreen", 0,-300,2)	
 						If MouseHit(1) Then Goto Spacegamestart: PlaySound(Sound_ID[1])
 					Else
-						DrawImage3D(GUI_Windows[19], 0,-300,0,0,2)
+						DrawUI3D("BaseButtonGrey", 0,-300,2)
 					EndIf
 					
 					
@@ -1059,7 +1010,6 @@ Repeat
 						If InputEx_KeyHit(KEY_X) Then Character_NewName$=Character_NewName$+"Y": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_Y) Then Character_NewName$=Character_NewName$+"X": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_Z) Then Character_NewName$=Character_NewName$+"Z": PlaySound(Sound_ID[1])
-						If InputEx_KeyHit(KEY_1) Then Character_NewName$=Character_NewName$+"!": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_2) Then Character_NewName$=Character_NewName$+"2": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_3) Then Character_NewName$=Character_NewName$+"3": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_4) Then Character_NewName$=Character_NewName$+"4": PlaySound(Sound_ID[1])
@@ -1070,8 +1020,6 @@ Repeat
 						If InputEx_KeyHit(KEY_9) Then Character_NewName$=Character_NewName$+"9": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_0) Then Character_NewName$=Character_NewName$+"0": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_DASH) Then Character_NewName$=Character_NewName$+"_": PlaySound(Sound_ID[1])
-						If InputEx_KeyHit(KEY_PERIOD) Then Character_NewName$=Character_NewName$+":": PlaySound(Sound_ID[1])
-						If InputEx_KeyHit(KEY_PLUS) Then Character_NewName$=Character_NewName$+"*": PlaySound(Sound_ID[1])
 					Else
 						If InputEx_KeyHit(KEY_A) Then Character_NewName$=Character_NewName$+"a": PlaySound(Sound_ID[1])
 						If InputEx_KeyHit(KEY_B) Then Character_NewName$=Character_NewName$+"b": PlaySound(Sound_ID[1])
@@ -1115,21 +1063,21 @@ Repeat
 					EndIf
 					
 					If InputEx_KeyDown(KEY_BACKSPACE) And Character_NewName$>"" Then 
-						Tcounter=Tcounter+1
-						If Tcounter>7 Then 
+						Chat_Usage_Counter=Chat_Usage_Counter+1
+						If Chat_Usage_Counter>7 Then 
 							Character_NewName$=Mid(Character_NewName$,1,Len(Character_NewName$)-1) 
-							Tcounter=0
+							Chat_Usage_Counter=0
 							PlaySound(Sound_ID[1])
 						EndIf
 					Else 
-						Tcounter=4
+						Chat_Usage_Counter=4
 					EndIf
 										;[End Block]
 					
 			End Select
 			
-			DrawImage3D(GUI_Windows[27],0,GraphicsHeight()/2-16,0,0,5)
-			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			DrawUI3D("LongBarDark",0,GraphicsHeight()/2-16,2,-90)
+			DrawUI3D("BaseButtonGreen", GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			
 			Text3D(Text_Font[7],0,GraphicsHeight()/2-24,"N e w   G a m e",1)
 		Case 5 ; >> Credits
@@ -1138,7 +1086,7 @@ Repeat
 			WipeKeyEx()
 			
 			DrawImage3D	(GUI_Windows[2],0,GraphicsHeight()/3)
-			DrawImage3D(GUI_Windows[16], GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
+			DrawUI3D("BaseButtonGreen", GraphicsWidth()/2-128,-GraphicsHeight()/2+64)
 			DrawImage3D(GUI_Windows[37], D3DOL+256,D3DOD+64,0,0,0.5)
 			If MouseX()>GraphicsWidth()-192 And MouseX()<GraphicsWidth()-64 And MouseY()>(GraphicsHeight()/2)+455 And MouseY()<(GraphicsHeight()/2)+480 Then
 				Text3D(Text_Font[8],GraphicsWidth()/2-128,-GraphicsHeight()/2+65,"B a c k",1)
@@ -1177,36 +1125,59 @@ Until CharDataLoaded=1
 .Spacegamestart
 
 StopChannel Channel_Music
-
+LogMessage(LOG_DEBUG,"Game Prep: Stopped Menu Music")
 
 ChatNickName$ = "bfgame_"+Character_NewName$
-Chat_Connect()
+LogMessage(LOG_DEBUG,"Game Prep: Set Chat Nickname")
+
+If Chat_Enabled = 1 Then
+	Chat_Connect()
+	LogMessage(LOG_DEBUG,"Game Prep: Connecting to Chat Server")
+EndIf
+
 Music_Volume#=.2
+LogMessage(LOG_DEBUG,"Game Prep: Lowered Music volume")
+
 
 
 CameraZoom WorldCamera,1
+LogMessage(LOG_DEBUG,"Game Prep: Set FOV")
+
 Global WorldCameraPivot = CreatePivot(pvCamera)
+LogMessage(LOG_DEBUG,"Game Prep: Creating Camera Pivoting")
+
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(pvCamera)-Zoffset, False
 PositionEntity WorldCameraPivot, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(pvCamera), False
+LogMessage(LOG_DEBUG,"Game Prep: Positioning Pivot")
+
 Global PlayerChannel = EmitSound(Sound3D_ID[1],pvShip)
+LogMessage(LOG_DEBUG,"Game Prep: Start Engine Sound")
+
 
 Global OldMS, NewMS, TDFMS, MaxMS, MinMS=10000
 Global DebugInfo_Enabled
 
 PlayerSwitchShip(1)
+LogMessage(LOG_DEBUG,"Game Prep: Switching Ship")
+
 World_Generate(Player_GlobalX,Player_GlobalY,0,0,0)
+LogMessage(LOG_DEBUG,"Game Prep: Generated World")
+
 HidePointer
+LogMessage(LOG_DEBUG,"Game Prep: Hid Mouse")
+
 
 ;set camera:
 PositionEntity WorldCamera, EntityX(pvCamera), EntityY(pvCamera)+Yoffset, EntityZ(WorldCamera), False
-
-
+LogMessage(LOG_DEBUG,"Game Prep: Positioned Camera")
 
 
 UpdateMapScale(4)
+LogMessage(LOG_DEBUG,"Game Prep: Updated Map Scale")
 
 
 HUD = 1
+LogMessage(LOG_DEBUG,"Game Prep: Entering Game")
 
 Repeat
 	
@@ -1218,34 +1189,22 @@ Repeat
 	Local ms_Performance_Update = MilliSecs()
 	
 	;[Block] Networking
-	Local ms_Performance_Update_Network = MilliSecs()
+	If Chat_Enabled = 1 Then Chat_GetData()
 	
-	Chat_GetData()
+	BU_Helper_Window_LockPointerAuto(0)
 	
 	If KeyHit(1) Then 
 		Game_Menu_Open=1-Game_Menu_Open
 	EndIf
 		
 	If Game_Menu_Open = 1 Then FlushMouse(): eCameraMode = MODE_DOCKED
-	
-	; Measure Time
-	Performance_Update_Network = MilliSecs() - ms_Performance_Update_Network
 	;[End Block]
 	
 	;[Block] Players
-	Local ms_Performance_Update_Players = MilliSecs()
-	
 	; Movement: Strafing
 	MoveEntity pvShip,ShipStrafeX#,ShipStrafeY#,Player_Value_Speed_Current#
 	TurnEntity pvShip,0,0,ShipRollZ#
 	
-	; Measure Time
-	Performance_Update_Players = MilliSecs() - ms_Performance_Update_Players
-	;[End Block]
-	
-	;[Block] Projectiles
-	Local ms_Performance_Update_Projectiles = MilliSecs()
-	Performance_Update_Projectiles = MilliSecs() - ms_Performance_Update_Projectiles
 	;[End Block]
 	
 	;[Block] Input
@@ -1253,7 +1212,7 @@ Repeat
 	
 	InputEx_Update()
 	
-	BU_Helper_Window_LockPointerAuto()
+	
 	
 	Local mSpeedX#, mSpeedY#
 	mSpeedX = MouseXSpeed()
@@ -1429,14 +1388,6 @@ Repeat
 
 	HandleInput()
 	
-	Performance_Update_Input = MilliSecs() - ms_Performance_Update_Input
-	;[End Block]
-	
-	;[Block] Build User Interface
-	Local ms_Performance_Update_UI = MilliSecs()
-	
-	Timer_HitRegister= Timer_HitRegister - 1
-	
 	;[Block] Player Health Checkup
 	Select Player_State_Alive
 		Case 0			; Player Alive and well
@@ -1445,10 +1396,6 @@ Repeat
 	End Select
 	
 	;[End Block]
-	
-	;[Block] Scanning Extension
-	;[End Block]
-	
 	
 	;[Block] Debug Information
 	If Game_Menu_Debug = 1 Then
@@ -1461,7 +1408,8 @@ Repeat
 		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*03), Floor(FPS#))
 		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*04), "Render")
 		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*04), Performance_Render)
-		
+		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*05), "Tris On Screen")
+		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*05), TrisRendered())
 		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*06), "X")
 		Text3D(Text_Font[1], D3DOL+190, D3DOU-100-(16*06), Floor(EntityX(pvShip,True)))
 		Text3D(Text_Font[1], D3DOL+100,  D3DOU-100-(16*07), "Y")
@@ -1475,7 +1423,6 @@ Repeat
 	;[End Block]
 	
 	Performance_Update_UI = MilliSecs() - ms_Performance_Update_UI
-	;[End Block]
 	
 	;[Block] Unsorted Updates
 	Local ms_Performance_RestUpdate = MilliSecs()
@@ -1496,13 +1443,7 @@ Repeat
 	D3DMouseX=(MouseX()-GraphicsWidth()/2)
 	D3DMouseY=(MouseY()-GraphicsHeight()/2)
 	
-	;[Block] Physics
-	Local ms_Performance_Physics = MilliSecs()
-	
 	UpdateWorld()
-	
-	Performance_Physics = MilliSecs() - ms_Performance_Physics
-	;[End Block]
 	Performance_Update = MilliSecs() - ms_Performance_Update
 	
 	;[Block] Render
@@ -1555,7 +1496,7 @@ Repeat
 	Interface_Container_Display()
 	RenderWorld
 	
-	Flip 0
+	Flip
 	
 	;[Block] Wait for Timer
 	Local ms_Performance_Wait = MilliSecs()
@@ -1588,6 +1529,7 @@ ShowPointer
 
 End
 ;~IDEal Editor Parameters:
-;~F#A5#B0#C8#CC#D5#DD#E4#F8#103#10D#117#11D#123#12D#1A6#284#28D#29F#2A7#2B0
-;~F#2BD#40B#473
+;~F#A5#B0#E4#F8#103#10D#117#11D#123#12D#258#25F#266#26D#273#27A#3D9#4A9#4B5#4D3
+;~F#509#571#57A#5AB#5DF
+;~B#3AB
 ;~C#Blitz3D
